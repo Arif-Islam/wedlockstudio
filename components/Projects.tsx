@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const projects = [
     { id: 1, title: "Wedding Highlight", subtitle: "Katie & Sam", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056154/project1_nwnqtn.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058593/project1_s5r8hy.mp4" },
@@ -19,9 +20,9 @@ const projects = [
 const SLOT_STYLES: Record<number, { left: string; top: number; width: number; height: number; opacity: number }> = {
     [-2]: { left: "calc(50% - 925px)", top: 135, width: 280, height: 280, opacity: 0 },
     [-1]: { left: "calc(50% - 625px)", top: 135, width: 280, height: 280, opacity: 0.75 },
-    [0]:  { left: "calc(50% - 325px)", top: 0,   width: 650, height: 550, opacity: 1 },
-    [1]:  { left: "calc(50% + 345px)", top: 135, width: 280, height: 280, opacity: 0.75 },
-    [2]:  { left: "calc(50% + 645px)", top: 135, width: 280, height: 280, opacity: 0 },
+    [0]: { left: "calc(50% - 325px)", top: 0, width: 650, height: 550, opacity: 1 },
+    [1]: { left: "calc(50% + 345px)", top: 135, width: 280, height: 280, opacity: 0.75 },
+    [2]: { left: "calc(50% + 645px)", top: 135, width: 280, height: 280, opacity: 0 },
 };
 
 function getSlotStyle(slot: number) {
@@ -33,7 +34,10 @@ function getSlotStyle(slot: number) {
 // For mobile infinite loop: create extended array [lastItem, ...allItems, firstItem]
 const extendedProjects = [projects[projects.length - 1], ...projects, projects[0]];
 
+const categories = ["Teaser", "Highlight Film", "Full Documentary Film", "Promotional Video"];
+
 export default function Projects() {
+    const [activeCategory, setActiveCategory] = useState("Teaser");
     const [currentIndex, setCurrentIndex] = useState(0);
     const [slotOffset, setSlotOffset] = useState(0);
     const [transitionEnabled, setTransitionEnabled] = useState(true);
@@ -202,12 +206,54 @@ export default function Projects() {
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
 
             <div className="container mx-auto px-4 relative z-10">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-4">
-                    Wedding Highlight <span className="text-gold">Examples</span>
-                </h2>
-                <p className="text-center text-gray-600 mb-16 max-w-2xl mx-auto">
-                    Explore our curated collection of cinematic wedding highlights
-                </p>
+                <div className="flex flex-col lg:flex-row justify-between lg:items-start mb-12 lg:mb-24 gap-6">
+                    <div className="text-center lg:text-left w-full lg:w-auto">
+                        <h2 className="text-gold text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                            Project <span className="text-black">Highlights</span>
+                        </h2>
+                        <p className="text-gray-600 max-w-xl mx-auto lg:mx-0">
+                            Explore our curated collection of cinematic {activeCategory.toLowerCase()}s
+                        </p>
+                    </div>
+
+                    {/* Category Tabs */}
+                    <div className="w-full md:w-[90%] lg:w-auto">
+                        <div className="grid grid-cols-2 gap-3 md:hidden">
+                            {categories.map((category) => (
+                                <button
+                                    key={`mobile-${category}`}
+                                    onClick={() => setActiveCategory(category)}
+                                    className={cn(
+                                        "px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer border",
+                                        activeCategory === category
+                                            ? "bg-gold text-black shadow-lg shadow-gold/20 scale-[1.02] border-gold"
+                                            : "bg-white text-gray-500 hover:text-black hover:bg-gray-50 border-gray-100"
+                                    )}
+                                >
+                                    {category}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Desktop List Layout (>= 1024px) */}
+                        <div className="hidden md:inline-flex bg-white/80 backdrop-blur-sm rounded-full p-1.5 border border-gold/40 shadow-sm shrink-0 whitespace-nowrap">
+                            {categories.map((category) => (
+                                <button
+                                    key={`desktop-${category}`}
+                                    onClick={() => setActiveCategory(category)}
+                                    className={cn(
+                                        "px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer",
+                                        activeCategory === category
+                                            ? "bg-gold text-black shadow-lg shadow-gold/20 scale-105"
+                                            : "text-gray-500 hover:text-black hover:bg-gray-100/50"
+                                    )}
+                                >
+                                    {category}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
 
                 {/* ==================== MOBILE/TABLET SLIDER (infinite loop) ==================== */}
                 <div

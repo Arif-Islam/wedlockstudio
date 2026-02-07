@@ -67,7 +67,7 @@ export default function Packages() {
                     </div>
 
                     {/* Toggle */}
-                    <div className="inline-flex bg-gray-100 rounded-full p-1 border border-gray-200 shrink-0">
+                    <div className="inline-flex bg-white/80 backdrop-blur-sm rounded-full p-1 border border-gold/40 shrink-0">
                         <button
                             onClick={() => setActiveTab("weekly")}
                             className={cn(
