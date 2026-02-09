@@ -15,8 +15,6 @@ const projects = [
 
 // Desktop carousel slot positions (absolute positioning)
 // Center: 650x550, Thumbs: 280x280, Gap: 20px, Container height: 550
-// Left video center X: calc(50% - 625px + 140px) = calc(50% - 485px)
-// Right video center X: calc(50% + 345px + 140px) = calc(50% + 485px)
 const SLOT_STYLES: Record<number, { left: string; top: number; width: number; height: number; opacity: number }> = {
     [-2]: { left: "calc(50% - 925px)", top: 135, width: 280, height: 280, opacity: 0 },
     [-1]: { left: "calc(50% - 625px)", top: 135, width: 280, height: 280, opacity: 0.75 },
@@ -45,19 +43,67 @@ export default function Projects() {
     const [playingVideo, setPlayingVideo] = useState<number | null>(null);
 
     // Mobile infinite loop state
-    const [mobileSlideIndex, setMobileSlideIndex] = useState(1); // Start at 1 because index 0 is the clone of last
+    const [mobileSlideIndex, setMobileSlideIndex] = useState(1);
     const [mobileTransition, setMobileTransition] = useState(true);
     const [touchStart, setTouchStart] = useState(0);
     const [touchEnd, setTouchEnd] = useState(0);
+
+    // Animation state
+    const [inView, setInView] = useState(false);
+    const [tabAnimCount, setTabAnimCount] = useState(0);
+    const sectionRef = useRef<HTMLElement>(null);
+    const sliderWrapperRef = useRef<HTMLDivElement>(null);
 
     // Separate refs for mobile and desktop to avoid conflicts
     const mobileVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
     const desktopVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
+    // ==================== VIEWPORT ENTRANCE (Intersection Observer) ====================
+    useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setInView(true);
+                    observer.disconnect(); // Only animate once
+                }
+            },
+            { threshold: 0.12 }
+        );
+
+        observer.observe(section);
+        return () => observer.disconnect();
+    }, []);
+
     // Get project index with wrapping (for desktop)
     const getProjectIndex = useCallback((offset: number) => {
         return (currentIndex + offset + projects.length * 10) % projects.length;
     }, [currentIndex]);
+
+    // ==================== TAB CHANGE ANIMATION ====================
+    // Runs AFTER React's render cycle so the DOM manipulation won't be overwritten
+    useEffect(() => {
+        if (tabAnimCount === 0) return; // Skip the initial render
+        const el = sliderWrapperRef.current;
+        if (!el) return;
+
+        // Clear any previous animation so the browser treats the next set as new
+        el.style.animation = "none";
+
+        // rAF ensures the browser has flushed the "none" before we apply the new animation
+        requestAnimationFrame(() => {
+            el.style.animation =
+                "tab-content-refresh 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+        });
+    }, [tabAnimCount]);
+
+    const handleCategoryChange = (category: string) => {
+        if (category === activeCategory) return;
+        setActiveCategory(category);
+        setTabAnimCount((prev) => prev + 1); // Triggers the useEffect above after render
+    };
 
     // ==================== DESKTOP NAVIGATION ====================
     const goToNextDesktop = useCallback(() => {
@@ -123,30 +169,27 @@ export default function Projects() {
     const mobileGoToSlide = (realIndex: number) => {
         pauseAllMobileVideos();
         setMobileTransition(true);
-        setMobileSlideIndex(realIndex + 1); // +1 because of the prepended clone
+        setMobileSlideIndex(realIndex + 1);
     };
 
     // Handle infinite loop snap-back after transition ends
     useEffect(() => {
-        // If we've slid to the clone of the first item (at the end)
         if (mobileSlideIndex === extendedProjects.length - 1) {
             const timer = setTimeout(() => {
                 setMobileTransition(false);
-                setMobileSlideIndex(1); // Jump to real first item
+                setMobileSlideIndex(1);
             }, 700);
             return () => clearTimeout(timer);
         }
-        // If we've slid to the clone of the last item (at the start)
         if (mobileSlideIndex === 0) {
             const timer = setTimeout(() => {
                 setMobileTransition(false);
-                setMobileSlideIndex(projects.length); // Jump to real last item
+                setMobileSlideIndex(projects.length);
             }, 700);
             return () => clearTimeout(timer);
         }
     }, [mobileSlideIndex]);
 
-    // Get the real project index from mobile slide index
     const getMobileRealIndex = () => {
         if (mobileSlideIndex === 0) return projects.length - 1;
         if (mobileSlideIndex === extendedProjects.length - 1) return 0;
@@ -200,34 +243,66 @@ export default function Projects() {
     const mobileRealIndex = getMobileRealIndex();
 
     return (
-        <section id="projects" className="py-20 bg-gray-50 text-black relative overflow-hidden">
-            {/* Decorative Elements */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
+        <section
+            ref={sectionRef}
+            id="projects"
+            className="relative py-20 md:py-28 overflow-hidden"
+            style={{
+                background: "linear-gradient(180deg, #f9f8f5 0%, #f5f3ef 30%, #f7f5f1 60%, #fdfbf7 100%)",
+            }}
+        >
+            {/* ── Decorative background orbs ── */}
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gold/4 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gold/4 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute top-1/2 right-0 w-72 h-72 bg-gold/3 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
-            <div className="container mx-auto px-4 relative z-10">
-                <div className="flex flex-col lg:flex-row justify-between lg:items-start mb-12 lg:mb-24 gap-6">
-                    <div className="text-center lg:text-left w-full lg:w-auto">
-                        <h2 className="text-gold text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                            Project <span className="text-black">Highlights</span>
+            {/* ── Thin gold vertical accent lines — desktop only ── */}
+            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+
+            {/* ── Subtle horizontal divider at the very top ── */}
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                {/* ── Section Header ── */}
+                <div className="flex flex-col lg:flex-row justify-between lg:items-start mb-12 lg:mb-20 gap-6">
+                    {/* Title block — viewport entrance stagger group 1 */}
+                    <div
+                        className={cn(
+                            "text-center lg:text-left w-full lg:w-auto",
+                            inView ? "animate-slide-up-fade" : "opacity-0"
+                        )}
+                    >
+                        <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
+                            Our Work
+                        </p>
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
+                            Project <span className="text-gold">Highlights</span>
                         </h2>
-                        <p className="text-gray-600 max-w-xl mx-auto lg:mx-0">
+                        <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
                             Explore our curated collection of cinematic {activeCategory.toLowerCase()}s
                         </p>
                     </div>
 
-                    {/* Category Tabs */}
-                    <div className="w-full md:w-[90%] lg:w-auto">
+                    {/* Category Tabs — viewport entrance stagger group 2 */}
+                    <div
+                        className={cn(
+                            "w-full md:w-[90%] lg:w-auto",
+                            inView ? "animate-slide-up-fade" : "opacity-0"
+                        )}
+                        style={inView ? { animationDelay: "0.15s" } : undefined}
+                    >
+                        {/* Mobile Grid Layout */}
                         <div className="grid grid-cols-2 gap-3 md:hidden">
                             {categories.map((category) => (
                                 <button
                                     key={`mobile-${category}`}
-                                    onClick={() => setActiveCategory(category)}
+                                    onClick={() => handleCategoryChange(category)}
                                     className={cn(
                                         "px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer border",
                                         activeCategory === category
                                             ? "bg-gold text-black shadow-lg shadow-gold/20 scale-[1.02] border-gold"
-                                            : "bg-white text-gray-500 hover:text-black hover:bg-gray-50 border-gray-100"
+                                            : "bg-white/80 backdrop-blur-sm text-gray-500 hover:text-black hover:bg-white border-gold/10"
                                     )}
                                 >
                                     {category}
@@ -235,17 +310,17 @@ export default function Projects() {
                             ))}
                         </div>
 
-                        {/* Desktop List Layout (>= 1024px) */}
-                        <div className="hidden md:inline-flex bg-white/80 backdrop-blur-sm rounded-full p-1.5 border border-gold/40 shadow-sm shrink-0 whitespace-nowrap">
+                        {/* Desktop Pill Layout */}
+                        <div className="hidden md:inline-flex bg-white/70 backdrop-blur-md rounded-full p-1.5 border border-gold/15 shadow-sm shrink-0 whitespace-nowrap">
                             {categories.map((category) => (
                                 <button
                                     key={`desktop-${category}`}
-                                    onClick={() => setActiveCategory(category)}
+                                    onClick={() => handleCategoryChange(category)}
                                     className={cn(
-                                        "px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer",
+                                        "px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer",
                                         activeCategory === category
                                             ? "bg-gold text-black shadow-lg shadow-gold/20 scale-105"
-                                            : "text-gray-500 hover:text-black hover:bg-gray-100/50"
+                                            : "text-gray-500 hover:text-black hover:bg-white/60"
                                     )}
                                 >
                                     {category}
@@ -255,183 +330,210 @@ export default function Projects() {
                     </div>
                 </div>
 
-                {/* ==================== MOBILE/TABLET SLIDER (infinite loop) ==================== */}
+                {/* ── Viewport entrance wrapper (stagger group 3) ── */}
                 <div
-                    className="lg:hidden relative"
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
+                    className={cn(inView ? "animate-slide-up-fade" : "opacity-0")}
+                    style={inView ? { animationDelay: "0.3s" } : undefined}
                 >
-                    <div className="overflow-hidden">
-                        <div
-                            className="flex"
-                            style={{
-                                transform: `translateX(-${mobileSlideIndex * 100}%)`,
-                                transition: mobileTransition ? "transform 0.7s ease-out" : "none",
-                            }}
-                        >
-                            {extendedProjects.map((project, index) => {
-                                const isPlaying = playingVideo === index;
-                                return (
-                                    <div key={`mobile-${index}`} className="min-w-full px-4">
-                                        <div className="relative group overflow-hidden rounded-2xl h-[400px] md:h-[500px]">
-                                            <video
-                                                ref={(el) => { mobileVideoRefs.current[index] = el; }}
-                                                src={project.video}
-                                                className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
-                                                loop
-                                                playsInline
-                                                preload="metadata"
-                                            />
-                                            <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                                <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
-                                                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-                                            </div>
-                                            <div
-                                                className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                                onClick={() => toggleMobileVideo(index)}
-                                            >
-                                                <div className={`w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 ${!isPlaying ? "animate-pulse-subtle" : ""}`}>
-                                                    {isPlaying ? <Pause fill="black" className="text-black" size={36} /> : <Play fill="black" className="text-black ml-1" size={36} />}
-                                                </div>
-                                            </div>
-                                            <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
-                                                <div className="text-center space-y-2">
-                                                    <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
-                                                    <p className="text-gray-300 text-sm">{project.title}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                    <div className="flex justify-center gap-2 mt-8">
-                        {projects.map((_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => mobileGoToSlide(index)}
-                                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${index === mobileRealIndex ? "bg-gold w-3 h-3" : "bg-gray-400"}`}
-                                aria-label={`Go to slide ${index + 1}`}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                {/* ==================== DESKTOP CAROUSEL ==================== */}
-                <div className="hidden lg:block relative overflow-hidden" style={{ height: 550 }}>
-                    {/* 5 absolutely positioned slides */}
-                    {[-2, -1, 0, 1, 2].map((offset) => {
-                        const projectIndex = getProjectIndex(offset);
-                        const project = projects[projectIndex];
-                        const slot = offset + slotOffset;
-                        const style = getSlotStyle(slot);
-                        const isCenter = slot === 0;
-                        const isPlaying = playingVideo === projectIndex && isCenter;
-
-                        return (
+                {/* ── Tab-change animation wrapper (separate from viewport to avoid conflicts) ── */}
+                <div ref={sliderWrapperRef}>
+                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) ==================== */}
+                    <div
+                        className="lg:hidden relative"
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                    >
+                        <div className="overflow-hidden rounded-2xl">
                             <div
-                                key={`desktop-${offset}`}
-                                className={`absolute rounded-2xl overflow-hidden group ${isCenter ? "z-20" : "z-10"}`}
+                                className="flex"
                                 style={{
-                                    left: style.left,
-                                    top: style.top,
-                                    width: style.width,
-                                    height: style.height,
-                                    opacity: style.opacity,
-                                    transition: transitionEnabled
-                                        ? "left 0.7s cubic-bezier(0.4, 0, 0.2, 1), top 0.7s cubic-bezier(0.4, 0, 0.2, 1), width 0.7s cubic-bezier(0.4, 0, 0.2, 1), height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)"
-                                        : "none",
+                                    transform: `translateX(-${mobileSlideIndex * 100}%)`,
+                                    transition: mobileTransition ? "transform 0.7s ease-out" : "none",
                                 }}
                             >
-                                {/* Video - only rendered for current center */}
-                                {offset === 0 && (
-                                    <video
-                                        ref={(el) => { desktopVideoRefs.current[projectIndex] = el; }}
-                                        src={project.video}
-                                        className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
-                                        loop
-                                        playsInline
-                                        preload="metadata"
-                                    />
-                                )}
-
-                                {/* Thumbnail */}
-                                <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                    <Image
-                                        src={project.thumbnail}
-                                        alt={project.title}
-                                        fill
-                                        sizes={isCenter ? "650px" : "280px"}
-                                        className={`object-cover ${isCenter ? "group-hover:scale-110 transition-transform duration-700" : ""}`}
-                                        priority={offset === 0}
-                                    />
-                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-                                </div>
-
-                                {/* Play Button - only on center */}
-                                {isCenter && (
-                                    <div
-                                        className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                        onClick={() => toggleDesktopVideo(projectIndex)}
-                                    >
-                                        <div className={`w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 ${!isPlaying ? "animate-pulse-subtle" : ""}`}>
-                                            {isPlaying ? (
-                                                <Pause fill="black" className="text-black" size={36} />
-                                            ) : (
-                                                <Play fill="black" className="text-black ml-1" size={36} />
-                                            )}
+                                {extendedProjects.map((project, index) => {
+                                    const isPlaying = playingVideo === index;
+                                    return (
+                                        <div key={`mobile-${index}`} className="min-w-full px-2">
+                                            <div className="relative group overflow-hidden rounded-2xl h-[400px] md:h-[500px] shadow-xl ring-1 ring-black/5">
+                                                <video
+                                                    ref={(el) => { mobileVideoRefs.current[index] = el; }}
+                                                    src={project.video}
+                                                    className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
+                                                    loop
+                                                    playsInline
+                                                    preload="metadata"
+                                                />
+                                                <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+                                                    <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
+                                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+                                                </div>
+                                                <div
+                                                    className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
+                                                    onClick={() => toggleMobileVideo(index)}
+                                                >
+                                                    <div className={`w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 ${!isPlaying ? "animate-pulse-subtle" : ""}`}>
+                                                        {isPlaying ? <Pause fill="black" className="text-black" size={36} /> : <Play fill="black" className="text-black ml-1" size={36} />}
+                                                    </div>
+                                                </div>
+                                                <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                                    <div className="text-center space-y-2">
+                                                        <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
+                                                        <p className="text-gray-300 text-sm">{project.title}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        {/* Dot indicators */}
+                        <div className="flex justify-center gap-2.5 mt-8">
+                            {projects.map((_, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => mobileGoToSlide(index)}
+                                    className={cn(
+                                        "rounded-full transition-all duration-300 cursor-pointer",
+                                        index === mobileRealIndex
+                                            ? "bg-gold w-7 h-2.5"
+                                            : "bg-gray-300 hover:bg-gray-400 w-2.5 h-2.5"
+                                    )}
+                                    aria-label={`Go to slide ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* ==================== DESKTOP CAROUSEL ==================== */}
+                    <div className="hidden lg:block relative overflow-hidden" style={{ height: 550 }}>
+                        {/* 5 absolutely positioned slides */}
+                        {[-2, -1, 0, 1, 2].map((offset) => {
+                            const projectIndex = getProjectIndex(offset);
+                            const project = projects[projectIndex];
+                            const slot = offset + slotOffset;
+                            const style = getSlotStyle(slot);
+                            const isCenter = slot === 0;
+                            const isPlaying = playingVideo === projectIndex && isCenter;
+
+                            return (
+                                <div
+                                    key={`desktop-${offset}`}
+                                    className={cn(
+                                        "absolute rounded-2xl overflow-hidden group",
+                                        isCenter ? "z-20 shadow-2xl ring-1 ring-black/10" : "z-10 shadow-lg ring-1 ring-black/5"
+                                    )}
+                                    style={{
+                                        left: style.left,
+                                        top: style.top,
+                                        width: style.width,
+                                        height: style.height,
+                                        opacity: style.opacity,
+                                        transition: transitionEnabled
+                                            ? "left 0.7s cubic-bezier(0.4, 0, 0.2, 1), top 0.7s cubic-bezier(0.4, 0, 0.2, 1), width 0.7s cubic-bezier(0.4, 0, 0.2, 1), height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)"
+                                            : "none",
+                                    }}
+                                >
+                                    {/* Video - only rendered for current center */}
+                                    {offset === 0 && (
+                                        <video
+                                            ref={(el) => { desktopVideoRefs.current[projectIndex] = el; }}
+                                            src={project.video}
+                                            className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
+                                            loop
+                                            playsInline
+                                            preload="metadata"
+                                        />
+                                    )}
+
+                                    {/* Thumbnail */}
+                                    <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+                                        <Image
+                                            src={project.thumbnail}
+                                            alt={project.title}
+                                            fill
+                                            sizes={isCenter ? "650px" : "280px"}
+                                            className={`object-cover ${isCenter ? "group-hover:scale-105 transition-transform duration-700" : ""}`}
+                                            priority={offset === 0}
+                                        />
+                                        <div className={cn(
+                                            "absolute inset-0",
+                                            isCenter
+                                                ? "bg-linear-to-t from-black/70 via-black/10 to-transparent"
+                                                : "bg-black/20"
+                                        )} />
                                     </div>
-                                )}
 
-                                {/* Title */}
-                                <div className={`absolute bottom-6 left-0 right-0 ${isCenter ? "p-6" : "p-4"} z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
-                                    {isCenter ? (
-                                        <div className="text-center space-y-2">
-                                            <h3 className="text-2xl md:text-2xl font-medium text-white">{project.subtitle}</h3>
-                                            <p className="text-gray-300 text-sm">{project.title}</p>
+                                    {/* Play Button - only on center */}
+                                    {isCenter && (
+                                        <div
+                                            className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
+                                            onClick={() => toggleDesktopVideo(projectIndex)}
+                                        >
+                                            <div className={cn(
+                                                "w-20 h-20 bg-gold rounded-full flex items-center justify-center transform transition-all shadow-2xl shadow-gold/30",
+                                                "group-hover:scale-110",
+                                                !isPlaying && "animate-pulse-subtle"
+                                            )}>
+                                                {isPlaying ? (
+                                                    <Pause fill="black" className="text-black" size={36} />
+                                                ) : (
+                                                    <Play fill="black" className="text-black ml-1" size={36} />
+                                                )}
+                                            </div>
                                         </div>
-                                    ) : (
-                                        <></>
+                                    )}
+
+                                    {/* Title overlay — center only */}
+                                    {isCenter && (
+                                        <div className={`absolute bottom-0 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                            <div className="text-center space-y-1.5">
+                                                <h3 className="text-2xl font-semibold text-white drop-shadow-md">{project.subtitle}</h3>
+                                                <p className="text-gray-300 text-sm tracking-wide">{project.title}</p>
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
 
-                    {/* Navigation Arrows - positioned at exact center of side videos */}
-                    {/* Left arrow: center of left video = left edge (50% - 625px) + half width (140px) = calc(50% - 485px) */}
-                    <button
-                        onClick={goToPrevDesktop}
-                        disabled={isAnimating}
-                        className="absolute z-40 w-12 h-12 bg-white/90 hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg"
-                        style={{
-                            left: "calc(50% - 485px)",
-                            top: "50%",
-                            transform: "translate(-50%, -50%)",
-                        }}
-                        aria-label="Previous"
-                    >
-                        <ChevronLeft size={24} className="text-black" />
-                    </button>
-                    {/* Right arrow: center of right video = left edge (50% + 345px) + half width (140px) = calc(50% + 485px) */}
-                    <button
-                        onClick={goToNextDesktop}
-                        disabled={isAnimating}
-                        className="absolute z-40 w-12 h-12 bg-white/90 hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg"
-                        style={{
-                            left: "calc(50% + 485px)",
-                            top: "50%",
-                            transform: "translate(-50%, -50%)",
-                        }}
-                        aria-label="Next"
-                    >
-                        <ChevronRight size={24} className="text-black" />
-                    </button>
+                        {/* Navigation Arrows — positioned at exact center of side videos */}
+                        <button
+                            onClick={goToPrevDesktop}
+                            disabled={isAnimating}
+                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{
+                                left: "calc(50% - 485px)",
+                                top: "50%",
+                                transform: "translate(-50%, -50%)",
+                            }}
+                            aria-label="Previous"
+                        >
+                            <ChevronLeft size={24} className="text-black" />
+                        </button>
+                        <button
+                            onClick={goToNextDesktop}
+                            disabled={isAnimating}
+                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{
+                                left: "calc(50% + 485px)",
+                                top: "50%",
+                                transform: "translate(-50%, -50%)",
+                            }}
+                            aria-label="Next"
+                        >
+                            <ChevronRight size={24} className="text-black" />
+                        </button>
+                    </div>
+                </div>
                 </div>
             </div>
+
+            {/* ── Subtle horizontal divider at the very bottom ── */}
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
         </section>
     );
 }

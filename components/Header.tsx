@@ -15,8 +15,8 @@ const navItems = [
         name: "More",
         href: "#",
         children: [
-            { name: "Testimonials", href: "#testimonials" },
-            { name: "Contact", href: "#contact" },
+            { name: "TESTIMONIALS", href: "#testimonials" },
+            { name: "CONTACT", href: "#contact" },
             { name: "FAQ", href: "#faq" },
         ]
     },

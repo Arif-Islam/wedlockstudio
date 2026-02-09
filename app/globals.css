@@ -50,3 +50,37 @@ body {
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
 }
+
+/* Viewport entrance — slide up with fade */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Tab change — smooth refresh (applied via JS for restartability) */
+@keyframes tab-content-refresh {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-tab-refresh {
+  animation: tab-content-refresh 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
