@@ -11,8 +11,26 @@ const navItems = [
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Packages", href: "#packages" },
+    {
+        name: "More",
+        href: "#",
+        children: [
+            { name: "Testimonials", href: "#testimonials" },
+            { name: "Contact", href: "#contact" },
+            { name: "FAQ", href: "#faq" },
+        ]
+    },
+];
+
+// Flattened list for mobile
+const mobileNavItems = [
+    { name: "Home", href: "#hero" },
+    { name: "About", href: "#about" },
+    { name: "Projects", href: "#projects" },
+    { name: "Packages", href: "#packages" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Contact", href: "#contact" },
+    { name: "FAQ", href: "#faq" },
 ];
 
 export default function Header() {
@@ -40,47 +58,81 @@ export default function Header() {
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-                isScrolled ? "bg-white/90 backdrop-blur-md py-4 shadow-sm" : "bg-transparent py-6"
+                isScrolled ? "bg-white/90 backdrop-blur-md py-2 shadow-sm" : "bg-transparent py-4"
             )}
         >
             <div className="container mx-auto px-4 flex justify-between items-center">
-                {/* Logo */}
-                {/* Logo */}
-                <Link
-                    href="/"
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    className="relative w-40 h-12"
-                >
-                    <Image
-                        src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056120/logo_xlkvz7.jpg"
-                        alt="WedLockStudio Logo"
-                        fill
-                        sizes="160px"
-                        className="object-contain object-left"
-                        priority
-                    />
-                </Link>
+                {/* Logo & Text - LEFT */}
+                <div className="flex flex-col items-start justify-center">
+                    <Link
+                        href="/"
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                        className="relative w-32 h-10 md:w-36 md:h-12"
+                    >
+                        <Image
+                            src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056120/logo_xlkvz7.jpg"
+                            alt="WedLockStudio Logo"
+                            fill
+                            sizes="160px"
+                            className="object-contain object-left"
+                            priority
+                        />
+                    </Link>
+                    <span
+                        className={cn(
+                            "text-[10px] tracking-[0.2em] font-medium uppercase mt-0.5",
+                            isScrolled ? "text-gray-500" : "text-gray-300"
+                        )}
+                    >
+                        Video editing agency
+                    </span>
+                </div>
 
-                {/* Desktop Nav */}
-                <nav className="hidden lg:flex space-x-8">
+                {/* Desktop Nav - CENTER/RIGHT */}
+                <nav className="hidden lg:flex items-center space-x-8">
                     {navItems.map((item) => (
-                        <a
-                            key={item.name}
-                            href={item.href}
-                            onClick={(e) => scrollToSection(e, item.href)}
-                            className={cn(
-                                "uppercase text-sm font-medium tracking-wide border-b-2 border-transparent transition-all duration-300",
-                                isScrolled
-                                    ? "text-gray-700 hover:text-[#DBA73D] hover:border-[#DBA73D]"
-                                    : "text-gray-200 hover:text-[#DBA73D] hover:border-[#DBA73D]"
+                        <div key={item.name} className="relative group">
+                            <a
+                                href={item.href}
+                                onClick={(e) => {
+                                    if (item.children) {
+                                        e.preventDefault();
+                                    } else {
+                                        scrollToSection(e, item.href);
+                                    }
+                                }}
+                                className={cn(
+                                    "uppercase text-sm font-medium tracking-wide transition-all duration-300 flex items-center gap-1 cursor-pointer",
+                                    isScrolled
+                                        ? "text-gray-700 hover:text-[#DBA73D]"
+                                        : "text-gray-200 hover:text-[#DBA73D]"
+                                )}
+                            >
+                                {item.name}
+                            </a>
+
+                            {/* Dropdown for "More" */}
+                            {item.children && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
+                                    <div className="bg-white/95 backdrop-blur-md rounded-lg shadow-xl border border-gray-100 overflow-hidden py-2">
+                                        {item.children.map((child) => (
+                                            <a
+                                                key={child.name}
+                                                href={child.href}
+                                                onClick={(e) => scrollToSection(e, child.href)}
+                                                className="block px-6 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#DBA73D] transition-colors text-center"
+                                            >
+                                                {child.name}
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
                             )}
-                        >
-                            {item.name}
-                        </a>
+                        </div>
                     ))}
                 </nav>
 
-                {/* Right Icons */}
+                {/* Right Icons - RIGHT */}
                 <div className="hidden lg:flex items-center space-x-6">
                     <a
                         href="https://wa.me/1234567890"
@@ -121,7 +173,7 @@ export default function Header() {
             {/* Mobile Menu */}
             {mobileMenuOpen && (
                 <div className="lg:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md py-8 px-4 flex flex-col space-y-4 shadow-xl border-t border-gray-100">
-                    {navItems.map((item) => (
+                    {mobileNavItems.map((item) => (
                         <a
                             key={item.name}
                             href={item.href}

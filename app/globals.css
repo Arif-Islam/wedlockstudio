@@ -22,9 +22,12 @@ body {
 
 /* Custom Animations */
 @keyframes pulse-subtle {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
@@ -34,6 +37,7 @@ body {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
