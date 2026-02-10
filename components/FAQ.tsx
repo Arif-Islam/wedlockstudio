@@ -55,14 +55,27 @@ export default function FAQ() {
     };
 
     return (
-        <section id="faq" className="py-20 bg-gray-50 text-black">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                        Frequently Asked <span className="text-[#DBA73D]">Questions</span>
+        <section
+            id="faq"
+            className="relative py-20 md:py-28 overflow-hidden text-black"
+            style={{
+                background: "linear-gradient(180deg, #fdfbf7 0%, #f9f8f5 50%, #f5f3ef 100%)",
+            }}
+        >
+            {/* Decorative background orbs */}
+            <div className="absolute top-1/2 right-0 w-[380px] h-[380px] bg-gold/4 rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
+            <div className="absolute top-1/3 left-0 w-[280px] h-[280px] bg-gold/3 rounded-full blur-3xl -translate-x-1/3 pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center mb-14 md:mb-16">
+                    <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">FAQ</p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                        Frequently Asked <span className="text-gold">Questions</span>
                     </h2>
-                    <p className="text-gray-600 max-w-xl mx-auto">
-                        Have questions? We have answers. If you don&apos;t see your question here, feel free to <a href="mailto:contact@wedlockstudio.com" className="text-[#DBA73D] hover:underline">contact us</a>.
+                    <p className="text-gray-500 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
+                        Have questions? We have answers. If you don&apos;t see your question here, feel free to <a href="mailto:contact@wedlockstudio.com" className="text-gold hover:underline font-medium">contact us</a>.
                     </p>
                 </div>
 
@@ -70,17 +83,17 @@ export default function FAQ() {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 hover:shadow-md"
+                            className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gold/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gold/20"
                         >
                             <button
                                 onClick={() => toggleFAQ(index)}
-                                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none"
+                                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none cursor-pointer"
                             >
-                                <span className={cn("text-lg font-semibold transition-colors duration-300 pr-4", openIndex === index ? "text-[#DBA73D]" : "text-gray-800")}>
+                                <span className={cn("text-lg font-semibold transition-colors duration-300 pr-4", openIndex === index ? "text-gold" : "text-gray-800")}>
                                     {faq.question}
                                 </span>
                                 {openIndex === index ? (
-                                    <ChevronUp className="text-[#DBA73D] w-5 h-5 shrink-0" />
+                                    <ChevronUp className="text-gold w-5 h-5 shrink-0" />
                                 ) : (
                                     <ChevronDown className="text-gray-400 w-5 h-5 shrink-0" />
                                 )}

@@ -43,13 +43,26 @@ const testimonials = [
 
 export default function Testimonials() {
     return (
-        <section id="testimonials" className="py-20 bg-white text-black">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                        What Our <span className="text-[#DBA73D]">Clients Say</span>
+        <section
+            id="testimonials"
+            className="relative py-20 md:py-28 overflow-hidden text-black"
+            style={{
+                background: "linear-gradient(180deg, #f7f5f1 0%, #faf9f6 40%, #fdfbf7 100%)",
+            }}
+        >
+            {/* Decorative background orbs */}
+            <div className="absolute top-0 left-1/4 w-[420px] h-[420px] bg-gold/4 rounded-full blur-3xl -translate-y-1/4 pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-[360px] h-[360px] bg-gold/3 rounded-full blur-3xl translate-y-1/4 pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center mb-14 md:mb-16">
+                    <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">Testimonials</p>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
+                        What Our <span className="text-gold">Clients Say</span>
                     </h2>
-                    <p className="text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-gray-500 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
                         Discover how our expert editing services have elevated the work of wedding videographers, delighted event planners, and brought joy to engaged couples!
                     </p>
                 </div>
@@ -58,7 +71,7 @@ export default function Testimonials() {
                     {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.id}
-                            className="break-inside-avoid bg-gray-50 p-6 rounded-2xl border border-gray-100 transition-all duration-300 hover:shadow-md"
+                            className="break-inside-avoid bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gold/10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gold/20"
                         >
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="relative w-10 h-10 rounded-full overflow-hidden">

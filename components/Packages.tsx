@@ -54,20 +54,33 @@ export default function Packages() {
     const packages = activeTab === "weekly" ? weeklyPackages : monthlyPackages;
 
     return (
-        <section id="packages" className="py-20 bg-white text-black">
-            <div className="container mx-auto px-4">
+        <section
+            id="packages"
+            className="relative py-20 md:py-28 overflow-hidden text-black"
+            style={{
+                background: "linear-gradient(180deg, #fdfbf7 0%, #faf9f6 50%, #f7f5f1 100%)",
+            }}
+        >
+            {/* Decorative background orbs */}
+            <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-gold/4 rounded-full blur-3xl translate-x-1/3 pointer-events-none" />
+            <div className="absolute bottom-1/4 left-0 w-[320px] h-[320px] bg-gold/3 rounded-full blur-3xl -translate-x-1/3 pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
                     <div className="text-left w-full md:w-auto">
+                        <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">Pricing</p>
                         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                             Our <span className="text-gold">Packages</span>
                         </h2>
-                        <p className="text-gray-600 max-w-xl">
+                        <p className="text-gray-500 max-w-xl text-base sm:text-lg leading-relaxed">
                             Choose a plan that suits your content needs. Scale up or down at any time.
                         </p>
                     </div>
 
                     {/* Toggle */}
-                    <div className="inline-flex bg-white/80 backdrop-blur-sm rounded-full p-1 border border-gold/40 shrink-0">
+                    <div className="inline-flex bg-white/70 backdrop-blur-md rounded-full p-1.5 border border-gold/15 shadow-sm shrink-0">
                         <button
                             onClick={() => setActiveTab("weekly")}
                             className={cn(
@@ -99,8 +112,8 @@ export default function Packages() {
                         <div
                             key={index}
                             className={cn(
-                                "relative bg-white rounded-2xl p-8 border hover:border-gold/50 transition-colors duration-300 flex flex-col shadow-sm",
-                                pkg.popular ? "border-gold scale-105 shadow-xl shadow-gold/10 z-10" : "border-gray-200"
+                                "relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border hover:border-gold/30 transition-all duration-300 flex flex-col shadow-sm",
+                                pkg.popular ? "border-gold/40 scale-105 shadow-xl shadow-gold/10 z-10 ring-1 ring-gold/10" : "border-gold/10"
                             )}
                         >
                             {pkg.popular && (

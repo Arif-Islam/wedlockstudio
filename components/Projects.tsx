@@ -504,7 +504,7 @@ export default function Projects() {
                         <button
                             onClick={goToPrevDesktop}
                             disabled={isAnimating}
-                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
                             style={{
                                 left: "calc(50% - 485px)",
                                 top: "50%",
@@ -517,7 +517,7 @@ export default function Projects() {
                         <button
                             onClick={goToNextDesktop}
                             disabled={isAnimating}
-                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
                             style={{
                                 left: "calc(50% + 485px)",
                                 top: "50%",
