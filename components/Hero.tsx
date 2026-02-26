@@ -1,25 +1,49 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
+    const [videoLoaded, setVideoLoaded] = useState(false);
+
     return (
         <section id="hero" className="relative h-screen w-full overflow-hidden">
-            {/* Background Video */}
+            {/* Background Video (Vimeo) */}
             <div className="absolute inset-0 w-full h-full">
-                <div className="absolute inset-0 bg-black/50 z-10" /> {/* Overlay */}
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="auto"
-                    className="w-full h-full object-cover"
+                {/* Poster image - shown until video loads */}
+                <div
+                    className={`absolute inset-0 z-5 transition-opacity duration-700 ${
+                        videoLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+                    }`}
+                    aria-hidden={videoLoaded}
                 >
-                    <source src="https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770059294/hero-bg_aw6gge.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
+                    <Image
+                        src="/teaser2.png"
+                        alt=""
+                        fill
+                        className="object-cover"
+                        sizes="100vw"
+                        priority
+                    />
+                </div>
+                <div className="absolute inset-0 bg-black/50 z-10" /> {/* Overlay */}
+                <iframe
+                    src="https://player.vimeo.com/video/858749361?autoplay=1&loop=1&muted=1&background=1"
+                    className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 ${
+                        videoLoaded ? "opacity-100" : "opacity-0"
+                    }`}
+                    style={{
+                        width: "max(100vw, 177.78vh)",
+                        height: "max(56.25vw, 100vh)",
+                    }}
+                    frameBorder="0"
+                    allow="autoplay; fullscreen"
+                    allowFullScreen
+                    title="Hero background"
+                    onLoad={() => setVideoLoaded(true)}
+                />
             </div>
 
             {/* Content */}

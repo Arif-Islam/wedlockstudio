@@ -2,40 +2,69 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
-import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const projects = [
-    { id: 1, title: "Wedding Highlight", subtitle: "Katie & Sam", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056154/project1_nwnqtn.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058593/project1_s5r8hy.mp4" },
-    { id: 2, title: "Corporate Event", subtitle: "Tech Summit 2024", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056150/project2_uyf5yl.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058560/project2_xeasmg.mp4" },
-    { id: 3, title: "Music Video", subtitle: "Summer Nights", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056157/project3_e3xx21.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058110/project3_i82o1q.mp4" },
-    { id: 4, title: "Travel Vlog", subtitle: "Asia Adventures", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056160/project4_gucpbs.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058627/project4_jtvrj4.mp4" },
-    { id: 5, title: "Documentary", subtitle: "Behind The Lens", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056175/project5_eq9xe3.jpg", video: "https://res.cloudinary.com/djbh7xuqv/video/upload/q_auto,f_auto/v1770058517/project5_cfk73g.mp4" },
+const DEFAULT_THUMB = "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772131695/thumbnail_2_zibdlu.png";
+
+type ProjectItem = { id: number; title: string; subtitle: string; thumbnail: string; vimeoId: string };
+
+const highlightFilmProjects: ProjectItem[] = [
+    { id: 1, title: "Wedding Highlight", subtitle: "Katie & Sam", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132621/thumbnail_1_u0ept3.png", vimeoId: "1162155196" },
+    { id: 2, title: "Corporate Event", subtitle: "Tech Summit 2024", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772131695/thumbnail_2_zibdlu.png", vimeoId: "923101806" },
+    { id: 3, title: "Music Video", subtitle: "Summer Nights", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132467/thumbnail_3_eclktu.png", vimeoId: "920569834" },
+    { id: 4, title: "Travel Vlog", subtitle: "Asia Adventures", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132424/thumbnail_4_fnrweu.png", vimeoId: "805961590" },
+    { id: 5, title: "Documentary", subtitle: "Behind The Lens", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132193/thumbnail_5_zw4aea.png", vimeoId: "814933799" },
 ];
 
-// Desktop carousel slot positions (absolute positioning)
-// Center: 650x550, Thumbs: 280x280, Gap: 20px, Container height: 550
-const SLOT_STYLES: Record<number, { left: string; top: number; width: number; height: number; opacity: number }> = {
-    [-2]: { left: "calc(50% - 925px)", top: 135, width: 280, height: 280, opacity: 0 },
-    [-1]: { left: "calc(50% - 625px)", top: 135, width: 280, height: 280, opacity: 0.75 },
-    [0]: { left: "calc(50% - 325px)", top: 0, width: 650, height: 550, opacity: 1 },
-    [1]: { left: "calc(50% + 345px)", top: 135, width: 280, height: 280, opacity: 0.75 },
-    [2]: { left: "calc(50% + 645px)", top: 135, width: 280, height: 280, opacity: 0 },
-};
+const teaserProjectsRaw: ProjectItem[] = [
+    { id: 1, title: "Teaser", subtitle: "Teaser 1", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772134709/teaser_1_rzx1h2.png", vimeoId: "857784436" },
+    { id: 2, title: "Teaser", subtitle: "Teaser 2", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772134779/teaser_2_sqy9xv.png", vimeoId: "858749361" },
+];
+const teaserProjectsExpanded: ProjectItem[] = [
+    { ...teaserProjectsRaw[0], id: 1, subtitle: "Teaser 1" },
+    { ...teaserProjectsRaw[1], id: 2, subtitle: "Teaser 2" },
+    { ...teaserProjectsRaw[0], id: 3, subtitle: "Teaser 3" },
+    { ...teaserProjectsRaw[1], id: 4, subtitle: "Teaser 4" },
+    { ...teaserProjectsRaw[0], id: 5, subtitle: "Teaser 5" },
+];
 
-function getSlotStyle(slot: number) {
-    if (slot <= -2) return SLOT_STYLES[-2];
-    if (slot >= 2) return SLOT_STYLES[2];
-    return SLOT_STYLES[slot];
+function getProjectsForCategory(category: string): ProjectItem[] {
+    if (category === "Teaser") return teaserProjectsExpanded;
+    return highlightFilmProjects;
 }
 
-// For mobile infinite loop: create extended array [lastItem, ...allItems, firstItem]
-const extendedProjects = [projects[projects.length - 1], ...projects, projects[0]];
+// Desktop carousel (>= 1380px): design sizes — scaled to fit container when narrower
+const CENTER_W = 800;
+const CENTER_H = 450;
+const SIDE_W = 240;
+const SIDE_H = 235;
+const GAP = 16;
+const TOTAL_DESIGN_WIDTH = SIDE_W * 2 + GAP * 2 + CENTER_W; // 1312
 
-const categories = ["Teaser", "Highlight Film", "Full Documentary Film", "Promotional Video"];
+type CarouselDims = { centerW: number; centerH: number; sideW: number; sideH: number; gap: number };
+
+function getSlotStyle(slot: number, d: CarouselDims) {
+    const half = d.centerW / 2;
+    const sideTop = (d.centerH - d.sideH) / 2;
+    const styles: Record<number, { left: string; top: number; width: number; height: number; opacity: number }> = {
+        [-2]: { left: `calc(50% - ${half + d.gap + d.sideW * 2}px)`, top: sideTop, width: d.sideW, height: d.sideH, opacity: 0 },
+        [-1]: { left: `calc(50% - ${half + d.gap + d.sideW}px)`, top: sideTop, width: d.sideW, height: d.sideH, opacity: 0.75 },
+        [0]: { left: `calc(50% - ${half}px)`, top: 0, width: d.centerW, height: d.centerH, opacity: 1 },
+        [1]: { left: `calc(50% + ${half + d.gap}px)`, top: sideTop, width: d.sideW, height: d.sideH, opacity: 0.75 },
+        [2]: { left: `calc(50% + ${half + d.gap + d.sideW}px)`, top: sideTop, width: d.sideW, height: d.sideH, opacity: 0 },
+    };
+    if (slot <= -2) return styles[-2];
+    if (slot >= 2) return styles[2];
+    return styles[slot];
+}
+
+const categories = ["Highlight Film", "Teaser", "Full Documentary Film", "Promotional Video"];
 
 export default function Projects() {
-    const [activeCategory, setActiveCategory] = useState("Teaser");
+    const [activeCategory, setActiveCategory] = useState("Highlight Film");
+    const projects = getProjectsForCategory(activeCategory);
+    const extendedProjects = [projects[projects.length - 1], ...projects, projects[0]];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [slotOffset, setSlotOffset] = useState(0);
     const [transitionEnabled, setTransitionEnabled] = useState(true);
@@ -53,6 +82,16 @@ export default function Projects() {
     const [tabAnimCount, setTabAnimCount] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
     const sliderWrapperRef = useRef<HTMLDivElement>(null);
+    const desktopCarouselRef = useRef<HTMLDivElement>(null);
+
+    // Responsive carousel dimensions: scale down when container is narrower than design width
+    const [carouselDims, setCarouselDims] = useState<CarouselDims>({
+        centerW: CENTER_W,
+        centerH: CENTER_H,
+        sideW: SIDE_W,
+        sideH: SIDE_H,
+        gap: GAP,
+    });
 
     // Separate refs for mobile and desktop to avoid conflicts
     const mobileVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -77,10 +116,30 @@ export default function Projects() {
         return () => observer.disconnect();
     }, []);
 
+    // ==================== DESKTOP CAROUSEL: scale to fit container width ====================
+    useEffect(() => {
+        const el = desktopCarouselRef.current;
+        if (!el) return;
+        const ro = new ResizeObserver((entries) => {
+            const { width } = entries[0].contentRect;
+            if (width < 100) return; // avoid zero dims when carousel is hidden (< 1380px)
+            const scale = Math.min(1, width / TOTAL_DESIGN_WIDTH);
+            setCarouselDims({
+                centerW: Math.round(CENTER_W * scale),
+                centerH: Math.round(CENTER_H * scale),
+                sideW: Math.round(SIDE_W * scale),
+                sideH: Math.round(SIDE_H * scale),
+                gap: Math.round(GAP * scale),
+            });
+        });
+        ro.observe(el);
+        return () => ro.disconnect();
+    }, []);
+
     // Get project index with wrapping (for desktop)
     const getProjectIndex = useCallback((offset: number) => {
         return (currentIndex + offset + projects.length * 10) % projects.length;
-    }, [currentIndex]);
+    }, [currentIndex, projects.length]);
 
     // ==================== TAB CHANGE ANIMATION ====================
     // Runs AFTER React's render cycle so the DOM manipulation won't be overwritten
@@ -215,28 +274,18 @@ export default function Projects() {
     };
 
     const toggleMobileVideo = (refIndex: number) => {
-        const video = mobileVideoRefs.current[refIndex];
-        if (video) {
-            if (playingVideo === refIndex) {
-                video.pause();
-                setPlayingVideo(null);
-            } else {
-                video.play();
-                setPlayingVideo(refIndex);
-            }
+        if (playingVideo === refIndex) {
+            setPlayingVideo(null);
+        } else {
+            setPlayingVideo(refIndex);
         }
     };
 
     const toggleDesktopVideo = (projectIndex: number) => {
-        const video = desktopVideoRefs.current[projectIndex];
-        if (video) {
-            if (playingVideo === projectIndex) {
-                video.pause();
-                setPlayingVideo(null);
-            } else {
-                video.play();
-                setPlayingVideo(projectIndex);
-            }
+        if (playingVideo === projectIndex) {
+            setPlayingVideo(null);
+        } else {
+            setPlayingVideo(projectIndex);
         }
     };
 
@@ -257,13 +306,13 @@ export default function Projects() {
             <div className="absolute top-1/2 right-0 w-72 h-72 bg-gold/3 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
             {/* ── Thin gold vertical accent lines — desktop only ── */}
-            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
-            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
+            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
 
             {/* ── Subtle horizontal divider at the very top ── */}
             <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
                 {/* ── Section Header ── */}
                 <div className="flex flex-col lg:flex-row justify-between lg:items-start mb-12 lg:mb-20 gap-6">
                     {/* Title block — viewport entrance stagger group 1 */}
@@ -337,9 +386,9 @@ export default function Projects() {
                 >
                 {/* ── Tab-change animation wrapper (separate from viewport to avoid conflicts) ── */}
                 <div ref={sliderWrapperRef}>
-                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) ==================== */}
+                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
                     <div
-                        className="lg:hidden relative"
+                        className="min-[1380px]:hidden relative"
                         onTouchStart={handleTouchStart}
                         onTouchMove={handleTouchMove}
                         onTouchEnd={handleTouchEnd}
@@ -356,27 +405,31 @@ export default function Projects() {
                                     const isPlaying = playingVideo === index;
                                     return (
                                         <div key={`mobile-${index}`} className="min-w-full px-2">
-                                            <div className="relative group overflow-hidden rounded-2xl h-[400px] md:h-[500px] shadow-xl ring-1 ring-black/5">
-                                                <video
-                                                    ref={(el) => { mobileVideoRefs.current[index] = el; }}
-                                                    src={project.video}
-                                                    className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
-                                                    loop
-                                                    playsInline
-                                                    preload="metadata"
-                                                />
+                                            <div className="relative group overflow-hidden rounded-2xl h-[400px] md:h-[500px]">
+                                                {isPlaying && (
+                                                    <iframe
+                                                        src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
+                                                        className="absolute inset-0 w-full h-full"
+                                                        frameBorder="0"
+                                                        allow="autoplay; fullscreen"
+                                                        allowFullScreen
+                                                        title={project.title}
+                                                    />
+                                                )}
                                                 <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
                                                     <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
                                                     <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
                                                 </div>
-                                                <div
-                                                    className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                                    onClick={() => toggleMobileVideo(index)}
-                                                >
-                                                    <div className={`w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 ${!isPlaying ? "animate-pulse-subtle" : ""}`}>
-                                                        {isPlaying ? <Pause fill="black" className="text-black" size={36} /> : <Play fill="black" className="text-black ml-1" size={36} />}
+                                                {!isPlaying && (
+                                                    <div
+                                                        className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
+                                                        onClick={() => toggleMobileVideo(index)}
+                                                    >
+                                                        <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                            <Play fill="black" className="text-black ml-1" size={36} />
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                )}
                                                 <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
                                                     <div className="text-center space-y-2">
                                                         <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
@@ -408,14 +461,18 @@ export default function Projects() {
                         </div>
                     </div>
 
-                    {/* ==================== DESKTOP CAROUSEL ==================== */}
-                    <div className="hidden lg:block relative overflow-hidden" style={{ height: 550 }}>
+                    {/* ==================== DESKTOP CAROUSEL (>= 1380px) ==================== */}
+                    <div
+                        ref={desktopCarouselRef}
+                        className="hidden min-[1380px]:block relative overflow-hidden"
+                        style={{ height: carouselDims.centerH }}
+                    >
                         {/* 5 absolutely positioned slides */}
                         {[-2, -1, 0, 1, 2].map((offset) => {
                             const projectIndex = getProjectIndex(offset);
                             const project = projects[projectIndex];
                             const slot = offset + slotOffset;
-                            const style = getSlotStyle(slot);
+                            const style = getSlotStyle(slot, carouselDims);
                             const isCenter = slot === 0;
                             const isPlaying = playingVideo === projectIndex && isCenter;
 
@@ -424,7 +481,7 @@ export default function Projects() {
                                     key={`desktop-${offset}`}
                                     className={cn(
                                         "absolute rounded-2xl overflow-hidden group",
-                                        isCenter ? "z-20 shadow-2xl ring-1 ring-black/10" : "z-10 shadow-lg ring-1 ring-black/5"
+                                        isCenter ? "z-20" : "z-10"
                                     )}
                                     style={{
                                         left: style.left,
@@ -437,15 +494,15 @@ export default function Projects() {
                                             : "none",
                                     }}
                                 >
-                                    {/* Video - only rendered for current center */}
-                                    {offset === 0 && (
-                                        <video
-                                            ref={(el) => { desktopVideoRefs.current[projectIndex] = el; }}
-                                            src={project.video}
-                                            className={`w-full h-full object-cover transition-opacity duration-300 ${isPlaying ? "opacity-100" : "opacity-0"}`}
-                                            loop
-                                            playsInline
-                                            preload="metadata"
+                                    {/* Vimeo player - only for current center when playing */}
+                                    {offset === 0 && isPlaying && (
+                                        <iframe
+                                            src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
+                                            className="absolute inset-0 w-full h-full z-1"
+                                            frameBorder="0"
+                                            allow="autoplay; fullscreen"
+                                            allowFullScreen
+                                            title={project.title}
                                         />
                                     )}
 
@@ -455,7 +512,7 @@ export default function Projects() {
                                             src={project.thumbnail}
                                             alt={project.title}
                                             fill
-                                            sizes={isCenter ? "650px" : "280px"}
+                                            sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
                                             className={`object-cover ${isCenter ? "group-hover:scale-105 transition-transform duration-700" : ""}`}
                                             priority={offset === 0}
                                         />
@@ -467,22 +524,14 @@ export default function Projects() {
                                         )} />
                                     </div>
 
-                                    {/* Play Button - only on center */}
-                                    {isCenter && (
+                                    {/* Play Button - only on center when not playing */}
+                                    {isCenter && !isPlaying && (
                                         <div
                                             className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
                                             onClick={() => toggleDesktopVideo(projectIndex)}
                                         >
-                                            <div className={cn(
-                                                "w-20 h-20 bg-gold rounded-full flex items-center justify-center transform transition-all shadow-2xl shadow-gold/30",
-                                                "group-hover:scale-110",
-                                                !isPlaying && "animate-pulse-subtle"
-                                            )}>
-                                                {isPlaying ? (
-                                                    <Pause fill="black" className="text-black" size={36} />
-                                                ) : (
-                                                    <Play fill="black" className="text-black ml-1" size={36} />
-                                                )}
+                                            <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                <Play fill="black" className="text-black ml-1" size={36} />
                                             </div>
                                         </div>
                                     )}
@@ -500,13 +549,13 @@ export default function Projects() {
                             );
                         })}
 
-                        {/* Navigation Arrows — positioned at exact center of side videos */}
+                        {/* Navigation Arrows — centered on side thumbnails */}
                         <button
                             onClick={goToPrevDesktop}
                             disabled={isAnimating}
                             className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
                             style={{
-                                left: "calc(50% - 485px)",
+                                left: `calc(50% - ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
                                 top: "50%",
                                 transform: "translate(-50%, -50%)",
                             }}
@@ -519,7 +568,7 @@ export default function Projects() {
                             disabled={isAnimating}
                             className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
                             style={{
-                                left: "calc(50% + 485px)",
+                                left: `calc(50% + ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
                                 top: "50%",
                                 transform: "translate(-50%, -50%)",
                             }}
