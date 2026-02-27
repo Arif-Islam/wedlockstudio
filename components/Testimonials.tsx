@@ -45,10 +45,7 @@ export default function Testimonials() {
     return (
         <section
             id="testimonials"
-            className="relative py-20 md:py-28 overflow-hidden text-black"
-            style={{
-                background: "linear-gradient(180deg, #f7f5f1 0%, #faf9f6 40%, #fdfbf7 100%)",
-            }}
+            className="relative py-20 md:py-28 overflow-hidden text-black bg-white"
         >
             {/* Decorative background orbs */}
             <div className="absolute top-0 left-1/4 w-[420px] h-[420px] bg-gold/4 rounded-full blur-3xl -translate-y-1/4 pointer-events-none" />
@@ -71,7 +68,7 @@ export default function Testimonials() {
                     {testimonials.map((testimonial) => (
                         <div
                             key={testimonial.id}
-                            className="break-inside-avoid bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-gold/10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gold/20"
+                            className="break-inside-avoid bg-gray-50 backdrop-blur-sm p-6 rounded-2xl border border-gold/10 shadow-sm transition-all duration-300 hover:shadow-md hover:border-gold/20"
                         >
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="relative w-10 h-10 rounded-full overflow-hidden">

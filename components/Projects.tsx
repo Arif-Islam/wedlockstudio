@@ -295,10 +295,7 @@ export default function Projects() {
         <section
             ref={sectionRef}
             id="projects"
-            className="relative py-20 md:py-28 overflow-hidden"
-            style={{
-                background: "linear-gradient(180deg, #f9f8f5 0%, #f5f3ef 30%, #f7f5f1 60%, #fdfbf7 100%)",
-            }}
+            className="relative py-20 md:py-28 overflow-hidden bg-white"
         >
             {/* ── Decorative background orbs ── */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gold/4 rounded-full blur-3xl pointer-events-none" />
@@ -384,200 +381,202 @@ export default function Projects() {
                     className={cn(inView ? "animate-slide-up-fade" : "opacity-0")}
                     style={inView ? { animationDelay: "0.3s" } : undefined}
                 >
-                {/* ── Tab-change animation wrapper (separate from viewport to avoid conflicts) ── */}
-                <div ref={sliderWrapperRef}>
-                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
-                    <div
-                        className="min-[1380px]:hidden relative"
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
-                    >
-                        <div className="overflow-hidden rounded-2xl">
-                            <div
-                                className="flex"
-                                style={{
-                                    transform: `translateX(-${mobileSlideIndex * 100}%)`,
-                                    transition: mobileTransition ? "transform 0.7s ease-out" : "none",
-                                }}
-                            >
-                                {extendedProjects.map((project, index) => {
-                                    const isPlaying = playingVideo === index;
-                                    return (
-                                        <div key={`mobile-${index}`} className="min-w-full px-2">
-                                            <div className="relative group overflow-hidden rounded-2xl h-[400px] md:h-[500px]">
-                                                {isPlaying && (
-                                                    <iframe
-                                                        src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                                        className="absolute inset-0 w-full h-full"
-                                                        frameBorder="0"
-                                                        allow="autoplay; fullscreen"
-                                                        allowFullScreen
-                                                        title={project.title}
-                                                    />
-                                                )}
-                                                <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                                    <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
-                                                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
-                                                </div>
-                                                {!isPlaying && (
-                                                    <div
-                                                        className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                                        onClick={() => toggleMobileVideo(index)}
-                                                    >
-                                                        <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
-                                                            <Play fill="black" className="text-black ml-1" size={36} />
+                    {/* ── Tab-change animation wrapper (separate from viewport to avoid conflicts) ── */}
+                    <div ref={sliderWrapperRef}>
+                        {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
+                        <div
+                            className="min-[1380px]:hidden relative"
+                            onTouchStart={handleTouchStart}
+                            onTouchMove={handleTouchMove}
+                            onTouchEnd={handleTouchEnd}
+                        >
+                            <div className="overflow-hidden rounded-2xl">
+                                <div
+                                    className="flex"
+                                    style={{
+                                        transform: `translateX(-${mobileSlideIndex * 100}%)`,
+                                        transition: mobileTransition ? "transform 0.7s ease-out" : "none",
+                                    }}
+                                >
+                                    {extendedProjects.map((project, index) => {
+                                        const isPlaying = playingVideo === index;
+                                        return (
+                                            <div key={`mobile-${index}`} className="min-w-full px-2 flex justify-center">
+                                                <div className="relative group overflow-hidden rounded-2xl w-full md:w-[80%]">
+                                                    <div className="relative w-full pt-[56.25%]">
+                                                        {isPlaying && (
+                                                            <iframe
+                                                                src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
+                                                                className="absolute inset-0 w-full h-full"
+                                                                frameBorder="0"
+                                                                allow="autoplay; fullscreen"
+                                                                allowFullScreen
+                                                                title={project.title}
+                                                            />
+                                                        )}
+                                                        <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+                                                            <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
+                                                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
                                                         </div>
-                                                    </div>
-                                                )}
-                                                <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
-                                                    <div className="text-center space-y-2">
-                                                        <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
-                                                        <p className="text-gray-300 text-sm">{project.title}</p>
+                                                        {!isPlaying && (
+                                                            <div
+                                                                className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
+                                                                onClick={() => toggleMobileVideo(index)}
+                                                            >
+                                                                <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                                    <Play fill="black" className="text-black ml-1" size={36} />
+                                                                </div>
+                                                            </div>
+                                                        )}
+                                                        <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                                            <div className="text-center space-y-2">
+                                                                <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
+                                                                <p className="text-gray-300 text-sm">{project.title}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Dot indicators */}
+                            <div className="flex justify-center gap-2.5 mt-8">
+                                {projects.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => mobileGoToSlide(index)}
+                                        className={cn(
+                                            "rounded-full transition-all duration-300 cursor-pointer",
+                                            index === mobileRealIndex
+                                                ? "bg-gold w-7 h-2.5"
+                                                : "bg-gray-300 hover:bg-gray-400 w-2.5 h-2.5"
+                                        )}
+                                        aria-label={`Go to slide ${index + 1}`}
+                                    />
+                                ))}
                             </div>
                         </div>
 
-                        {/* Dot indicators */}
-                        <div className="flex justify-center gap-2.5 mt-8">
-                            {projects.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => mobileGoToSlide(index)}
-                                    className={cn(
-                                        "rounded-full transition-all duration-300 cursor-pointer",
-                                        index === mobileRealIndex
-                                            ? "bg-gold w-7 h-2.5"
-                                            : "bg-gray-300 hover:bg-gray-400 w-2.5 h-2.5"
-                                    )}
-                                    aria-label={`Go to slide ${index + 1}`}
-                                />
-                            ))}
+                        {/* ==================== DESKTOP CAROUSEL (>= 1380px) ==================== */}
+                        <div
+                            ref={desktopCarouselRef}
+                            className="hidden min-[1380px]:block relative overflow-hidden"
+                            style={{ height: carouselDims.centerH }}
+                        >
+                            {/* 5 absolutely positioned slides */}
+                            {[-2, -1, 0, 1, 2].map((offset) => {
+                                const projectIndex = getProjectIndex(offset);
+                                const project = projects[projectIndex];
+                                const slot = offset + slotOffset;
+                                const style = getSlotStyle(slot, carouselDims);
+                                const isCenter = slot === 0;
+                                const isPlaying = playingVideo === projectIndex && isCenter;
+
+                                return (
+                                    <div
+                                        key={`desktop-${offset}`}
+                                        className={cn(
+                                            "absolute rounded-2xl overflow-hidden group",
+                                            isCenter ? "z-20" : "z-10"
+                                        )}
+                                        style={{
+                                            left: style.left,
+                                            top: style.top,
+                                            width: style.width,
+                                            height: style.height,
+                                            opacity: style.opacity,
+                                            transition: transitionEnabled
+                                                ? "left 0.7s cubic-bezier(0.4, 0, 0.2, 1), top 0.7s cubic-bezier(0.4, 0, 0.2, 1), width 0.7s cubic-bezier(0.4, 0, 0.2, 1), height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)"
+                                                : "none",
+                                        }}
+                                    >
+                                        {/* Vimeo player - only for current center when playing */}
+                                        {offset === 0 && isPlaying && (
+                                            <iframe
+                                                src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
+                                                className="absolute inset-0 w-full h-full z-1"
+                                                frameBorder="0"
+                                                allow="autoplay; fullscreen"
+                                                allowFullScreen
+                                                title={project.title}
+                                            />
+                                        )}
+
+                                        {/* Thumbnail */}
+                                        <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
+                                            <Image
+                                                src={project.thumbnail}
+                                                alt={project.title}
+                                                fill
+                                                sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
+                                                className={`object-cover ${isCenter ? "group-hover:scale-105 transition-transform duration-700" : ""}`}
+                                                priority={offset === 0}
+                                            />
+                                            <div className={cn(
+                                                "absolute inset-0",
+                                                isCenter
+                                                    ? "bg-linear-to-t from-black/70 via-black/10 to-transparent"
+                                                    : "bg-black/20"
+                                            )} />
+                                        </div>
+
+                                        {/* Play Button - only on center when not playing */}
+                                        {isCenter && !isPlaying && (
+                                            <div
+                                                className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
+                                                onClick={() => toggleDesktopVideo(projectIndex)}
+                                            >
+                                                <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                    <Play fill="black" className="text-black ml-1" size={36} />
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {/* Title overlay — center only */}
+                                        {isCenter && (
+                                            <div className={`absolute bottom-0 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                                <div className="text-center space-y-1.5">
+                                                    <h3 className="text-2xl font-semibold text-white drop-shadow-md">{project.subtitle}</h3>
+                                                    <p className="text-gray-300 text-sm tracking-wide">{project.title}</p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+
+                            {/* Navigation Arrows — centered on side thumbnails */}
+                            <button
+                                onClick={goToPrevDesktop}
+                                disabled={isAnimating}
+                                className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
+                                style={{
+                                    left: `calc(50% - ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
+                                    top: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                }}
+                                aria-label="Previous"
+                            >
+                                <ChevronLeft size={24} className="text-black" />
+                            </button>
+                            <button
+                                onClick={goToNextDesktop}
+                                disabled={isAnimating}
+                                className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
+                                style={{
+                                    left: `calc(50% + ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
+                                    top: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                }}
+                                aria-label="Next"
+                            >
+                                <ChevronRight size={24} className="text-black" />
+                            </button>
                         </div>
                     </div>
-
-                    {/* ==================== DESKTOP CAROUSEL (>= 1380px) ==================== */}
-                    <div
-                        ref={desktopCarouselRef}
-                        className="hidden min-[1380px]:block relative overflow-hidden"
-                        style={{ height: carouselDims.centerH }}
-                    >
-                        {/* 5 absolutely positioned slides */}
-                        {[-2, -1, 0, 1, 2].map((offset) => {
-                            const projectIndex = getProjectIndex(offset);
-                            const project = projects[projectIndex];
-                            const slot = offset + slotOffset;
-                            const style = getSlotStyle(slot, carouselDims);
-                            const isCenter = slot === 0;
-                            const isPlaying = playingVideo === projectIndex && isCenter;
-
-                            return (
-                                <div
-                                    key={`desktop-${offset}`}
-                                    className={cn(
-                                        "absolute rounded-2xl overflow-hidden group",
-                                        isCenter ? "z-20" : "z-10"
-                                    )}
-                                    style={{
-                                        left: style.left,
-                                        top: style.top,
-                                        width: style.width,
-                                        height: style.height,
-                                        opacity: style.opacity,
-                                        transition: transitionEnabled
-                                            ? "left 0.7s cubic-bezier(0.4, 0, 0.2, 1), top 0.7s cubic-bezier(0.4, 0, 0.2, 1), width 0.7s cubic-bezier(0.4, 0, 0.2, 1), height 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1)"
-                                            : "none",
-                                    }}
-                                >
-                                    {/* Vimeo player - only for current center when playing */}
-                                    {offset === 0 && isPlaying && (
-                                        <iframe
-                                            src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                            className="absolute inset-0 w-full h-full z-1"
-                                            frameBorder="0"
-                                            allow="autoplay; fullscreen"
-                                            allowFullScreen
-                                            title={project.title}
-                                        />
-                                    )}
-
-                                    {/* Thumbnail */}
-                                    <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                        <Image
-                                            src={project.thumbnail}
-                                            alt={project.title}
-                                            fill
-                                            sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
-                                            className={`object-cover ${isCenter ? "group-hover:scale-105 transition-transform duration-700" : ""}`}
-                                            priority={offset === 0}
-                                        />
-                                        <div className={cn(
-                                            "absolute inset-0",
-                                            isCenter
-                                                ? "bg-linear-to-t from-black/70 via-black/10 to-transparent"
-                                                : "bg-black/20"
-                                        )} />
-                                    </div>
-
-                                    {/* Play Button - only on center when not playing */}
-                                    {isCenter && !isPlaying && (
-                                        <div
-                                            className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                            onClick={() => toggleDesktopVideo(projectIndex)}
-                                        >
-                                            <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
-                                                <Play fill="black" className="text-black ml-1" size={36} />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Title overlay — center only */}
-                                    {isCenter && (
-                                        <div className={`absolute bottom-0 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
-                                            <div className="text-center space-y-1.5">
-                                                <h3 className="text-2xl font-semibold text-white drop-shadow-md">{project.subtitle}</h3>
-                                                <p className="text-gray-300 text-sm tracking-wide">{project.title}</p>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            );
-                        })}
-
-                        {/* Navigation Arrows — centered on side thumbnails */}
-                        <button
-                            onClick={goToPrevDesktop}
-                            disabled={isAnimating}
-                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
-                            style={{
-                                left: `calc(50% - ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
-                                top: "50%",
-                                transform: "translate(-50%, -50%)",
-                            }}
-                            aria-label="Previous"
-                        >
-                            <ChevronLeft size={24} className="text-black" />
-                        </button>
-                        <button
-                            onClick={goToNextDesktop}
-                            disabled={isAnimating}
-                            className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
-                            style={{
-                                left: `calc(50% + ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
-                                top: "50%",
-                                transform: "translate(-50%, -50%)",
-                            }}
-                            aria-label="Next"
-                        >
-                            <ChevronRight size={24} className="text-black" />
-                        </button>
-                    </div>
-                </div>
                 </div>
             </div>
 

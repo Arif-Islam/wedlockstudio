@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const faqs = [
@@ -57,10 +57,7 @@ export default function FAQ() {
     return (
         <section
             id="faq"
-            className="relative py-20 md:py-28 overflow-hidden text-black"
-            style={{
-                background: "linear-gradient(180deg, #fdfbf7 0%, #f9f8f5 50%, #f5f3ef 100%)",
-            }}
+            className="relative py-20 md:py-28 overflow-hidden text-black bg-white"
         >
             {/* Decorative background orbs */}
             <div className="absolute top-1/2 right-0 w-[380px] h-[380px] bg-gold/4 rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
@@ -83,30 +80,32 @@ export default function FAQ() {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gold/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gold/20"
+                            className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gold/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gold/20 flex flex-col"
                         >
                             <button
                                 onClick={() => toggleFAQ(index)}
-                                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none cursor-pointer"
+                                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none cursor-pointer group"
                             >
                                 <span className={cn("text-lg font-semibold transition-colors duration-300 pr-4", openIndex === index ? "text-gold" : "text-gray-800")}>
                                     {faq.question}
                                 </span>
                                 {openIndex === index ? (
-                                    <ChevronUp className="text-gold w-5 h-5 shrink-0" />
+                                    <Minus className="text-gold w-5 h-5 shrink-0 transition-transform duration-300 transform rotate-180" />
                                 ) : (
-                                    <ChevronDown className="text-gray-400 w-5 h-5 shrink-0" />
+                                    <Plus className="text-gray-400 w-5 h-5 shrink-0 transition-transform duration-300 transform rotate-90 group-hover:text-gray-600" />
                                 )}
                             </button>
                             <div
                                 className={cn(
-                                    "px-6 overflow-hidden transition-all duration-300 ease-in-out",
-                                    openIndex === index ? "max-h-96 pb-6 opacity-100" : "max-h-0 opacity-0"
+                                    "grid transition-all duration-300 ease-in-out",
+                                    openIndex === index ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                                 )}
                             >
-                                <p className="text-gray-600 leading-relaxed">
-                                    {faq.answer}
-                                </p>
+                                <div className="overflow-hidden">
+                                    <p className="text-gray-600 leading-relaxed px-6 pb-6 pt-1">
+                                        {faq.answer}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     ))}

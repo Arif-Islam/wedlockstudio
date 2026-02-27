@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { MailOpen, Menu, X } from "lucide-react";
+import { MailOpen, Menu, X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -15,6 +15,8 @@ const navItems = [
         name: "More",
         href: "#",
         children: [
+            { name: "MEET OUR TEAM", href: "#team" },
+            { name: "WORK PROCESS", href: "#process" },
             { name: "TESTIMONIALS", href: "#testimonials" },
             { name: "CONTACT", href: "#contact" },
             { name: "FAQ", href: "#faq" },
@@ -28,6 +30,8 @@ const mobileNavItems = [
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Packages", href: "#packages" },
+    { name: "Meet Our Team", href: "#team" },
+    { name: "Work Process", href: "#process" },
     { name: "Testimonials", href: "#testimonials" },
     { name: "Contact", href: "#contact" },
     { name: "FAQ", href: "#faq" },
@@ -109,6 +113,12 @@ export default function Header() {
                                 )}
                             >
                                 {item.name}
+                                {item.children && (
+                                    <ChevronDown
+                                        size={14}
+                                        className="mt-0.5 ml-0.5 transition-transform duration-300 group-hover:rotate-180"
+                                    />
+                                )}
                             </a>
 
                             {/* Dropdown for "More" */}

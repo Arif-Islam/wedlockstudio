@@ -12,22 +12,6 @@ export default function Hero() {
         <section id="hero" className="relative h-screen w-full overflow-hidden">
             {/* Background Video (Vimeo) */}
             <div className="absolute inset-0 w-full h-full">
-                {/* Poster image - shown until video loads */}
-                <div
-                    className={`absolute inset-0 z-5 transition-opacity duration-700 ${
-                        videoLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
-                    }`}
-                    aria-hidden={videoLoaded}
-                >
-                    <Image
-                        src="/teaser2.png"
-                        alt=""
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                        priority
-                    />
-                </div>
                 <div className="absolute inset-0 bg-black/50 z-10" /> {/* Overlay */}
                 <iframe
                     src="https://player.vimeo.com/video/858749361?autoplay=1&loop=1&muted=1&background=1"

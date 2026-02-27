@@ -56,10 +56,7 @@ export default function Packages() {
     return (
         <section
             id="packages"
-            className="relative py-20 md:py-28 overflow-hidden text-black"
-            style={{
-                background: "linear-gradient(180deg, #fdfbf7 0%, #faf9f6 50%, #f7f5f1 100%)",
-            }}
+            className="relative py-20 md:py-28 overflow-hidden text-black bg-white"
         >
             {/* Decorative background orbs */}
             <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-gold/4 rounded-full blur-3xl translate-x-1/3 pointer-events-none" />
