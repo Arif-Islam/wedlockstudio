@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { AboutAnimatedStat } from "@/components/AboutAnimatedStat";
 
 export default function About() {
     return (
@@ -32,7 +33,7 @@ export default function About() {
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-gold/10 rounded-full blur-[80px] pointer-events-none" />
 
                             {/* Back Image */}
-                            <div className="absolute top-[10%] left-[5%] w-[60%] h-[80%] rounded-sm overflow-hidden shadow-2xl shadow-black/20 border border-black/5 z-0 transform transition-transform duration-700 group-hover:-translate-y-2">
+                            <div className="absolute top-[10%] left-[5%] w-[60%] h-[80%] rounded-sm overflow-hidden shadow-2xl shadow-black/20 border border-black/5 z-0 transform transition-transform duration-500 group-hover:-translate-y-6">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218144/modern-office-with-nobody-present_lxf4gu.jpg"
                                     alt="About WedLockStudio Back"
@@ -44,7 +45,7 @@ export default function About() {
                             </div>
 
                             {/* Front Image */}
-                            <div className="absolute top-[20%] right-[5%] w-[48%] h-[60%] rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-black/10 z-10 transform transition-transform duration-700 group-hover:-translate-y-4">
+                            <div className="absolute top-[20%] right-[5%] w-[48%] h-[60%] rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-black/10 z-10 transform transition-transform duration-500 group-hover:-translate-y-5">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
                                     alt="About WedLockStudio Front"
@@ -81,14 +82,16 @@ export default function About() {
 
                         {/* Stats */}
                         <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                            <div className="rounded-xl bg-white/80 backdrop-blur-sm border border-gold/10 px-5 py-4 shadow-sm">
-                                <h3 className="text-2xl sm:text-3xl font-bold text-black">500+</h3>
-                                <p className="text-gray-500 text-sm sm:text-base">Projects Completed</p>
-                            </div>
-                            <div className="rounded-xl bg-white/80 backdrop-blur-sm border border-gold/10 px-5 py-4 shadow-sm">
-                                <h3 className="text-2xl sm:text-3xl font-bold text-black">100%</h3>
-                                <p className="text-gray-500 text-sm sm:text-base">Client Satisfaction</p>
-                            </div>
+                            <AboutAnimatedStat
+                                label="Projects Completed"
+                                target={1000}
+                                suffix="+"
+                            />
+                            <AboutAnimatedStat
+                                label="Client Satisfaction"
+                                target={100}
+                                suffix="%"
+                            />
                         </div>
                     </div>
                 </div>
