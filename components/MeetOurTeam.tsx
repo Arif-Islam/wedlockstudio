@@ -26,7 +26,7 @@ export default function MeetOurTeam() {
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-[#d4af37]/10 rounded-full blur-[80px] pointer-events-none" />
 
                             {/* Back Image (Left side on mobile, Top-Left on Desktop) */}
-                            <div className="relative lg:absolute lg:top-0 lg:left-0 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/60 border border-white/5 z-0 transform transition-transform duration-700 lg:group-hover:-translate-y-2">
+                            <div className="relative lg:absolute lg:top-0 lg:left-0 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/60 border border-white/5 z-0 transform transition-transform duration-500 lg:group-hover:-translate-y-4">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217391/group-graphic-designers-working-computer_iojoen.jpg"
                                     alt="Team Member 1"
@@ -37,7 +37,7 @@ export default function MeetOurTeam() {
                             </div>
 
                             {/* Front Image (Right side on mobile, Bottom-Right on Desktop) */}
-                            <div className="relative lg:absolute lg:bottom-0 lg:right-10 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/80 border border-white/10 z-10 transform transition-transform duration-700 lg:group-hover:-translate-y-4">
+                            <div className="relative lg:absolute lg:bottom-0 lg:right-10 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/80 border border-white/10 z-10 transform transition-transform duration-500 lg:group-hover:-translate-y-6">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217721/male-female-graphic-designers-interacting-with-each-other_eqt93k.jpg"
                                     alt="Team Member 2"
