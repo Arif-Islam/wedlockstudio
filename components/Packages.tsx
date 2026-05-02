@@ -3,28 +3,7 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const weeklyPackages = [
-    {
-        name: "Basic",
-        price: "$199",
-        description: "Perfect for short edits and reels.",
-        features: ["2 Videos per week", "Basic Color Grading", "Simple Transitions", "2 Revision Rounds"],
-    },
-    {
-        name: "Pro",
-        price: "$399",
-        description: "Ideal for content creators.",
-        features: ["4 Videos per week", "Advanced Color Grading", "Sound Design", "Unlimited Revisions"],
-        popular: true,
-    },
-    {
-        name: "Agency",
-        price: "$699",
-        description: "For high-volume needs.",
-        features: ["Daily Videos", "Premium Effects", "Dedicated Editor", "24h Turnaround"],
-    },
-];
+import WeeklyPackagesSlider from "@/components/WeeklyPackagesSlider";
 
 const monthlyPackages = [
     {
@@ -50,8 +29,6 @@ const monthlyPackages = [
 
 export default function Packages() {
     const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
-
-    const packages = activeTab === "weekly" ? weeklyPackages : monthlyPackages;
 
     return (
         <section
@@ -103,52 +80,56 @@ export default function Packages() {
                     </div>
                 </div>
 
-                {/* Cards */}
-                <div className="grid md:grid-cols-3 gap-10 md:gap-8">
-                    {packages.map((pkg, index) => (
-                        <div
-                            key={index}
-                            className={cn(
-                                "relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border hover:border-gold/30 transition-all duration-300 flex flex-col shadow-sm",
-                                pkg.popular ? "border-gold/40 scale-105 shadow-xl shadow-gold/10 z-10 ring-1 ring-gold/10" : "border-gold/10"
-                            )}
-                        >
-                            {pkg.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gold text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide text-center">
-                                    Most Popular
+                {/* Weekly → slider | Monthly → grid */}
+                {activeTab === "weekly" ? (
+                    <WeeklyPackagesSlider />
+                ) : (
+                    <div className="grid md:grid-cols-3 gap-10 md:gap-8">
+                        {monthlyPackages.map((pkg, index) => (
+                            <div
+                                key={index}
+                                className={cn(
+                                    "relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border hover:border-gold/30 transition-all duration-300 flex flex-col shadow-sm",
+                                    pkg.popular ? "border-gold/40 scale-105 shadow-xl shadow-gold/10 z-10 ring-1 ring-gold/10" : "border-gold/10"
+                                )}
+                            >
+                                {pkg.popular && (
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gold text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide text-center">
+                                        Most Popular
+                                    </div>
+                                )}
+
+                                <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
+                                <p className="text-gray-600 text-sm mb-6 h-10">{pkg.description}</p>
+
+                                <div className="text-4xl font-bold mb-6 text-black">
+                                    {pkg.price}
+                                    <span className="text-lg text-gray-500 font-normal">/mo</span>
                                 </div>
-                            )}
 
-                            <h3 className="text-2xl font-bold mb-2">{pkg.name}</h3>
-                            <p className="text-gray-600 text-sm mb-6 h-10">{pkg.description}</p>
+                                <ul className="space-y-4 mb-8 flex-1">
+                                    {pkg.features.map((feature, i) => (
+                                        <li key={i} className="flex items-center gap-3 text-sm text-gray-700">
+                                            <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
+                                                <Check size={12} className="text-gold" />
+                                            </div>
+                                            {feature}
+                                        </li>
+                                    ))}
+                                </ul>
 
-                            <div className="text-4xl font-bold mb-6 text-black">
-                                {pkg.price}
-                                <span className="text-lg text-gray-500 font-normal">/{activeTab === 'weekly' ? 'week' : 'mo'}</span>
+                                <button className={cn(
+                                    "w-full py-3 rounded-lg font-bold transition-transform active:scale-95 cursor-pointer",
+                                    pkg.popular
+                                        ? "bg-gold text-black hover:opacity-90"
+                                        : "bg-gray-100 text-black hover:bg-gray-200"
+                                )}>
+                                    Choose Plan
+                                </button>
                             </div>
-
-                            <ul className="space-y-4 mb-8 flex-1">
-                                {pkg.features.map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3 text-sm text-gray-700">
-                                        <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
-                                            <Check size={12} className="text-gold" />
-                                        </div>
-                                        {feature}
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <button className={cn(
-                                "w-full py-3 rounded-lg font-bold transition-transform active:scale-95 cursor-pointer",
-                                pkg.popular
-                                    ? "bg-gold text-black hover:opacity-90"
-                                    : "bg-gray-100 text-black hover:bg-gray-200"
-                            )}>
-                                Choose Plan
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );
