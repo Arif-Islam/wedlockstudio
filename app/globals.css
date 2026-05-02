@@ -84,3 +84,16 @@ body {
 .animate-tab-refresh {
   animation: tab-content-refresh 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* Projects — desktop carousel: tab switch entrance (slide up from below + fade) */
+@keyframes projects-desktop-tab-slider-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 120px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}

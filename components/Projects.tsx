@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useLayoutEffect } from "react";
 import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -61,6 +61,10 @@ function getSlotStyle(slot: number, d: CarouselDims) {
 
 const categories = ["Highlight Film", "Teaser", "Full Documentary Film", "Promotional Video"];
 
+const DESKTOP_CAROUSEL_MIN_WIDTH = 1380;
+const DESKTOP_TAB_SLIDER_ENTER_ANIM =
+    "projects-desktop-tab-slider-enter 1.15s cubic-bezier(0.22, 1, 0.36, 1) both";
+
 export default function Projects() {
     const [activeCategory, setActiveCategory] = useState("Highlight Film");
     const projects = getProjectsForCategory(activeCategory);
@@ -80,8 +84,10 @@ export default function Projects() {
     // Animation state
     const [inView, setInView] = useState(false);
     const [tabAnimCount, setTabAnimCount] = useState(0);
+    const [desktopTabEnterSeq, setDesktopTabEnterSeq] = useState(0);
     const sectionRef = useRef<HTMLElement>(null);
     const sliderWrapperRef = useRef<HTMLDivElement>(null);
+    const desktopSliderEnterRef = useRef<HTMLDivElement>(null);
     const desktopCarouselRef = useRef<HTMLDivElement>(null);
 
     // Responsive carousel dimensions: scale down when container is narrower than design width
@@ -148,20 +154,43 @@ export default function Projects() {
         const el = sliderWrapperRef.current;
         if (!el) return;
 
-        // Clear any previous animation so the browser treats the next set as new
         el.style.animation = "none";
-
-        // rAF ensures the browser has flushed the "none" before we apply the new animation
         requestAnimationFrame(() => {
-            el.style.animation =
-                "tab-content-refresh 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+            requestAnimationFrame(() => {
+                el.style.animation =
+                    "tab-content-refresh 0.8s cubic-bezier(0.16, 1, 0.3, 1) both";
+            });
         });
     }, [tabAnimCount]);
+
+    useLayoutEffect(() => {
+        if (desktopTabEnterSeq === 0) return;
+        if (typeof window === "undefined") return;
+        if (!window.matchMedia(`(min-width: ${DESKTOP_CAROUSEL_MIN_WIDTH}px)`).matches) return;
+
+        const el = desktopSliderEnterRef.current;
+        if (!el) return;
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            el.style.animation = "none";
+            el.style.opacity = "";
+            return;
+        }
+
+        el.style.animation = "none";
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                const node = desktopSliderEnterRef.current;
+                if (node) node.style.animation = DESKTOP_TAB_SLIDER_ENTER_ANIM;
+            });
+        });
+    }, [desktopTabEnterSeq]);
 
     const handleCategoryChange = (category: string) => {
         if (category === activeCategory) return;
         setActiveCategory(category);
-        setTabAnimCount((prev) => prev + 1); // Triggers the useEffect above after render
+        setTabAnimCount((prev) => prev + 1);
+        setDesktopTabEnterSeq((s) => s + 1);
     };
 
     // ==================== DESKTOP NAVIGATION ====================
@@ -381,10 +410,9 @@ export default function Projects() {
                     className={cn(inView ? "animate-slide-up-fade" : "opacity-0")}
                     style={inView ? { animationDelay: "0.3s" } : undefined}
                 >
-                    {/* ── Tab-change animation wrapper (separate from viewport to avoid conflicts) ── */}
-                    <div ref={sliderWrapperRef}>
-                        {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
+                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
                         <div
+                            ref={sliderWrapperRef}
                             className="min-[1380px]:hidden relative"
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
@@ -460,12 +488,16 @@ export default function Projects() {
                             </div>
                         </div>
 
-                        {/* ==================== DESKTOP CAROUSEL (>= 1380px) ==================== */}
+                    {/* ==================== DESKTOP CAROUSEL (>= 1380px) — tab: whole block rises + fades in ==================== */}
                         <div
-                            ref={desktopCarouselRef}
-                            className="hidden min-[1380px]:block relative overflow-hidden"
-                            style={{ height: carouselDims.centerH }}
+                            ref={desktopSliderEnterRef}
+                            className="hidden min-[1380px]:block w-full transform-gpu"
                         >
+                            <div
+                                ref={desktopCarouselRef}
+                                className="relative w-full overflow-hidden"
+                                style={{ height: carouselDims.centerH }}
+                            >
                             {/* 5 absolutely positioned slides */}
                             {[-2, -1, 0, 1, 2].map((offset) => {
                                 const projectIndex = getProjectIndex(offset);
@@ -575,8 +607,8 @@ export default function Projects() {
                             >
                                 <ChevronRight size={24} className="text-black" />
                             </button>
+                            </div>
                         </div>
-                    </div>
                 </div>
             </div>
 
