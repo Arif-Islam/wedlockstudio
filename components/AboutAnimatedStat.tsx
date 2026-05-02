@@ -4,11 +4,16 @@ import { useEffect, useRef } from "react";
 
 const DURATION_MS = 1600;
 
+const HOVER_TRANSITION =
+    "scale 400ms cubic-bezier(0.45,0,0.55,1), " +
+    "translate 400ms cubic-bezier(0.45,0,0.55,1), " +
+    "border-color 400ms cubic-bezier(0.45,0,0.55,1), " +
+    "box-shadow 400ms cubic-bezier(0.45,0,0.55,1)";
+
 const statCardClassName =
     "rounded-xl bg-white/80 backdrop-blur-sm border border-gold/10 px-5 py-4 shadow-sm " +
-    "scale-100 translate-y-0 transform-gpu origin-center " +
-    "transition-[transform,border-color,box-shadow] duration-[600ms] ease-[cubic-bezier(0.45,0,0.55,1)] " +
-    "motion-safe:hover:scale-[1.035] motion-safe:hover:-translate-y-1.5 " +
+    "transform-gpu origin-center " +
+    "motion-safe:hover:scale-[1.028] motion-safe:hover:-translate-y-1 " +
     "hover:border-gold/55 hover:shadow-[0_10px_36px_-8px_rgba(219,167,61,0.22)]";
 
 function easeOutCubic(t: number) {
@@ -68,7 +73,7 @@ export function AboutAnimatedStat({ label, target, suffix }: AboutAnimatedStatPr
     }, [target, suffix]);
 
     return (
-        <div ref={rootRef} className={statCardClassName}>
+        <div ref={rootRef} className={statCardClassName} style={{ transition: HOVER_TRANSITION }}>
             <h3
                 ref={valueRef}
                 className="text-2xl sm:text-3xl font-bold text-black tabular-nums"
