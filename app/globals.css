@@ -68,16 +68,16 @@ body {
   animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Tab change — smooth refresh (applied via JS for restartability) */
+/* Tab change — slide up from bottom with fade (applied via JS for restartability) */
 @keyframes tab-content-refresh {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(18px) scale(0.96);
+    transform: translateY(120px);
   }
 
-  100% {
+  to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -95,18 +95,5 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Projects — desktop carousel: tab switch entrance (slide up from below + fade) */
-@keyframes projects-desktop-tab-slider-enter {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 120px, 0);
-  }
-
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 }

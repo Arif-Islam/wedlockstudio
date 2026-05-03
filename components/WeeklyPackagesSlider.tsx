@@ -210,7 +210,7 @@ export default function WeeklyPackagesSlider() {
                         "border shadow-sm",
                         index === 0
                             ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-gold/30 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
+                            : "border-gold/70 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
                     )}
                 >
                     <ChevronLeft size={20} />
@@ -224,7 +224,7 @@ export default function WeeklyPackagesSlider() {
                         "border shadow-sm",
                         index >= maxIndex
                             ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-gold/30 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
+                            : "border-gold/70 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
                     )}
                 >
                     <ChevronRight size={20} />
