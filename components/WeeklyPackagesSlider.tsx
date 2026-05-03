@@ -185,7 +185,7 @@ export default function WeeklyPackagesSlider() {
                             )}
                             style={{
                                 width: cardWidth || "100%",
-                                transitionDuration: "700ms",
+                                transitionDuration: "1000ms",
                                 transitionTimingFunction:
                                     "cubic-bezier(0.22, 1, 0.36, 1)",
                                 transitionDelay: hasAppeared

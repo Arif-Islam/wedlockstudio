@@ -84,14 +84,16 @@ export default function Packages() {
                 {activeTab === "weekly" ? (
                     <WeeklyPackagesSlider />
                 ) : (
-                    <div className="grid md:grid-cols-3 gap-10 md:gap-8">
+                    <div key="monthly" className="grid md:grid-cols-3 gap-10 md:gap-8">
                         {monthlyPackages.map((pkg, index) => (
                             <div
                                 key={index}
                                 className={cn(
-                                    "relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border hover:border-gold/30 transition-all duration-300 flex flex-col shadow-sm",
+                                    "relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 border hover:border-gold/30 flex flex-col shadow-sm",
+                                    "animate-[packages-card-enter_700ms_cubic-bezier(0.22,1,0.36,1)_both]",
                                     pkg.popular ? "border-gold/40 scale-105 shadow-xl shadow-gold/10 z-10 ring-1 ring-gold/10" : "border-gold/10"
                                 )}
+                                style={{ animationDelay: `${index * 120}ms` }}
                             >
                                 {pkg.popular && (
                                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gold text-black text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide text-center">
@@ -118,14 +120,14 @@ export default function Packages() {
                                     ))}
                                 </ul>
 
-                                <button className={cn(
-                                    "w-full py-3 rounded-lg font-bold transition-transform active:scale-95 cursor-pointer",
+                                <a href="#contact" className={cn(
+                                    "w-full text-center py-3 rounded-lg font-bold transition-transform active:scale-95 cursor-pointer",
                                     pkg.popular
                                         ? "bg-gold text-black hover:opacity-90"
                                         : "bg-gray-100 text-black hover:bg-gray-200"
                                 )}>
-                                    Choose Plan
-                                </button>
+                                    Get In Touch
+                                </a>
                             </div>
                         ))}
                     </div>
