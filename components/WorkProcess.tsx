@@ -1,37 +1,37 @@
-import { Search, ClipboardList, Video, Scissors, Rocket } from "lucide-react";
+import { FileText, CloudUpload, CreditCard, Film, FolderDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const processSteps = [
     {
         id: "01",
-        title: "Discovery & Strategy",
-        description: "We explore your brand, goals, and audience to shape the right strategy.",
-        icon: Search,
+        title: "Complete the Contact form",
+        description: "Tell us about your project and share any special requests.",
+        icon: FileText,
     },
     {
         id: "02",
-        title: "Pre-Production",
-        description: "We plan the script, storyboard, and all production details.",
-        icon: ClipboardList,
+        title: "Upload your footage",
+        description: "Securely send us your raw video files via our upload portal.",
+        icon: CloudUpload,
     },
     {
         id: "03",
-        title: "Production",
-        description: "We film with pro lighting, sound, and direction.",
-        icon: Video,
+        title: "Pay the invoice",
+        description: "Receive a transparent quote and complete payment online.",
+        icon: CreditCard,
     },
     {
         id: "04",
-        title: "Post-Production",
-        description: "We edit, grade, and polish your video.",
-        icon: Scissors,
+        title: "Review the video edit",
+        description: "Watch the first cut and request any revisions you need.",
+        icon: Film,
     },
     {
         id: "05",
-        title: "Delivery & Launch",
-        description: "We finalize files and launch your project.",
-        icon: Rocket,
-    }
+        title: "Download the videos and project files",
+        description: "Get your polished final files ready to share anywhere.",
+        icon: FolderDown,
+    },
 ];
 
 export default function WorkProcess() {

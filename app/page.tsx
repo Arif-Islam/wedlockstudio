@@ -19,8 +19,8 @@ export default function Home() {
       <Packages />
       <WorkProcess />
       <Testimonials />
-      <Contact />
       <FAQ />
+      <Contact />
       <Footer />
     </div>
   );

@@ -346,16 +346,17 @@ function Card({ card }: { card: WeeklyCard }) {
                     hl ? "bg-[#1a1a1a]" : "bg-white"
                 )}
             >
-                <button
+                <a
+                    href="#contact"
                     className={cn(
-                        "w-full py-3 rounded-full text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300",
+                        "block w-full py-3 rounded-full text-sm font-semibold tracking-wide text-center cursor-pointer transition-all duration-300",
                         hl
                             ? "bg-gold text-black hover:brightness-110 shadow-md shadow-gold/20"
                             : "border border-gray-400 text-gray-700 hover:border-gold/40 hover:text-black hover:shadow-sm hover:bg-[#fafafa]"
                     )}
                 >
                     Get In Touch
-                </button>
+                </a>
             </div>
         </div>
     );
