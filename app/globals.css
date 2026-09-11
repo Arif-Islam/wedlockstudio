@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f1eb;
+  --foreground: #181714;
   --gold: 219 167 61;
   /* rgb(219, 167, 61) */
 }
@@ -19,6 +19,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  text-rendering: geometricPrecision;
+}
+
+::selection {
+  background: rgb(var(--gold) / 0.26);
+  color: #11100d;
 }
 
 /* Custom Animations */

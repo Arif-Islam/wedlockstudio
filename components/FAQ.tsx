@@ -59,11 +59,8 @@ export default function FAQ() {
             id="faq"
             className="relative py-20 md:py-28 overflow-hidden text-black bg-white"
         >
-            {/* Decorative background orbs */}
-            <div className="absolute top-1/2 right-0 w-[380px] h-[380px] bg-gold/4 rounded-full blur-3xl translate-x-1/3 -translate-y-1/2 pointer-events-none" />
-            <div className="absolute top-1/3 left-0 w-[280px] h-[280px] bg-gold/3 rounded-full blur-3xl -translate-x-1/3 pointer-events-none" />
-            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="text-center mb-14 md:mb-16">
@@ -71,7 +68,7 @@ export default function FAQ() {
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
                         Frequently Asked <span className="text-gold">Questions</span>
                     </h2>
-                    <p className="text-gray-500 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
+                    <p className="text-neutral-600 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
                         Have questions? We have answers. If you don&apos;t see your question here, feel free to <a href="mailto:contact@wedlockstudio.com" className="text-gold hover:underline font-medium">contact us</a>.
                     </p>
                 </div>
@@ -80,7 +77,7 @@ export default function FAQ() {
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="bg-white/90 backdrop-blur-sm rounded-xl shadow-sm border border-gold/10 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gold/20 flex flex-col"
+                            className="bg-[#fbfaf7] rounded-lg shadow-[0_12px_36px_-32px_rgba(0,0,0,0.65)] border border-black/10 overflow-hidden transition-all duration-300 hover:shadow-[0_18px_46px_-36px_rgba(0,0,0,0.8)] hover:border-black/25 flex flex-col"
                         >
                             <button
                                 onClick={() => toggleFAQ(index)}

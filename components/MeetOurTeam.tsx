@@ -4,10 +4,10 @@ export default function MeetOurTeam() {
     return (
         <section
             id="team"
-            className="relative py-16 md:py-24 overflow-hidden bg-white"
+            className="relative py-20 md:py-28 overflow-hidden bg-[#ede8df]"
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="bg-[#1c1c1c] rounded-sm sm:rounded-sm p-6 sm:p-12 lg:p-16 xl:p-10 shadow-2xl overflow-hidden relative">
+                <div className="bg-[#181714] rounded-lg p-6 sm:p-12 lg:p-16 xl:p-10 shadow-[0_28px_80px_-48px_rgba(0,0,0,0.95)] overflow-hidden relative border border-black/20">
                     <div className="grid lg:grid-cols-2 gap-10 lg:gap-10 items-start lg:items-center relative z-10">
 
                         {/* Mobile/Tablet Title Area (Hidden on Desktop) */}
@@ -22,11 +22,8 @@ export default function MeetOurTeam() {
 
                         {/* Left Side - Image Composition */}
                         <div className="relative w-full max-w-lg mx-auto lg:max-w-none h-[220px] sm:h-[300px] lg:h-[380px] xl:h-[480px] flex lg:block items-center justify-between group mb-8 lg:mb-0">
-                            {/* Decorative background glow for the images */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-[#d4af37]/10 rounded-full blur-[80px] pointer-events-none" />
-
                             {/* Back Image (Left side on mobile, Top-Left on Desktop) */}
-                            <div className="relative lg:absolute lg:top-0 lg:left-0 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/60 border border-white/5 z-0 transform transition-transform duration-500 lg:group-hover:-translate-y-4">
+                            <div className="relative lg:absolute lg:top-0 lg:left-0 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-md overflow-hidden shadow-[0_24px_70px_-36px_rgba(0,0,0,1)] border border-white/10 z-0 transform transition-transform duration-500 lg:group-hover:-translate-y-3">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217391/group-graphic-designers-working-computer_iojoen.jpg"
                                     alt="Team Member 1"
@@ -37,7 +34,7 @@ export default function MeetOurTeam() {
                             </div>
 
                             {/* Front Image (Right side on mobile, Bottom-Right on Desktop) */}
-                            <div className="relative lg:absolute lg:bottom-0 lg:right-10 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-sm overflow-hidden shadow-2xl shadow-black/80 border border-white/10 z-10 transform transition-transform duration-500 lg:group-hover:-translate-y-6">
+                            <div className="relative lg:absolute lg:bottom-0 lg:right-10 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-md overflow-hidden shadow-[0_24px_70px_-34px_rgba(0,0,0,1)] border border-white/10 z-10 transform transition-transform duration-500 lg:group-hover:-translate-y-4">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217721/male-female-graphic-designers-interacting-with-each-other_eqt93k.jpg"
                                     alt="Team Member 2"

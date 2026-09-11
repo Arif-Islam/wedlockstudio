@@ -4,7 +4,7 @@ import { Facebook, Instagram, Twitter, Linkedin, Youtube } from "lucide-react";
 
 export default function Footer() {
     return (
-        <footer className="bg-gray-100 text-black pt-10 pb-4 border-t border-gray-200">
+        <footer className="bg-[#ede8df] text-black pt-10 pb-4 border-t border-black/10">
             <div className="container mx-auto px-4">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-12">
                     {/* Logo */}

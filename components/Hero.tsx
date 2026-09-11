@@ -11,7 +11,8 @@ export default function Hero() {
         <section id="hero" className="relative h-screen w-full overflow-hidden">
             {/* Background Video (Vimeo) */}
             <div className="absolute inset-0 w-full h-full">
-                <div className="absolute inset-0 bg-black/50 z-10" /> {/* Overlay */}
+                <div className="absolute inset-0 bg-black/60 z-10" /> {/* Overlay */}
+                <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#f4f1eb] to-transparent z-10" />
                 <iframe
                     src="https://player.vimeo.com/video/858749361?autoplay=1&loop=1&muted=1&background=1"
                     className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-700 ${
@@ -31,17 +32,17 @@ export default function Hero() {
 
             {/* Content */}
             <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up">
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.02] animate-fade-in-up max-w-6xl">
                     Cinematic Wedding Video Editing for
                     <br />
                     <span className="text-gold">Filmmakers, Studios, and Couples</span>
                 </h1>
-                <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl animate-fade-in-up delay-100">
+                <p className="text-base md:text-xl text-gray-200 mb-8 max-w-2xl leading-relaxed animate-fade-in-up delay-100">
                     We are WedLockStudio, a professional video editing agency dedicated to transforming your raw footage into cinematic masterpieces.
                 </p>
                 <Link
                     href="#contact"
-                    className="inline-flex items-center gap-2 bg-gold text-black px-8 py-3 rounded-full font-bold shadow-lg shadow-gold/20 hover:scale-105 hover:shadow-xl hover:shadow-gold/40 transition-all duration-300 animate-fade-in-up delay-100"
+                    className="inline-flex items-center gap-2 bg-gold text-black px-7 py-3 rounded-md font-bold shadow-[0_12px_28px_-18px_rgba(0,0,0,0.8)] hover:bg-[#e2b14c] hover:-translate-y-0.5 transition-all duration-300 animate-fade-in-up delay-100"
                 >
                     Get In Touch
                     <ArrowRight size={20} />

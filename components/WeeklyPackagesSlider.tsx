@@ -210,7 +210,7 @@ export default function WeeklyPackagesSlider() {
                         "border shadow-sm",
                         index === 0
                             ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-gold/70 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
+                            : "border-black/20 text-black hover:bg-[#181714] hover:text-white"
                     )}
                 >
                     <ChevronLeft size={20} />
@@ -224,7 +224,7 @@ export default function WeeklyPackagesSlider() {
                         "border shadow-sm",
                         index >= maxIndex
                             ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-gold/70 text-black hover:bg-gold hover:text-black hover:shadow-gold/20"
+                            : "border-black/20 text-black hover:bg-[#181714] hover:text-white"
                     )}
                 >
                     <ChevronRight size={20} />
@@ -240,10 +240,10 @@ function Card({ card }: { card: WeeklyCard }) {
     return (
         <div
             className={cn(
-                "relative rounded-2xl overflow-hidden flex flex-col h-full",
+                "relative rounded-lg overflow-hidden flex flex-col h-full",
                 hl
-                    ? "shadow-xl shadow-gold/15 ring-1 ring-gold/25"
-                    : "shadow-[0_2px_16px_-4px_rgba(0,0,0,0.08)] border border-gray-100 hover:shadow-[0_8px_30px_-6px_rgba(219,167,61,0.18)] hover:border-gold/25"
+                    ? "shadow-[0_22px_60px_-40px_rgba(0,0,0,0.85)] ring-1 ring-black/20"
+                    : "shadow-[0_12px_36px_-30px_rgba(0,0,0,0.7)] border border-black/10 hover:shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] hover:border-black/25"
             )}
             style={{
                 transition:
@@ -268,8 +268,8 @@ function Card({ card }: { card: WeeklyCard }) {
                 className={cn(
                     "px-6 pt-7 pb-5 text-center",
                     hl
-                        ? "bg-linear-to-br from-[#d4a63a] via-[#c9a033] to-[#a88425]"
-                        : "bg-[#eeede9]"
+                        ? "bg-[#181714]"
+                        : "bg-[#ebe6dc]"
                 )}
             >
                 <h3
@@ -294,7 +294,7 @@ function Card({ card }: { card: WeeklyCard }) {
             <div
                 className={cn(
                     "px-6 pt-6 pb-5 text-center",
-                    hl ? "bg-linear-to-b from-[#a88425] to-[#1a1a1a]" : "bg-white"
+                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
                 )}
             >
                 <div className="flex items-baseline justify-center gap-1">
@@ -321,7 +321,7 @@ function Card({ card }: { card: WeeklyCard }) {
             <div
                 className={cn(
                     "flex-1 px-6 py-6",
-                    hl ? "bg-[#1a1a1a]" : "bg-white"
+                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
                 )}
             >
                 <ul className="space-y-3">
@@ -343,16 +343,16 @@ function Card({ card }: { card: WeeklyCard }) {
             <div
                 className={cn(
                     "px-6 pb-7 pt-2",
-                    hl ? "bg-[#1a1a1a]" : "bg-white"
+                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
                 )}
             >
                 <a
                     href="#contact"
                     className={cn(
-                        "block w-full py-3 rounded-full text-sm font-semibold tracking-wide text-center cursor-pointer transition-all duration-300",
+                        "block w-full py-3 rounded-md text-sm font-semibold tracking-wide text-center cursor-pointer transition-all duration-300",
                         hl
-                            ? "bg-gold text-black hover:brightness-110 shadow-md shadow-gold/20"
-                            : "border border-gray-400 text-gray-700 hover:border-gold/40 hover:text-black hover:shadow-sm hover:bg-[#fafafa]"
+                            ? "bg-gold text-black hover:bg-[#e2b14c]"
+                            : "border border-black/25 text-gray-700 hover:border-black/45 hover:text-black hover:bg-[#f2eee6]"
                     )}
                 >
                     Get In Touch

@@ -5,14 +5,10 @@ export default function About() {
     return (
         <section
             id="about"
-            className="relative py-10 md:py-16 overflow-hidden bg-white"
+            className="relative py-16 md:py-24 overflow-hidden bg-[#f4f1eb]"
         >
-            {/* Decorative background elements */}
-            <div className="absolute top-0 right-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none" />
-
             {/* Thin gold vertical accent line — desktop only */}
-            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-gold/20 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-black/20 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Mobile/Tablet Title Area (Hidden on Desktop) */}
@@ -25,15 +21,12 @@ export default function About() {
                     </h2>
                 </div>
 
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
                     {/* Image Side */}
                     <div className="w-full lg:w-[46%] h-[400px] sm:h-[500px] lg:h-[650px] relative mt-4 lg:mt-0">
                         <div className="relative w-full h-full max-w-xl mx-auto lg:max-w-none group">
-                            {/* Gold glow behind images */}
-                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] bg-gold/10 rounded-full blur-[80px] pointer-events-none" />
-
                             {/* Back Image */}
-                            <div className="absolute top-[10%] left-[5%] w-[60%] h-[80%] rounded-sm overflow-hidden shadow-2xl shadow-black/20 border border-black/5 z-0 transform transition-transform duration-500 group-hover:-translate-y-6">
+                            <div className="absolute top-[10%] left-[5%] w-[60%] h-[80%] rounded-md overflow-hidden shadow-[0_24px_70px_-42px_rgba(0,0,0,0.9)] border border-black/10 z-0 transform transition-transform duration-500 group-hover:-translate-y-4">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218144/modern-office-with-nobody-present_lxf4gu.jpg"
                                     alt="About WedLockStudio Back"
@@ -45,7 +38,7 @@ export default function About() {
                             </div>
 
                             {/* Front Image */}
-                            <div className="absolute top-[20%] right-[5%] w-[48%] h-[60%] rounded-sm overflow-hidden shadow-2xl shadow-black/30 border border-black/10 z-10 transform transition-transform duration-500 group-hover:-translate-y-5">
+                            <div className="absolute top-[20%] right-[5%] w-[48%] h-[60%] rounded-md overflow-hidden shadow-[0_24px_70px_-38px_rgba(0,0,0,0.95)] border border-black/15 z-10 transform transition-transform duration-500 group-hover:-translate-y-3">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
                                     alt="About WedLockStudio Front"
@@ -70,13 +63,13 @@ export default function About() {
                             </h2>
                         </div>
 
-                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-5 lg:hidden xl:block">
+                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-5 lg:hidden xl:block">
                             At WedLockStudio, we believe every frame tells a story. Established with a passion for visual storytelling, we specialize in high-end video editing services that bring your vision to life.
                         </p>
-                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-5 hidden lg:block xl:hidden">
+                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-5 hidden lg:block xl:hidden">
                             At WedLockStudio, we believe every frame tells a story. Established with a passion for visual storytelling, we specialize in high-end video editing services that bring your vision to life. We don&apos;t just edit videos — we craft emotional experiences.
                         </p>
-                        <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8 lg:hidden xl:block">
+                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-8 lg:hidden xl:block">
                             Whether it&apos;s a wedding film, corporate event, or a creative project, our team of expert editors ensures meticulous attention to detail, color grading, and sound design. We don&apos;t just edit videos — we craft emotional experiences.
                         </p>
 

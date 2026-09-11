@@ -66,14 +66,10 @@ export default function Contact() {
     return (
         <section
             id="contact"
-            className="relative py-20 md:py-28 overflow-hidden bg-[#1c1c1c]"
+            className="relative py-20 md:py-28 overflow-hidden bg-[#151411]"
         >
-            {/* Decorative background elements */}
-            <div className="absolute top-20 left-0 w-96 h-96 bg-gold/5 rounded-full blur-3xl -translate-x-1/2 pointer-events-none" />
-            <div className="absolute bottom-10 right-0 w-72 h-72 bg-gold/5 rounded-full blur-3xl translate-x-1/3 pointer-events-none" />
-
             {/* Thin gold vertical accent line — desktop only */}
-            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-gold/20 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Section Header */}
@@ -99,7 +95,7 @@ export default function Contact() {
                         <div className="space-y-6">
                             {contactItems.map((item) => (
                                 <div key={item.label} className="flex items-start gap-4 group">
-                                    <div className="w-11 h-11 rounded-xl bg-white/5 backdrop-blur-sm border border-gold/10 shadow-sm flex items-center justify-center shrink-0 text-gold transition-colors group-hover:bg-gold/10">
+                                    <div className="w-11 h-11 rounded-lg bg-[#22201c] border border-white/10 shadow-sm flex items-center justify-center shrink-0 text-gold transition-colors group-hover:border-gold/45">
                                         {item.icon}
                                     </div>
                                     <div>
@@ -120,19 +116,16 @@ export default function Contact() {
                         </div>
 
                         {/* Decorative divider — mobile/tablet only */}
-                        <div className="mt-8 lg:hidden h-px w-full bg-linear-to-r from-transparent via-gold/20 to-transparent" />
+                        <div className="mt-8 lg:hidden h-px w-full bg-white/10" />
                     </div>
 
                     {/* Form — right column */}
                     <div className="lg:col-span-3">
                         <div className="relative">
-                            {/* Gold glow behind card */}
-                            <div className="absolute -inset-1.5 rounded-2xl bg-gold/8 blur-lg pointer-events-none" />
-
-                            <div className="relative bg-[#252525] rounded-2xl border border-white/5 shadow-xl p-7 sm:p-9 min-h-[460px] flex flex-col justify-center">
+                            <div className="relative bg-[#22201c] rounded-lg border border-white/10 shadow-[0_24px_70px_-44px_rgba(0,0,0,1)] p-7 sm:p-9 min-h-[460px] flex flex-col justify-center">
                                 {isSent ? (
                                     <div className="text-center animate-fade-in">
-                                        <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-6 ring-1 ring-green-500/30">
+                                        <div className="w-20 h-20 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-6 ring-1 ring-green-500/30">
                                             <CheckCircle size={40} className="text-green-400" />
                                         </div>
                                         <h3 className="text-2xl font-bold text-white mb-3">Message Sent!</h3>
@@ -158,7 +151,7 @@ export default function Contact() {
                                                     type="text"
                                                     name="user_name"
                                                     id="user_name"
-                                                    className="w-full bg-[#1c1c1c] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
+                                                    className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
                                                     placeholder="John Doe"
                                                     required
                                                 />
@@ -171,7 +164,7 @@ export default function Contact() {
                                                     type="email"
                                                     name="user_email"
                                                     id="user_email"
-                                                    className="w-full bg-[#1c1c1c] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
+                                                    className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
                                                     placeholder="john@example.com"
                                                     required
                                                 />
@@ -186,7 +179,7 @@ export default function Contact() {
                                                 name="message"
                                                 id="message"
                                                 rows={5}
-                                                className="w-full bg-[#1c1c1c] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all resize-none"
+                                                className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all resize-none"
                                                 placeholder="Tell us about your project..."
                                                 required
                                             />
@@ -195,7 +188,7 @@ export default function Contact() {
                                         <button
                                             type="submit"
                                             disabled={isSending}
-                                            className="w-full bg-gold text-black font-bold py-3.5 rounded-xl hover:brightness-105 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
+                                            className="w-full bg-gold text-black font-bold py-3.5 rounded-md hover:bg-[#e2b14c] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
                                         >
                                             {isSending ? (
                                                 <span className="flex items-center gap-2">

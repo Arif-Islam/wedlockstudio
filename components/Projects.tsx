@@ -8,16 +8,16 @@ import { cn } from "@/lib/utils";
 type ProjectItem = { id: number; title: string; subtitle: string; thumbnail: string; vimeoId: string };
 
 const highlightFilmProjects: ProjectItem[] = [
-    { id: 1, title: "Wedding Highlight", subtitle: "Katie & Sam", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132621/thumbnail_1_u0ept3.png", vimeoId: "1162155196" },
-    { id: 2, title: "Corporate Event", subtitle: "Tech Summit 2024", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772131695/thumbnail_2_zibdlu.png", vimeoId: "923101806" },
-    { id: 3, title: "Music Video", subtitle: "Summer Nights", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132467/thumbnail_3_eclktu.png", vimeoId: "920569834" },
-    { id: 4, title: "Travel Vlog", subtitle: "Asia Adventures", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132424/thumbnail_4_fnrweu.png", vimeoId: "805961590" },
-    { id: 5, title: "Documentary", subtitle: "Behind The Lens", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772132193/thumbnail_5_zw4aea.png", vimeoId: "814933799" },
+    { id: 1, title: "Wedding Highlight", subtitle: "Katie & Sam", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772132621/thumbnail_1_u0ept3.png", vimeoId: "1162155196" },
+    { id: 2, title: "Studio Delivery", subtitle: "Reception Cut", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772131695/thumbnail_2_zibdlu.png", vimeoId: "923101806" },
+    { id: 3, title: "Ceremony Film", subtitle: "Vows & Details", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772132467/thumbnail_3_eclktu.png", vimeoId: "920569834" },
+    { id: 4, title: "Destination Story", subtitle: "Editorial Recap", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772132424/thumbnail_4_fnrweu.png", vimeoId: "805961590" },
+    { id: 5, title: "Documentary Edit", subtitle: "Full-Day Film", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772132193/thumbnail_5_zw4aea.png", vimeoId: "814933799" },
 ];
 
 const teaserProjectsRaw: ProjectItem[] = [
-    { id: 1, title: "Teaser", subtitle: "Teaser 1", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772134709/teaser_1_rzx1h2.png", vimeoId: "857784436" },
-    { id: 2, title: "Teaser", subtitle: "Teaser 2", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772134779/teaser_2_sqy9xv.png", vimeoId: "858749361" },
+    { id: 1, title: "Wedding Teaser", subtitle: "Opening Moments", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772134709/teaser_1_rzx1h2.png", vimeoId: "857784436" },
+    { id: 2, title: "Wedding Teaser", subtitle: "Golden Hour", thumbnail: "https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1400/v1772134779/teaser_2_sqy9xv.png", vimeoId: "858749361" },
 ];
 const teaserProjectsExpanded: ProjectItem[] = [
     { ...teaserProjectsRaw[0], id: 1, subtitle: "Teaser 1" },
@@ -298,19 +298,14 @@ export default function Projects() {
         <section
             ref={sectionRef}
             id="projects"
-            className="relative py-20 md:py-28 overflow-hidden bg-white"
+            className="relative py-20 md:py-28 overflow-hidden bg-[#12110f] text-white"
         >
-            {/* ── Decorative background orbs ── */}
-            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-gold/4 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gold/4 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute top-1/2 right-0 w-72 h-72 bg-gold/3 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-
             {/* ── Thin gold vertical accent lines — desktop only ── */}
-            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
-            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-gold/15 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
+            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
+            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
 
             {/* ── Subtle horizontal divider at the very top ── */}
-            <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute top-0 left-0 right-0 h-px bg-white/10 pointer-events-none" />
 
             <div className="container px-4 sm:px-6 lg:px-8 mx-auto relative z-10">
                 {/* ── Section Header ── */}
@@ -325,10 +320,10 @@ export default function Projects() {
                         <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
                             Our Work
                         </p>
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-black mb-4 leading-tight">
+                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
                             Project <span className="text-gold">Highlights</span>
                         </h2>
-                        <p className="text-gray-500 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                        <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
                             Explore our curated collection of cinematic {activeCategory.toLowerCase()}s
                         </p>
                     </div>
@@ -348,10 +343,10 @@ export default function Projects() {
                                     key={`mobile-${category}`}
                                     onClick={() => handleCategoryChange(category)}
                                     className={cn(
-                                        "px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 cursor-pointer border",
+                                        "px-4 py-3 rounded-md text-sm font-semibold transition-all duration-300 cursor-pointer border",
                                         activeCategory === category
-                                            ? "bg-gold text-black shadow-lg shadow-gold/20 scale-[1.02] border-gold"
-                                            : "bg-white/80 backdrop-blur-sm text-gray-500 hover:text-black hover:bg-white border-gold/10"
+                                            ? "bg-gold text-black border-gold"
+                                            : "bg-white/5 text-neutral-300 hover:text-white hover:bg-white/10 border-white/10"
                                     )}
                                 >
                                     {category}
@@ -360,16 +355,16 @@ export default function Projects() {
                         </div>
 
                         {/* Desktop Pill Layout */}
-                        <div className="hidden md:inline-flex bg-white/70 backdrop-blur-md rounded-full p-1.5 border border-gold/15 shadow-sm shrink-0 whitespace-nowrap">
+                        <div className="hidden md:inline-flex bg-white/5 rounded-md p-1.5 border border-white/10 shrink-0 whitespace-nowrap">
                             {categories.map((category) => (
                                 <button
                                     key={`desktop-${category}`}
                                     onClick={() => handleCategoryChange(category)}
                                     className={cn(
-                                        "px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer",
+                                        "px-6 py-2.5 rounded-sm text-sm font-semibold transition-all duration-300 cursor-pointer",
                                         activeCategory === category
-                                            ? "bg-gold text-black shadow-lg shadow-gold/20 scale-105"
-                                            : "text-gray-500 hover:text-black hover:bg-white/60"
+                                            ? "bg-gold text-black"
+                                            : "text-neutral-400 hover:text-white hover:bg-white/10"
                                     )}
                                 >
                                     {category}
@@ -392,7 +387,7 @@ export default function Projects() {
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
                         >
-                            <div className="overflow-hidden rounded-2xl">
+                            <div className="overflow-hidden rounded-lg border border-white/10 bg-black shadow-[0_28px_80px_-46px_rgba(0,0,0,1)]">
                                 <div
                                     className="flex"
                                     style={{
@@ -404,7 +399,7 @@ export default function Projects() {
                                         const isPlaying = playingVideo === index;
                                         return (
                                             <div key={`mobile-${index}`} className="min-w-full px-2 flex justify-center">
-                                                <div className="relative group overflow-hidden rounded-2xl w-full md:w-[80%]">
+                                                <div className="relative group overflow-hidden rounded-lg w-full md:w-[80%] border border-white/10 bg-black">
                                                     <div className="relative w-full pt-[56.25%]">
                                                         {isPlaying && (
                                                             <iframe
@@ -417,15 +412,15 @@ export default function Projects() {
                                                             />
                                                         )}
                                                         <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                                            <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover" priority={index <= 2} />
-                                                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent" />
+                                                            <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover contrast-110 saturate-110" priority={index <= 2} />
+                                                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/15 to-transparent" />
                                                         </div>
                                                         {!isPlaying && (
                                                             <div
                                                                 className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
                                                                 onClick={() => toggleMobileVideo(index)}
                                                             >
-                                                                <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                                <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-105 transition-all shadow-[0_18px_40px_-28px_rgba(0,0,0,0.9)]">
                                                                     <Play fill="black" className="text-black ml-1" size={36} />
                                                                 </div>
                                                             </div>
@@ -454,7 +449,7 @@ export default function Projects() {
                                             "rounded-full transition-all duration-300 cursor-pointer",
                                             index === mobileRealIndex
                                                 ? "bg-gold w-7 h-2.5"
-                                                : "bg-gray-300 hover:bg-gray-400 w-2.5 h-2.5"
+                                                : "bg-white/25 hover:bg-white/45 w-2.5 h-2.5"
                                         )}
                                         aria-label={`Go to slide ${index + 1}`}
                                     />
@@ -484,8 +479,8 @@ export default function Projects() {
                                     <div
                                         key={`desktop-${offset}`}
                                         className={cn(
-                                            "absolute rounded-2xl overflow-hidden group",
-                                            isCenter ? "z-20" : "z-10"
+                                            "absolute rounded-lg overflow-hidden group bg-black border border-white/10",
+                                            isCenter ? "z-20 shadow-[0_34px_90px_-42px_rgba(0,0,0,1)]" : "z-10"
                                         )}
                                         style={{
                                             left: style.left,
@@ -517,14 +512,14 @@ export default function Projects() {
                                                 alt={project.title}
                                                 fill
                                                 sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
-                                                className={`object-cover ${isCenter ? "group-hover:scale-105 transition-transform duration-700" : ""}`}
+                                                className={`object-cover contrast-110 saturate-110 ${isCenter ? "group-hover:scale-[1.025] transition-transform duration-700" : ""}`}
                                                 priority={offset === 0}
                                             />
                                             <div className={cn(
                                                 "absolute inset-0",
                                                 isCenter
-                                                    ? "bg-linear-to-t from-black/70 via-black/10 to-transparent"
-                                                    : "bg-black/20"
+                                                    ? "bg-linear-to-t from-black/82 via-black/10 to-transparent"
+                                                    : "bg-black/35"
                                             )} />
                                         </div>
 
@@ -534,7 +529,7 @@ export default function Projects() {
                                                 className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
                                                 onClick={() => toggleDesktopVideo(projectIndex)}
                                             >
-                                                <div className="w-20 h-20 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-110 transition-all shadow-2xl shadow-gold/30 animate-pulse-subtle">
+                                                <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-105 transition-all shadow-[0_18px_40px_-28px_rgba(0,0,0,0.9)]">
                                                     <Play fill="black" className="text-black ml-1" size={36} />
                                                 </div>
                                             </div>
@@ -557,7 +552,7 @@ export default function Projects() {
                             <button
                                 onClick={goToPrevDesktop}
                                 disabled={isAnimating}
-                                className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
+                                className="absolute z-40 w-12 h-12 bg-white/90 hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_14px_34px_-24px_rgba(0,0,0,0.95)] ring-1 ring-black/10 cursor-pointer"
                                 style={{
                                     left: `calc(50% - ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
                                     top: "50%",
@@ -570,7 +565,7 @@ export default function Projects() {
                             <button
                                 onClick={goToNextDesktop}
                                 disabled={isAnimating}
-                                className="absolute z-40 w-12 h-12 bg-white/90 backdrop-blur-sm hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ring-1 ring-black/5 hover:ring-gold/30 cursor-pointer"
+                                className="absolute z-40 w-12 h-12 bg-white/90 hover:bg-gold rounded-full flex items-center justify-center transition-all duration-300 shadow-[0_14px_34px_-24px_rgba(0,0,0,0.95)] ring-1 ring-black/10 cursor-pointer"
                                 style={{
                                     left: `calc(50% + ${carouselDims.centerW / 2 + carouselDims.gap + carouselDims.sideW / 2}px)`,
                                     top: "50%",
@@ -587,7 +582,7 @@ export default function Projects() {
             </div>
 
             {/* ── Subtle horizontal divider at the very bottom ── */}
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-gold/10 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 left-0 right-0 h-px bg-white/10 pointer-events-none" />
         </section>
     );
 }

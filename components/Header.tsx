@@ -62,7 +62,7 @@ export default function Header() {
         <header
             className={cn(
                 "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-                isScrolled ? "bg-white/90 backdrop-blur-md py-2 shadow-sm" : "bg-transparent py-4"
+                isScrolled ? "bg-[#f4f1eb]/95 py-2 shadow-[0_10px_34px_-30px_rgba(0,0,0,0.85)] border-b border-black/10" : "bg-transparent py-4"
             )}
         >
             <div className="container mx-auto px-4 flex justify-between items-center">
@@ -124,7 +124,7 @@ export default function Header() {
                             {/* Dropdown for "More" */}
                             {item.children && (
                                 <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-                                    <div className="bg-white/95 backdrop-blur-md rounded-lg shadow-xl border border-gray-100 overflow-hidden py-2">
+                                    <div className="bg-[#fbfaf7] rounded-lg shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] border border-black/10 overflow-hidden py-2">
                                         {item.children.map((child) => (
                                             <a
                                                 key={child.name}
@@ -182,7 +182,7 @@ export default function Header() {
 
             {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="lg:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md py-8 px-4 flex flex-col space-y-4 shadow-xl border-t border-gray-100">
+                <div className="lg:hidden absolute top-full left-0 right-0 bg-[#fbfaf7] py-8 px-4 flex flex-col space-y-4 shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] border-t border-black/10">
                     {mobileNavItems.map((item) => (
                         <a
                             key={item.name}
