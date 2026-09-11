@@ -5,8 +5,6 @@ import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const DEFAULT_THUMB = "https://res.cloudinary.com/djbh7xuqv/image/upload/v1772131695/thumbnail_2_zibdlu.png";
-
 type ProjectItem = { id: number; title: string; subtitle: string; thumbnail: string; vimeoId: string };
 
 const highlightFilmProjects: ProjectItem[] = [
@@ -189,7 +187,7 @@ export default function Projects() {
                 setIsAnimating(false);
             });
         }, 700);
-    }, [isAnimating]);
+    }, [isAnimating, projects.length]);
 
     const goToPrevDesktop = useCallback(() => {
         if (isAnimating) return;
@@ -210,7 +208,7 @@ export default function Projects() {
                 setIsAnimating(false);
             });
         }, 700);
-    }, [isAnimating]);
+    }, [isAnimating, projects.length]);
 
     // ==================== MOBILE NAVIGATION (infinite loop) ====================
     const pauseAllMobileVideos = () => {
@@ -252,7 +250,7 @@ export default function Projects() {
             }, 700);
             return () => clearTimeout(timer);
         }
-    }, [mobileSlideIndex]);
+    }, [extendedProjects.length, mobileSlideIndex, projects.length]);
 
     const getMobileRealIndex = () => {
         if (mobileSlideIndex === 0) return projects.length - 1;

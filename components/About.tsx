@@ -5,7 +5,7 @@ export default function About() {
     return (
         <section
             id="about"
-            className="relative py-10 md:16 overflow-hidden bg-white"
+            className="relative py-10 md:py-16 overflow-hidden bg-white"
         >
             {/* Decorative background elements */}
             <div className="absolute top-0 right-0 w-80 h-80 bg-gold/5 rounded-full blur-3xl -translate-y-1/3 translate-x-1/3 pointer-events-none" />

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
@@ -33,9 +32,9 @@ export default function Hero() {
             {/* Content */}
             <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in-up">
-                    You Keep the <span className="text-gold">Memories</span>
+                    Cinematic Wedding Video Editing for
                     <br />
-                    Because Every Moment <span className="text-gold">Matters</span>
+                    <span className="text-gold">Filmmakers, Studios, and Couples</span>
                 </h1>
                 <p className="text-lg md:text-xl text-gray-200 mb-8 max-w-2xl animate-fade-in-up delay-100">
                     We are WedLockStudio, a professional video editing agency dedicated to transforming your raw footage into cinematic masterpieces.
