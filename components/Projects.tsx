@@ -157,7 +157,7 @@ export default function Projects() {
                 const node = tabContentRef.current;
                 if (node) {
                     node.style.animation =
-                        "tab-content-refresh 1.6s cubic-bezier(0.16, 1, 0.3, 1) both";
+                        "tab-content-refresh 2s cubic-bezier(0.22, 1, 0.36, 1) both";
                 }
             });
         });

@@ -82,7 +82,7 @@ body {
 }
 
 .animate-tab-refresh {
-  animation: tab-content-refresh 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: tab-content-refresh 2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Packages — monthly card entrance (fade + slide up, staggered via animation-delay) */
