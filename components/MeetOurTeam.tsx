@@ -1,90 +1,108 @@
 import Image from "next/image";
 
+const teamHighlights = [
+    {
+        title: "Editorial direction",
+        description: "Story structure, pacing, music flow, and emotional rhythm.",
+    },
+    {
+        title: "Post-production polish",
+        description: "Color tone, sound detail, captions, exports, and review delivery.",
+    },
+];
+
+const roles = ["Lead Editor", "Color Artist", "Sound Designer"];
+
 export default function MeetOurTeam() {
     return (
         <section
             id="team"
-            className="relative py-20 md:py-28 overflow-hidden bg-[#ede8df]"
+            className="relative overflow-hidden bg-[#ede8df] py-14 sm:py-20 lg:py-24"
         >
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="bg-[#181714] rounded-lg p-6 sm:p-12 lg:p-16 xl:p-10 shadow-[0_28px_80px_-48px_rgba(0,0,0,0.95)] overflow-hidden relative border border-black/20">
-                    <div className="grid lg:grid-cols-2 gap-10 lg:gap-10 items-start lg:items-center relative z-10">
+            <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-8 border-b border-black/10 pb-7 lg:mb-10 lg:flex lg:items-end lg:justify-between lg:gap-12">
+                    <div className="max-w-3xl">
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#b57900]">
+                            The Creators
+                        </p>
+                        <h2 className="text-3xl font-bold leading-tight text-[#181714] sm:text-4xl lg:text-5xl">
+                            A focused team behind every finished film.
+                        </h2>
+                    </div>
 
-                        {/* Mobile/Tablet Title Area (Hidden on Desktop) */}
-                        <div className="block lg:hidden text-center mb-6">
-                            <p className="text-gold font-sans font-medium text-sm uppercase tracking-[0.2em] mb-4">
-                                The Creators
-                            </p>
-                            <h2 className="text-4xl sm:text-5xl font-serif text-white leading-[1.1]">
-                                Meet Our Team
-                            </h2>
+                    <div className="mt-5 max-w-md lg:mt-0">
+                        <p className="text-base leading-7 text-[#625d53]">
+                            Editors, storytellers, and finishers working together to make each frame feel intentional.
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {roles.map((role) => (
+                                <span
+                                    key={role}
+                                    className="rounded-full border border-black/10 bg-[#f7f3ec] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#6f685d]"
+                                >
+                                    {role}
+                                </span>
+                            ))}
                         </div>
+                    </div>
+                </div>
 
-                        {/* Left Side - Image Composition */}
-                        <div className="relative w-full max-w-lg mx-auto lg:max-w-none h-[220px] sm:h-[300px] lg:h-[380px] xl:h-[480px] flex lg:block items-center justify-between group mb-8 lg:mb-0">
-                            {/* Back Image (Left side on mobile, Top-Left on Desktop) */}
-                            <div className="relative lg:absolute lg:top-0 lg:left-0 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-md overflow-hidden shadow-[0_24px_70px_-36px_rgba(0,0,0,1)] border border-white/10 z-0 transform transition-transform duration-500 lg:group-hover:-translate-y-3">
+                <div className="overflow-hidden rounded-lg border border-black/10 bg-[#181714] shadow-[0_28px_80px_-50px_rgba(0,0,0,0.95)]">
+                    <div className="grid lg:grid-cols-[1.18fr_0.82fr]">
+                        <div className="grid bg-white/10 sm:grid-cols-2 lg:min-h-[560px]">
+                            <div className="relative min-h-[320px] overflow-hidden sm:min-h-[460px] lg:min-h-full">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217391/group-graphic-designers-working-computer_iojoen.jpg"
-                                    alt="Team Member 1"
+                                    alt="WedLockStudio team reviewing an edit"
                                     fill
                                     className="object-cover"
-                                    sizes="(max-width: 1024px) 50vw, 30vw"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 35vw"
                                 />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/5 to-transparent" />
+                                <div className="absolute bottom-4 left-4 right-4 rounded-lg border border-white/10 bg-black/55 p-4 backdrop-blur-sm sm:bottom-5 sm:left-5 sm:right-5">
+                                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-gold">
+                                        Review Ready
+                                    </p>
+                                    <p className="mt-2 text-sm font-medium leading-5 text-white">
+                                        Clean exports, clear notes, and polished delivery.
+                                    </p>
+                                </div>
                             </div>
 
-                            {/* Front Image (Right side on mobile, Bottom-Right on Desktop) */}
-                            <div className="relative lg:absolute lg:bottom-0 lg:right-10 w-[48%] lg:w-[50%] h-full lg:h-[75%] rounded-md overflow-hidden shadow-[0_24px_70px_-34px_rgba(0,0,0,1)] border border-white/10 z-10 transform transition-transform duration-500 lg:group-hover:-translate-y-4">
+                            <div className="relative min-h-[320px] overflow-hidden border-t border-white/10 sm:min-h-[460px] sm:border-l sm:border-t-0 lg:min-h-full">
                                 <Image
                                     src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217721/male-female-graphic-designers-interacting-with-each-other_eqt93k.jpg"
-                                    alt="Team Member 2"
+                                    alt="WedLockStudio creative team collaborating"
                                     fill
                                     className="object-cover object-top"
-                                    sizes="(max-width: 1024px) 50vw, 30vw"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                                 />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/35 via-transparent to-transparent" />
                             </div>
-
                         </div>
 
-                        {/* Right Side - Text Content */}
-                        <div className="flex flex-col justify-center max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
-                            {/* Desktop Title Area (Hidden on Mobile/Tablet) */}
-                            <div className="hidden lg:block">
-                                <p className="text-gold font-sans font-medium text-sm uppercase tracking-[0.2em] mb-4">
-                                    The Creators
-                                </p>
-                                <h2 className="text-4xl sm:text-5xl lg:text-5xl font-serif text-white mb-8 leading-[1.1]">
-                                    Meet Our Team
-                                </h2>
+                        <div className="flex flex-col justify-center border-t border-white/10 p-6 sm:p-8 lg:border-l lg:border-t-0 lg:p-10 xl:p-12">
+                            <div className="mb-5 inline-flex w-fit rounded-full border border-gold/40 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-gold">
+                                Studio Team
                             </div>
+                            <h3 className="max-w-xl text-3xl font-bold leading-tight text-white sm:text-4xl">
+                                The edit gets better when every specialist is aligned.
+                            </h3>
+                            <p className="mt-5 max-w-xl text-base leading-7 text-[#c7c0b3]">
+                                From assembly to final export, the team keeps the story clear, the pacing intentional, and the look consistent.
+                            </p>
 
-                            <div className="space-y-4 text-gray-400 text-base sm:text-lg leading-relaxed font-sans font-light">
-                                <p>
-                                    Every beautiful film is crafted by a dedicated team who understands the weight of your moments. We don’t just capture events — we anticipate, feel, and preserve them.
-                                </p>
-                                <p>
-                                    With years of editorial and cinematic wedding experience, our approach blends documentary authenticity with a highly stylized luxury aesthetic. We are storytellers at heart, focused on capturing the sophisticated nuances of your day.
-                                </p>
-                                {/* <p>
-                                    From the quiet anticipation before the ceremony to the joyful energy of the reception, we’re there — unobtrusive, attentive, and deeply passionate about our craft.
-                                </p> */}
+                            <div className="mt-8 divide-y divide-white/10 border-y border-white/10">
+                                {teamHighlights.map((item) => (
+                                    <div key={item.title} className="py-5">
+                                        <h4 className="font-bold text-white">{item.title}</h4>
+                                        <p className="mt-2 text-sm leading-6 text-[#aaa295]">
+                                            {item.description}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
-
-                            {/* <div className="mt-12 pt-10 border-t border-white/10">
-                            <div className="flex flex-wrap items-center gap-8 md:gap-12 justify-center lg:justify-start">
-                                <div>
-                                    <h4 className="text-[#ebe3d5] font-serif text-xl mb-1">Ariful Islam</h4>
-                                    <p className="text-[#8c8c8c] text-xs font-sans tracking-widest uppercase">Lead Cinematographer</p>
-                                </div>
-                                <div className="hidden sm:block w-px h-10 bg-white/10" />
-                                <div>
-                                    <h4 className="text-[#ebe3d5] font-serif text-xl mb-1">Jane Doe</h4>
-                                    <p className="text-[#8c8c8c] text-xs font-sans tracking-widest uppercase">Creative Director</p>
-                                </div>
-                            </div>
-                        </div> */}
                         </div>
-
                     </div>
                 </div>
             </div>
