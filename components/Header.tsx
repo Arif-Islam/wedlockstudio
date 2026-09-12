@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { MailOpen, Menu, X, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { MailOpen, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -38,16 +38,7 @@ const mobileNavItems = [
 ];
 
 export default function Header() {
-    const [isScrolled, setIsScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
@@ -59,41 +50,34 @@ export default function Header() {
     };
 
     return (
-        <header
-            className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-                isScrolled ? "bg-[#f4f1eb]/95 py-2 shadow-[0_10px_34px_-30px_rgba(0,0,0,0.85)] border-b border-black/10" : "bg-transparent py-4"
-            )}
-        >
-            <div className="container mx-auto px-4 flex justify-between items-center">
-                {/* Logo & Text - LEFT */}
-                <div className="flex flex-col items-start justify-center">
+        <header className="fixed left-0 right-0 top-0 z-50 border-b border-black/10 bg-[#fbfaf7]/95 text-[#181714] shadow-[0_14px_36px_-30px_rgba(0,0,0,0.95)] backdrop-blur-md">
+            <div className="container mx-auto flex min-h-[78px] items-center justify-between gap-4 px-4 py-2.5 lg:min-h-[86px]">
+                <div className="flex min-w-0 flex-col items-start justify-center">
                     <Link
                         href="/"
-                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                        className="relative w-32 h-10 md:w-36 md:h-12"
+                        onClick={() => {
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                            setMobileMenuOpen(false);
+                        }}
+                        className="inline-flex"
+                        aria-label="Go to top"
                     >
                         <Image
-                            src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto/v1770056120/logo_xlkvz7.jpg"
+                            src="/images/logo-transparent-dark.png"
                             alt="WedLockStudio Logo"
-                            fill
-                            sizes="160px"
-                            className="object-contain object-left"
+                            width={659}
+                            height={608}
+                            sizes="80px"
+                            className="h-12 w-auto object-contain object-left sm:h-14 lg:h-16"
                             priority
                         />
                     </Link>
-                    <span
-                        className={cn(
-                            "text-[10px] tracking-[0.2em] font-medium uppercase mt-0.5",
-                            isScrolled ? "text-gray-500" : "text-gray-300"
-                        )}
-                    >
+                    <span className="mt-0.5 text-[9px] font-semibold uppercase tracking-[0.22em] text-[#72706a] sm:text-[10px]">
                         Video editing agency
                     </span>
                 </div>
 
-                {/* Desktop Nav - CENTER/RIGHT */}
-                <nav className="hidden lg:flex items-center space-x-8">
+                <nav className="hidden items-center gap-1 rounded-full border border-black/10 bg-white/75 p-1.5 shadow-[0_12px_30px_-28px_rgba(0,0,0,0.8)] lg:flex">
                     {navItems.map((item) => (
                         <div key={item.name} className="relative group">
                             <a
@@ -106,10 +90,8 @@ export default function Header() {
                                     }
                                 }}
                                 className={cn(
-                                    "uppercase text-sm font-medium tracking-wide transition-all duration-300 flex items-center gap-1 cursor-pointer",
-                                    isScrolled
-                                        ? "text-gray-700 hover:text-[#DBA73D]"
-                                        : "text-gray-200 hover:text-[#DBA73D]"
+                                    "flex cursor-pointer items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold uppercase tracking-wide text-[#494641] transition-all duration-300 hover:bg-[#f1eadf] hover:text-[#b57900]",
+                                    item.children && "pr-3.5"
                                 )}
                             >
                                 {item.name}
@@ -121,16 +103,15 @@ export default function Header() {
                                 )}
                             </a>
 
-                            {/* Dropdown for "More" */}
                             {item.children && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
-                                    <div className="bg-[#fbfaf7] rounded-lg shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] border border-black/10 overflow-hidden py-2">
+                                <div className="invisible absolute left-1/2 top-full w-56 -translate-x-1/2 translate-y-2 pt-4 opacity-0 transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                                    <div className="overflow-hidden rounded-lg border border-black/10 bg-[#fbfaf7] py-2 shadow-[0_22px_56px_-34px_rgba(0,0,0,0.9)]">
                                         {item.children.map((child) => (
                                             <a
                                                 key={child.name}
                                                 href={child.href}
                                                 onClick={(e) => scrollToSection(e, child.href)}
-                                                className="block px-6 py-2.5 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#DBA73D] transition-colors text-center"
+                                                className="block px-5 py-2.5 text-center text-sm font-medium text-[#5f5a51] transition-colors hover:bg-[#f1eadf] hover:text-[#b57900]"
                                             >
                                                 {child.name}
                                             </a>
@@ -142,72 +123,75 @@ export default function Header() {
                     ))}
                 </nav>
 
-                {/* Right Icons - RIGHT */}
-                <div className="hidden lg:flex items-center space-x-6">
+                <div className="hidden items-center gap-2 lg:flex">
                     <a
                         href="https://wa.me/1234567890"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={cn("transition-colors", isScrolled ? "text-black hover:text-green-600" : "text-white hover:text-green-500")}
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/75 text-[#181714] transition-all hover:-translate-y-0.5 hover:border-green-500/50 hover:text-green-600"
                         aria-label="WhatsApp"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-5 h-5"
-                        >
-                            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                        </svg>
+                        <MessageCircle size={19} />
                     </a>
                     <a
                         href="mailto:contact@wedlockstudio.com"
-                        className={cn("transition-colors", isScrolled ? "text-black hover:text-blue-600" : "text-white hover:text-blue-500")}
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/75 text-[#181714] transition-all hover:-translate-y-0.5 hover:border-[#DBA73D]/60 hover:text-[#b57900]"
                         aria-label="Email"
                     >
-                        <MailOpen size={20} />
+                        <MailOpen size={19} />
+                    </a>
+                    <a
+                        href="#contact"
+                        onClick={(e) => scrollToSection(e, "#contact")}
+                        className="ml-1 inline-flex items-center rounded-full bg-[#181714] px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white transition-all hover:-translate-y-0.5 hover:bg-black"
+                    >
+                        Get quote
                     </a>
                 </div>
 
-                {/* Mobile Menu Button */}
                 <button
-                    className={cn("lg:hidden", isScrolled ? "text-black" : "text-white")}
+                    type="button"
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white text-[#181714] shadow-[0_10px_28px_-24px_rgba(0,0,0,0.9)] lg:hidden"
                     onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                    aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                    aria-expanded={mobileMenuOpen}
                 >
-                    {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                    {mobileMenuOpen ? <X size={23} /> : <Menu size={23} />}
                 </button>
             </div>
 
-            {/* Mobile Menu */}
             {mobileMenuOpen && (
-                <div className="lg:hidden absolute top-full left-0 right-0 bg-[#fbfaf7] py-8 px-4 flex flex-col space-y-4 shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] border-t border-black/10">
-                    {mobileNavItems.map((item) => (
-                        <a
-                            key={item.name}
-                            href={item.href}
-                            onClick={(e) => scrollToSection(e, item.href)}
-                            className="text-gray-800 hover:text-[#DBA73D] text-lg font-medium text-center py-2 border-b border-gray-100 last:border-0"
-                        >
-                            {item.name}
-                        </a>
-                    ))}
-                    <div className="flex justify-center space-x-8 mt-6 pt-4">
-                        <a href="https://wa.me/1234567890" className="text-gray-800 hover:text-green-600" aria-label="WhatsApp">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="w-6 h-6"
+                <div className="absolute left-0 right-0 top-full border-t border-black/10 bg-[#fbfaf7] px-4 py-5 shadow-[0_22px_56px_-34px_rgba(0,0,0,0.9)] lg:hidden">
+                    <nav className="grid grid-cols-2 gap-2">
+                        {mobileNavItems.map((item) => (
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                onClick={(e) => scrollToSection(e, item.href)}
+                                className="rounded-md border border-black/10 bg-white/70 px-4 py-3 text-center text-sm font-semibold text-[#3f3b35] transition-colors hover:border-[#DBA73D]/60 hover:text-[#b57900]"
                             >
-                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.463 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-                            </svg>
+                                {item.name}
+                            </a>
+                        ))}
+                    </nav>
+                    <div className="mt-5 grid grid-cols-2 gap-3">
+                        <a
+                            href="https://wa.me/1234567890"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 rounded-md bg-gold px-4 py-3 text-sm font-bold text-black transition-colors hover:bg-[#e4b34d]"
+                            aria-label="WhatsApp"
+                        >
+                            <MessageCircle size={18} />
+                            WhatsApp
                         </a>
-                        <a href="mailto:contact@wedlockstudio.com" className="text-gray-800 hover:text-blue-600" aria-label="Email">
-                            <MailOpen size={24} />
+                        <a
+                            href="mailto:contact@wedlockstudio.com"
+                            className="inline-flex items-center justify-center gap-2 rounded-md border border-black/10 bg-white px-4 py-3 text-sm font-bold text-[#181714] transition-colors hover:border-[#DBA73D]/60 hover:text-[#b57900]"
+                            aria-label="Email"
+                        >
+                            <MailOpen size={18} />
+                            Email
                         </a>
                     </div>
                 </div>
