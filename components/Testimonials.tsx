@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { BadgeCheck, Quote, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -59,61 +59,148 @@ const proofItems = [
     { value: "3-14", label: "Day Delivery" },
 ];
 
+const SLIDE_INTERVAL = 6500;
+
 export default function Testimonials() {
     const [activeIndex, setActiveIndex] = useState(0);
+    const [isPaused, setIsPaused] = useState(false);
     const active = testimonials[activeIndex];
+
+    useEffect(() => {
+        if (isPaused) return;
+
+        if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+            return;
+        }
+
+        const timer = window.setTimeout(() => {
+            setActiveIndex((current) => (current + 1) % testimonials.length);
+        }, SLIDE_INTERVAL);
+
+        return () => window.clearTimeout(timer);
+    }, [activeIndex, isPaused]);
+
+    const handleSelect = (index: number) => {
+        setActiveIndex(index);
+        setIsPaused(false);
+    };
 
     return (
         <section
             id="testimonials"
-            className="relative overflow-hidden bg-[#f7f4ee] py-14 text-black md:py-20 lg:py-24"
+            className="relative overflow-hidden bg-[#f7f4ee] py-10 text-black md:py-14 lg:py-20"
         >
             <div className="absolute top-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
             <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
 
             <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-8 flex flex-col gap-5 md:mb-10 lg:mb-12 lg:flex-row lg:items-end lg:justify-between">
-                    <div className="max-w-3xl">
-                        <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-gold">
+                <div className="mx-auto mb-6 max-w-3xl text-center md:mb-8 lg:mb-12">
+                    <div className="mb-3 flex items-center justify-center gap-3 md:mb-4">
+                        <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
+                        <p className="text-xs font-bold uppercase tracking-[0.32em] text-gold">
                             Testimonials
                         </p>
-                        <h2 className="text-3xl font-bold leading-tight tracking-normal sm:text-4xl lg:text-5xl">
-                            Client stories with a <span className="text-gold">finished-film feel</span>
-                        </h2>
+                        <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
                     </div>
-                    <p className="max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base lg:max-w-md lg:text-right">
-                        Real feedback from filmmakers, studios, and creators who trust WedLockStudio
-                        to shape their edits with polish and care.
+
+                    <h2 className="text-2xl font-bold leading-tight tracking-normal text-[#181714] sm:text-3xl md:text-4xl lg:text-5xl">
+                        Proof in every <span className="text-gold">finished film</span>
+                    </h2>
+
+                    <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base sm:leading-7 md:mt-4">
+                        Real feedback from filmmakers, studios, and creators who trust
+                        WedLockStudio for polished edits, clear revisions, and calm delivery.
                     </p>
+
+                    <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 sm:text-xs sm:tracking-[0.16em] md:mt-5">
+                        <span className="flex items-center gap-1 text-gold" aria-label="Five star rating">
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <Star key={`intro-star-${index}`} className="h-3.5 w-3.5" fill="currentColor" />
+                            ))}
+                        </span>
+                        <span className="h-1 w-1 rounded-full bg-black/25" aria-hidden="true" />
+                        <span>{testimonials.length} verified client stories</span>
+                    </div>
                 </div>
 
-                <div className="overflow-hidden rounded-lg border border-black/10 bg-[#181714] shadow-[0_34px_90px_-58px_rgba(0,0,0,0.95)]">
-                    <div className="grid lg:grid-cols-[0.9fr_1.1fr]">
-                        <div className="relative aspect-[4/3] overflow-hidden sm:aspect-[16/10] lg:aspect-auto lg:min-h-[590px]">
-                            <Image
-                                key={active.image}
-                                src={active.image}
-                                alt={active.name}
-                                fill
-                                sizes="(min-width: 1024px) 42vw, 100vw"
-                                className="object-cover transition-opacity duration-500"
-                                priority
-                            />
-                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/15 to-transparent" />
-                            <div className="absolute bottom-5 left-5 right-5 sm:bottom-7 sm:left-7 sm:right-7">
-                                <div className="mb-3 w-fit rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold backdrop-blur sm:text-[11px] sm:tracking-[0.22em]">
-                                    {active.category}
+                <div
+                    className="overflow-hidden rounded-lg border border-black/10 bg-[#181714] shadow-[0_34px_90px_-58px_rgba(0,0,0,0.95)]"
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                    onFocus={() => setIsPaused(true)}
+                    onBlur={(event) => {
+                        const nextFocused = event.relatedTarget as Node | null;
+                        if (!nextFocused || !event.currentTarget.contains(nextFocused)) {
+                            setIsPaused(false);
+                        }
+                    }}
+                >
+                    <div className="grid lg:grid-cols-[minmax(280px,0.56fr)_minmax(0,1.44fr)]">
+                        <div className="hidden border-b border-white/10 p-4 sm:p-6 lg:flex lg:min-h-[560px] lg:items-center lg:border-b-0 lg:border-r lg:p-8">
+                            <div className="testimonial-media-enter w-full">
+                                <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 bg-black sm:aspect-[16/9] lg:aspect-[4/5]">
+                                    <Image
+                                        src={active.image}
+                                        alt={active.name}
+                                        fill
+                                        sizes="(min-width: 1024px) 28vw, 100vw"
+                                        className="object-cover transition-opacity duration-500"
+                                        priority
+                                    />
+                                    <div className="absolute inset-0 bg-linear-to-t from-black/82 via-black/10 to-transparent" />
+                                    <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5">
+                                        <div className="mb-3 w-fit rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold backdrop-blur sm:text-[11px] sm:tracking-[0.22em]">
+                                            {active.category}
+                                        </div>
+                                        <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-2xl">
+                                            {active.name}
+                                        </h3>
+                                        <p className="mt-1 text-sm font-medium text-white/70">{active.role}</p>
+                                    </div>
                                 </div>
-                                <h3 className="text-2xl font-bold text-white sm:text-3xl">
-                                    {active.name}
-                                </h3>
-                                <p className="mt-1 text-sm font-medium text-white/70">{active.role}</p>
+
+                                <div className="mt-4 grid grid-cols-2 gap-3">
+                                    <div className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                                            Focus
+                                        </p>
+                                        <p className="mt-1 text-sm leading-5 text-white/70">{active.result}</p>
+                                    </div>
+                                    <div className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
+                                            Rating
+                                        </p>
+                                        <p className="mt-1 text-sm leading-5 text-white/70">5-star experience</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div className="flex flex-col justify-between p-5 text-white sm:p-7 lg:min-h-[590px] lg:p-10">
-                            <div>
-                                <div className="mb-5 flex items-center justify-between gap-4 sm:mb-7">
+                        <div className="flex flex-col justify-between p-4 text-white sm:p-6 md:p-8 lg:min-h-[560px] lg:p-10">
+                            <div className="mb-5 flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.04] p-3 shadow-[0_18px_45px_-34px_rgba(0,0,0,0.9)] sm:gap-4 sm:p-4 lg:hidden">
+                                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-white/10 bg-black sm:h-20 sm:w-20">
+                                    <Image
+                                        src={active.image}
+                                        alt={active.name}
+                                        fill
+                                        sizes="80px"
+                                        className="object-cover"
+                                        priority
+                                    />
+                                </div>
+                                <div className="min-w-0">
+                                    <p className="mb-1 w-fit rounded-full border border-gold/25 bg-gold/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
+                                        {active.category}
+                                    </p>
+                                    <h3 className="truncate text-xl font-bold text-white sm:text-2xl">
+                                        {active.name}
+                                    </h3>
+                                    <p className="mt-1 truncate text-sm font-medium text-white/60">{active.role}</p>
+                                </div>
+                            </div>
+
+                            <div className="testimonial-copy-enter">
+                                <div className="mb-4 flex items-center justify-between gap-4 sm:mb-5 lg:mb-7">
                                     <div className="flex gap-1 text-gold">
                                         {Array.from({ length: 5 }).map((_, index) => (
                                             <Star key={index} className="h-4 w-4 sm:h-[18px] sm:w-[18px]" fill="currentColor" />
@@ -122,24 +209,24 @@ export default function Testimonials() {
                                     <Quote className="h-8 w-8 text-gold/80 sm:h-[38px] sm:w-[38px]" aria-hidden="true" />
                                 </div>
 
-                                <p className="max-w-3xl text-base font-semibold leading-7 text-white sm:text-lg sm:leading-8 md:text-xl md:leading-9 lg:text-[1.7rem] lg:leading-[1.55]">
+                                <p className="max-w-4xl text-[1.05rem] font-semibold leading-7 text-white sm:text-lg sm:leading-8 md:text-[1.2rem] md:leading-9 lg:text-[1.7rem] lg:leading-[1.55]">
                                     &ldquo;{active.review}&rdquo;
                                 </p>
 
-                                <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8">
-                                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
+                                <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 lg:mt-8">
+                                    <span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
                                         <BadgeCheck size={14} className="text-gold" />
                                         Verified Client
                                     </span>
-                                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
+                                    <span className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
                                         {active.result}
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="mt-8 border-t border-white/10 pt-5 sm:mt-10 sm:pt-6">
+                            <div className="mt-7 border-t border-white/10 pt-4 sm:mt-8 sm:pt-5 lg:mt-10 lg:pt-6">
                                 <div className="mb-4 flex items-center justify-between gap-4">
-                                    <p className="text-xs font-bold uppercase tracking-[0.24em] text-gold">
+                                    <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold sm:text-xs sm:tracking-[0.24em]">
                                         Client Notes
                                     </p>
                                     <p className="text-sm text-white/45">
@@ -147,24 +234,25 @@ export default function Testimonials() {
                                     </p>
                                 </div>
 
-                                <div className="grid gap-3 min-[520px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+                                <div className="testimonial-selector-strip -mx-1 flex gap-2.5 overflow-x-auto px-1 pb-2 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0 lg:pb-0">
                                     {testimonials.map((testimonial, index) => {
                                         const selected = index === activeIndex;
 
                                         return (
                                             <button
                                                 key={testimonial.id}
-                                                onClick={() => setActiveIndex(index)}
+                                                onClick={() => handleSelect(index)}
                                                 className={cn(
-                                                    "rounded-md border p-2 text-left transition-all duration-300 cursor-pointer",
+                                                    "min-w-[154px] flex-none rounded-full border px-3 py-2 text-left transition-all duration-300 cursor-pointer lg:min-w-0 lg:rounded-md lg:p-2",
                                                     selected
                                                         ? "border-gold bg-gold text-black"
                                                         : "border-white/10 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08]"
                                                 )}
                                                 aria-pressed={selected}
+                                                aria-label={`Show testimonial from ${testimonial.name}`}
                                             >
-                                                <span className="mb-2 flex items-center gap-2">
-                                                    <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
+                                                <span className="flex items-center gap-2 lg:mb-2">
+                                                    <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full lg:h-9 lg:w-9">
                                                         <Image
                                                             src={testimonial.image}
                                                             alt={testimonial.name}
@@ -179,7 +267,7 @@ export default function Testimonials() {
                                                         </span>
                                                         <span
                                                             className={cn(
-                                                                "block truncate text-[11px]",
+                                                                "hidden truncate text-[11px] sm:block",
                                                                 selected ? "text-black/65" : "text-white/45"
                                                             )}
                                                         >
@@ -191,12 +279,20 @@ export default function Testimonials() {
                                         );
                                     })}
                                 </div>
+
+                                <div className="mt-5 h-px overflow-hidden bg-white/10">
+                                    <div
+                                        key={active.id}
+                                        className="testimonial-progress h-full origin-left bg-gold"
+                                        style={{ animationPlayState: isPaused ? "paused" : "running" }}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-5 grid overflow-hidden rounded-lg border border-black/10 bg-white shadow-[0_20px_52px_-44px_rgba(0,0,0,0.65)] sm:grid-cols-3">
+                <div className="mt-5 2xl:mt-10 grid overflow-hidden rounded-lg border border-black/10 bg-white shadow-[0_20px_52px_-44px_rgba(0,0,0,0.65)] sm:grid-cols-3">
                     {proofItems.map((item, index) => (
                         <div
                             key={item.label}
