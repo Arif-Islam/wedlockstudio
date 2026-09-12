@@ -422,7 +422,7 @@ export default function Projects() {
                                                         {isPlaying && (
                                                             <iframe
                                                                 src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                                                className="absolute inset-0 w-full h-full"
+                                                                className="absolute inset-0 z-30 w-full h-full"
                                                                 frameBorder="0"
                                                                 allow="autoplay; fullscreen"
                                                                 allowFullScreen
@@ -443,7 +443,7 @@ export default function Projects() {
                                                                 </div>
                                                             </div>
                                                         )}
-                                                        <div className={`absolute bottom-2 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                                        <div className={`absolute bottom-2 left-0 right-0 z-10 p-6 transition-opacity duration-300 pointer-events-none ${isPlaying ? "opacity-0" : "opacity-100"}`}>
                                                             <div className="text-center space-y-2">
                                                                 <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
                                                                 <p className="text-gray-300 text-sm">{project.title}</p>
@@ -515,7 +515,7 @@ export default function Projects() {
                                         {offset === 0 && isPlaying && (
                                             <iframe
                                                 src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                                className="absolute inset-0 w-full h-full z-1"
+                                                className="absolute inset-0 z-30 w-full h-full"
                                                 frameBorder="0"
                                                 allow="autoplay; fullscreen"
                                                 allowFullScreen
@@ -555,7 +555,7 @@ export default function Projects() {
 
                                         {/* Title overlay — center only */}
                                         {isCenter && (
-                                            <div className={`absolute bottom-0 left-0 right-0 p-6 z-10 transition-opacity duration-300 ${isPlaying ? "opacity-0" : "opacity-100"}`}>
+                                            <div className={`absolute bottom-0 left-0 right-0 z-10 p-6 transition-opacity duration-300 pointer-events-none ${isPlaying ? "opacity-0" : "opacity-100"}`}>
                                                 <div className="text-center space-y-1.5">
                                                     <h3 className="text-2xl font-semibold text-white drop-shadow-md">{project.subtitle}</h3>
                                                     <p className="text-gray-300 text-sm tracking-wide">{project.title}</p>
