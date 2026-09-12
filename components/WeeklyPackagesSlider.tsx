@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type WeeklyCard = {
@@ -110,7 +110,7 @@ function useVisibleCount() {
     return count;
 }
 
-const GAP = 24;
+const GAP = 18;
 const TRANSITION = "transform 650ms cubic-bezier(0.22, 1, 0.36, 1)";
 
 export default function WeeklyPackagesSlider() {
@@ -123,9 +123,6 @@ export default function WeeklyPackagesSlider() {
     const [cardWidth, setCardWidth] = useState(0);
 
     const clampedIndex = Math.min(index, maxIndex);
-    if (clampedIndex !== index) {
-        setIndex(clampedIndex);
-    }
 
     useEffect(() => {
         const el = wrapperRef.current;
@@ -154,17 +151,20 @@ export default function WeeklyPackagesSlider() {
         return () => observer.disconnect();
     }, []);
 
-    const goPrev = useCallback(() => setIndex((i) => Math.max(0, i - 1)), []);
+    const goPrev = useCallback(
+        () => setIndex((i) => Math.max(0, Math.min(i, maxIndex) - 1)),
+        [maxIndex]
+    );
     const goNext = useCallback(
         () => setIndex((i) => Math.min(maxIndex, i + 1)),
         [maxIndex]
     );
 
-    const translateX = index * (cardWidth + GAP);
+    const translateX = clampedIndex * (cardWidth + GAP);
 
     return (
         <div ref={wrapperRef} className="w-full">
-            <div className="overflow-hidden">
+            <div className="overflow-hidden rounded-lg">
                 <div
                     ref={trackRef}
                     className="flex"
@@ -200,31 +200,31 @@ export default function WeeklyPackagesSlider() {
             </div>
 
             {/* Arrows */}
-            <div className="flex justify-center gap-4 mt-10">
+            <div className="mt-7 flex justify-center gap-3">
                 <button
                     onClick={goPrev}
-                    disabled={index === 0}
+                    disabled={clampedIndex === 0}
                     aria-label="Previous"
                     className={cn(
-                        "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
+                        "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 cursor-pointer",
                         "border shadow-sm",
-                        index === 0
-                            ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-black/20 text-black hover:bg-[#181714] hover:text-white"
+                        clampedIndex === 0
+                            ? "border-black/10 text-neutral-300 cursor-default"
+                            : "border-black/15 bg-white text-black hover:bg-[#181714] hover:text-white"
                     )}
                 >
                     <ChevronLeft size={20} />
                 </button>
                 <button
                     onClick={goNext}
-                    disabled={index >= maxIndex}
+                    disabled={clampedIndex >= maxIndex}
                     aria-label="Next"
                     className={cn(
-                        "w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer",
+                        "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 cursor-pointer",
                         "border shadow-sm",
-                        index >= maxIndex
-                            ? "border-gray-200 text-gray-300 cursor-default"
-                            : "border-black/20 text-black hover:bg-[#181714] hover:text-white"
+                        clampedIndex >= maxIndex
+                            ? "border-black/10 text-neutral-300 cursor-default"
+                            : "border-black/15 bg-white text-black hover:bg-[#181714] hover:text-white"
                     )}
                 >
                     <ChevronRight size={20} />
@@ -240,10 +240,10 @@ function Card({ card }: { card: WeeklyCard }) {
     return (
         <div
             className={cn(
-                "relative rounded-lg overflow-hidden flex flex-col h-full",
+                "relative flex h-full flex-col overflow-hidden rounded-lg",
                 hl
-                    ? "shadow-[0_22px_60px_-40px_rgba(0,0,0,0.85)] ring-1 ring-black/20"
-                    : "shadow-[0_12px_36px_-30px_rgba(0,0,0,0.7)] border border-black/10 hover:shadow-[0_18px_46px_-34px_rgba(0,0,0,0.85)] hover:border-black/25"
+                    ? "bg-[#181714] shadow-[0_26px_62px_-42px_rgba(0,0,0,0.88)] ring-1 ring-black/20"
+                    : "border border-black/10 bg-white shadow-[0_16px_42px_-38px_rgba(0,0,0,0.72)] hover:border-black/20 hover:shadow-[0_24px_52px_-40px_rgba(0,0,0,0.78)]"
             )}
             style={{
                 transition:
@@ -256,25 +256,31 @@ function Card({ card }: { card: WeeklyCard }) {
                 if (!hl) e.currentTarget.style.translate = "";
             }}
         >
-            {/* Ribbon */}
             {card.ribbon && (
-                <div className="absolute top-10 right-[-30px] rotate-45 bg-gold text-black text-xs font-bold uppercase tracking-wider px-10 py-1 shadow-sm z-20">
+                <div className="absolute right-4 top-4 z-20 rounded-full bg-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-black shadow-sm">
                     {card.ribbon}
                 </div>
             )}
 
-            {/* ── 1. Header Bar ── */}
             <div
                 className={cn(
-                    "px-6 pt-7 pb-5 text-center",
+                    "px-5 pb-4 pt-5 sm:px-6",
                     hl
                         ? "bg-[#181714]"
-                        : "bg-[#ebe6dc]"
+                        : "bg-white"
                 )}
             >
+                <p
+                    className={cn(
+                        "mb-2 text-[11px] font-bold uppercase tracking-[0.24em]",
+                        hl ? "text-gold" : "text-[#b78114]"
+                    )}
+                >
+                    Weekly Edit
+                </p>
                 <h3
                     className={cn(
-                        "text-[20px] font-bold tracking-tight",
+                        "pr-24 text-xl font-bold tracking-normal",
                         hl ? "text-white" : "text-gray-900"
                     )}
                 >
@@ -282,80 +288,86 @@ function Card({ card }: { card: WeeklyCard }) {
                 </h3>
                 <p
                     className={cn(
-                        "text-sm mt-1",
-                        hl ? "text-white/75" : "text-gray-400"
+                        "mt-1 text-sm leading-6",
+                        hl ? "text-white/70" : "text-neutral-500"
                     )}
                 >
                     {card.subtitle}
                 </p>
             </div>
 
-            {/* ── 2. Pricing ── */}
             <div
                 className={cn(
-                    "px-6 pt-6 pb-5 text-center",
-                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
+                    "px-5 pb-4 sm:px-6",
+                    hl ? "bg-[#181714]" : "bg-white"
                 )}
             >
-                <div className="flex items-baseline justify-center gap-1">
+                <div className="flex items-end justify-between gap-4 border-y py-4 border-black/10">
                     <span
                         className={cn(
-                            "text-[2.75rem] leading-none font-extrabold tracking-tight",
+                            "text-4xl font-extrabold leading-none tracking-normal",
                             hl ? "text-gold" : "text-gray-900"
                         )}
                     >
                         ${card.price}
                     </span>
+                    <span
+                        className={cn(
+                            "mb-0.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
+                            hl ? "bg-white/[0.08] text-white/70" : "bg-[#f5f0e7] text-neutral-600"
+                        )}
+                    >
+                        <Clock3 size={13} />
+                        {card.delivery}
+                    </span>
                 </div>
-                <p
-                    className={cn(
-                        "text-sm mt-2",
-                        hl ? "text-gray-400" : "text-gray-400"
-                    )}
-                >
-                    {card.delivery}
-                </p>
             </div>
 
-            {/* ── 3. Features ── */}
             <div
                 className={cn(
-                    "flex-1 px-6 py-6",
-                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
+                    "flex-1 px-5 py-4 sm:px-6",
+                    hl ? "bg-[#181714]" : "bg-white"
                 )}
             >
-                <ul className="space-y-3">
+                <ul className="space-y-2.5">
                     {card.features.map((f, i) => (
                         <li
                             key={i}
                             className={cn(
-                                "text-sm text-center leading-snug",
-                                hl ? "text-gray-300" : "text-gray-500"
+                                "flex items-start gap-2.5 text-sm leading-6",
+                                hl ? "text-gray-300" : "text-neutral-600"
                             )}
                         >
+                            <span
+                                className={cn(
+                                    "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
+                                    hl ? "bg-white/10 text-gold" : "bg-[#f2ead8] text-[#b78114]"
+                                )}
+                            >
+                                <Check size={12} />
+                            </span>
                             {f}
                         </li>
                     ))}
                 </ul>
             </div>
 
-            {/* ── 4. CTA ── */}
             <div
                 className={cn(
-                    "px-6 pb-7 pt-2",
-                    hl ? "bg-[#181714]" : "bg-[#fbfaf7]"
+                    "px-5 pb-5 pt-1 sm:px-6",
+                    hl ? "bg-[#181714]" : "bg-white"
                 )}
             >
                 <a
                     href="#contact"
                     className={cn(
-                        "block w-full py-3 rounded-md text-sm font-semibold tracking-wide text-center cursor-pointer transition-all duration-300",
+                        "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md text-sm font-semibold text-center cursor-pointer transition-all duration-300",
                         hl
                             ? "bg-gold text-black hover:bg-[#e2b14c]"
-                            : "border border-black/25 text-gray-700 hover:border-black/45 hover:text-black hover:bg-[#f2eee6]"
+                            : "border border-black/15 bg-[#faf8f3] text-neutral-800 hover:border-black/30 hover:bg-[#f0eadf] hover:text-black"
                     )}
                 >
-                    Get In Touch
+                    Get In Touch <ArrowRight size={16} />
                 </a>
             </div>
         </div>
