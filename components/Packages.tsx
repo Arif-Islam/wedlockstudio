@@ -27,6 +27,12 @@ const monthlyPackages = [
     },
 ];
 
+const packageNotes = [
+    { label: "Weekly edits", value: "Fast single-video delivery" },
+    { label: "Monthly plans", value: "Consistent content volume" },
+    { label: "Revisions", value: "Clear review rounds" },
+];
+
 export default function Packages() {
     const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
 
@@ -39,7 +45,7 @@ export default function Packages() {
             <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="mb-9 flex flex-col gap-5 md:mb-11 lg:flex-row lg:items-end lg:justify-between">
+                <div className="mb-9 grid gap-6 md:mb-11 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,0.85fr)] lg:items-start lg:gap-12">
                     <div className="max-w-2xl text-left">
                         <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-gold">Pricing</p>
                         <h2 className="mb-3 text-3xl font-bold leading-tight tracking-normal md:text-4xl lg:text-5xl">
@@ -51,30 +57,54 @@ export default function Packages() {
                         </p>
                     </div>
 
-                    {/* Toggle */}
-                    <div className="inline-flex w-full rounded-md border border-black/10 bg-white p-1 shadow-[0_14px_36px_-30px_rgba(0,0,0,0.55)] sm:w-auto">
-                        <button
-                            onClick={() => setActiveTab("weekly")}
-                            className={cn(
-                                "min-h-10 flex-1 rounded-sm px-6 text-sm font-semibold transition-all duration-300 cursor-pointer sm:flex-none",
-                                activeTab === "weekly"
-                                    ? "bg-[#181714] text-white"
-                                    : "text-neutral-500 hover:bg-black/5 hover:text-black"
-                            )}
-                        >
-                            Weekly
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("monthly")}
-                            className={cn(
-                                "min-h-10 flex-1 rounded-sm px-6 text-sm font-semibold transition-all duration-300 cursor-pointer sm:flex-none",
-                                activeTab === "monthly"
-                                    ? "bg-[#181714] text-white"
-                                    : "text-neutral-500 hover:bg-black/5 hover:text-black"
-                            )}
-                        >
-                            Monthly
-                        </button>
+                    <div className="w-full">
+                        <div className="grid gap-2 sm:grid-cols-3">
+                            {packageNotes.map((item) => (
+                                <div
+                                    key={item.label}
+                                    className="rounded-md border border-black/10 bg-white/75 px-4 py-3 shadow-[0_14px_34px_-32px_rgba(0,0,0,0.48)]"
+                                >
+                                    <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#b78114]">
+                                        {item.label}
+                                    </p>
+                                    <p className="mt-1 text-sm leading-5 text-neutral-600">
+                                        {item.value}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="mt-3 flex flex-col gap-3 border-t border-black/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
+                            <p className="max-w-xs text-sm leading-6 text-neutral-500">
+                                Pick the cadence first, then choose the edit scope that fits the project.
+                            </p>
+
+                            {/* Toggle */}
+                            <div className="inline-flex w-full rounded-md border border-black/10 bg-white p-1 shadow-[0_14px_36px_-30px_rgba(0,0,0,0.55)] sm:w-auto">
+                                <button
+                                    onClick={() => setActiveTab("weekly")}
+                                    className={cn(
+                                        "min-h-10 flex-1 rounded-sm px-6 text-sm font-semibold transition-all duration-300 cursor-pointer sm:flex-none",
+                                        activeTab === "weekly"
+                                            ? "bg-[#181714] text-white"
+                                            : "text-neutral-500 hover:bg-black/5 hover:text-black"
+                                    )}
+                                >
+                                    Weekly
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab("monthly")}
+                                    className={cn(
+                                        "min-h-10 flex-1 rounded-sm px-6 text-sm font-semibold transition-all duration-300 cursor-pointer sm:flex-none",
+                                        activeTab === "monthly"
+                                            ? "bg-[#181714] text-white"
+                                            : "text-neutral-500 hover:bg-black/5 hover:text-black"
+                                    )}
+                                >
+                                    Monthly
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
