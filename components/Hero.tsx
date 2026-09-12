@@ -64,13 +64,13 @@ export default function Hero() {
                         {trustItems.map((item, index) => (
                             <div
                                 key={item}
-                                className={`px-4 py-4 text-center text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-neutral-200 ${
+                                className={`flex min-h-[72px] items-center justify-center px-4 py-3 text-center text-[10px] font-semibold uppercase leading-normal tracking-[0.1em] text-neutral-200 min-[420px]:tracking-[0.12em] sm:min-h-20 sm:px-5 sm:text-xs sm:tracking-[0.14em] lg:min-h-[76px] lg:px-6 lg:text-[11px] lg:tracking-[0.12em] xl:px-8 xl:text-xs xl:tracking-[0.13em] 2xl:text-[13px] ${
                                     index % 2 === 1 ? "border-l border-white/10" : ""
                                 } ${index > 1 ? "border-t border-white/10 lg:border-t-0" : ""} ${
                                     index > 0 ? "lg:border-l lg:border-white/10" : ""
                                 }`}
                             >
-                                {item}
+                                <span className="block min-[420px]:whitespace-nowrap">{item}</span>
                             </div>
                         ))}
                     </div>
