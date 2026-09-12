@@ -32,13 +32,11 @@ function getProjectsForCategory(category: string): ProjectItem[] {
     return highlightFilmProjects;
 }
 
-// Desktop carousel (>= 1380px): design sizes — scaled to fit container when narrower
 const CENTER_W = 800;
 const CENTER_H = 450;
-const SIDE_W = 240;
-const SIDE_H = 235;
-const GAP = 16;
-const TOTAL_DESIGN_WIDTH = SIDE_W * 2 + GAP * 2 + CENTER_W; // 1312
+const SIDE_W = 300;
+const SIDE_H = 270;
+const GAP = 18;
 
 type CarouselDims = { centerW: number; centerH: number; sideW: number; sideH: number; gap: number };
 
@@ -82,7 +80,7 @@ export default function Projects() {
     const tabContentRef = useRef<HTMLDivElement>(null);
     const desktopCarouselRef = useRef<HTMLDivElement>(null);
 
-    // Responsive carousel dimensions: scale down when container is narrower than design width
+    // Responsive carousel dimensions: fill the carousel row on lg+ screens
     const [carouselDims, setCarouselDims] = useState<CarouselDims>({
         centerW: CENTER_W,
         centerH: CENTER_H,
@@ -114,20 +112,24 @@ export default function Projects() {
         return () => observer.disconnect();
     }, []);
 
-    // ==================== DESKTOP CAROUSEL: scale to fit container width ====================
+    // ==================== DESKTOP CAROUSEL: fill available width from lg screens up ====================
     useEffect(() => {
         const el = desktopCarouselRef.current;
         if (!el) return;
         const ro = new ResizeObserver((entries) => {
             const { width } = entries[0].contentRect;
-            if (width < 100) return; // avoid zero dims when carousel is hidden (< 1380px)
-            const scale = Math.min(1, width / TOTAL_DESIGN_WIDTH);
+            if (width < 100) return; // avoid zero dims when carousel is hidden (< 1024px)
+            const gap = width >= 1500 ? 24 : 18;
+            const centerW = Math.round(Math.min(940, Math.max(560, width * 0.52)));
+            const centerH = Math.round(centerW * 0.5625);
+            const sideW = Math.max(200, Math.round((width - centerW - gap * 2) / 2));
+            const sideH = Math.round(Math.min(centerH * 0.82, sideW * 0.72));
             setCarouselDims({
-                centerW: Math.round(CENTER_W * scale),
-                centerH: Math.round(CENTER_H * scale),
-                sideW: Math.round(SIDE_W * scale),
-                sideH: Math.round(SIDE_H * scale),
-                gap: Math.round(GAP * scale),
+                centerW,
+                centerH,
+                sideW,
+                sideH,
+                gap,
             });
         });
         ro.observe(el);
@@ -163,8 +165,24 @@ export default function Projects() {
 
     const handleCategoryChange = (category: string) => {
         if (category === activeCategory) return;
+        mobileVideoRefs.current.forEach((v) => v?.pause());
+        desktopVideoRefs.current.forEach((v) => v?.pause());
+        setPlayingVideo(null);
+        setIsAnimating(false);
+        setTransitionEnabled(false);
+        setSlotOffset(0);
+        setCurrentIndex(0);
+        setMobileTransition(false);
+        setMobileSlideIndex(1);
+        setTouchStart(0);
+        setTouchEnd(0);
         setActiveCategory(category);
         setTabAnimCount((prev) => prev + 1);
+
+        requestAnimationFrame(() => {
+            setTransitionEnabled(true);
+            setMobileTransition(true);
+        });
     };
 
     // ==================== DESKTOP NAVIGATION ====================
@@ -301,8 +319,8 @@ export default function Projects() {
             className="relative py-20 md:py-28 overflow-hidden bg-[#12110f] text-white"
         >
             {/* ── Thin gold vertical accent lines — desktop only ── */}
-            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
-            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden min-[1380px]:block pointer-events-none" />
+            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden lg:block pointer-events-none" />
+            <div className="absolute top-1/2 right-6 w-px h-40 bg-linear-to-b from-transparent via-white/20 to-transparent -translate-y-1/2 hidden lg:block pointer-events-none" />
 
             {/* ── Subtle horizontal divider at the very top ── */}
             <div className="absolute top-0 left-0 right-0 h-px bg-white/10 pointer-events-none" />
@@ -380,9 +398,9 @@ export default function Projects() {
                     style={inView ? { animationDelay: "0.3s" } : undefined}
                 >
                     <div ref={tabContentRef}>
-                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1380px ==================== */}
+                    {/* ==================== MOBILE/TABLET SLIDER (infinite loop) — until < 1024px ==================== */}
                         <div
-                            className="min-[1380px]:hidden relative"
+                            className="relative lg:hidden"
                             onTouchStart={handleTouchStart}
                             onTouchMove={handleTouchMove}
                             onTouchEnd={handleTouchEnd}
@@ -457,9 +475,9 @@ export default function Projects() {
                             </div>
                         </div>
 
-                    {/* ==================== DESKTOP CAROUSEL (>= 1380px) ==================== */}
+                    {/* ==================== DESKTOP CAROUSEL (>= 1024px) ==================== */}
                         <div
-                            className="hidden min-[1380px]:block w-full transform-gpu"
+                            className="relative left-1/2 hidden w-[calc(100vw-2rem)] -translate-x-1/2 transform-gpu lg:block"
                         >
                             <div
                                 ref={desktopCarouselRef}
