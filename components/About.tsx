@@ -1,80 +1,75 @@
 import Image from "next/image";
 import { AboutAnimatedStat } from "@/components/AboutAnimatedStat";
 
+const editPrinciples = [
+    {
+        value: "01",
+        title: "Shape the story",
+        description: "We find the emotional thread, trim the noise, and build a rhythm that feels natural.",
+    },
+    {
+        value: "02",
+        title: "Refine the finish",
+        description: "Color, sound, pacing, captions, and delivery formats are polished before handoff.",
+    },
+    {
+        value: "03",
+        title: "Keep reviews clear",
+        description: "Organized feedback rounds and practical updates keep the edit moving without confusion.",
+    },
+];
+
 export default function About() {
     return (
         <section
             id="about"
-            className="relative py-16 md:py-24 overflow-hidden bg-[#f4f1eb]"
+            className="relative overflow-hidden bg-[#f4f1eb] py-14 sm:py-20 lg:py-24"
         >
-            {/* Thin gold vertical accent line — desktop only */}
-            <div className="absolute top-1/2 left-6 w-px h-40 bg-linear-to-b from-transparent via-black/20 to-transparent -translate-y-1/2 hidden xl:block pointer-events-none" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-black/15 to-transparent" />
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {/* Mobile/Tablet Title Area (Hidden on Desktop) */}
-                <div className="block lg:hidden text-center mb-0">
-                    <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3 mx-auto">
-                        Our Story
-                    </p>
-                    <h2 className="text-2xl sm:text-4xl font-bold text-black leading-tight mx-auto max-w-2xl">
-                        About <span className="text-gold">WedLockStudio</span>
-                    </h2>
+            <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-10 grid gap-6 lg:mb-12 lg:grid-cols-[minmax(0,0.95fr)_minmax(340px,0.55fr)] lg:items-end">
+                    <div>
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.28em] text-[#b57900]">
+                            Our Story
+                        </p>
+                        <h2 className="max-w-4xl text-3xl font-bold leading-tight text-[#181714] sm:text-4xl lg:text-5xl">
+                            Editing that turns raw footage into a finished story.
+                        </h2>
+                    </div>
+
+                    <div className="max-w-xl lg:justify-self-end">
+                        <p className="text-base leading-7 text-[#625d53] sm:text-lg">
+                            WedLockStudio helps wedding filmmakers, creators, and brands transform scattered footage into films with rhythm, emotion, and a cinematic finish.
+                        </p>
+                        <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f685d]">
+                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Story</span>
+                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Color</span>
+                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Sound</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-                    {/* Image Side */}
-                    <div className="w-full lg:w-[46%] h-[400px] sm:h-[500px] lg:h-[650px] relative mt-4 lg:mt-0">
-                        <div className="relative w-full h-full max-w-xl mx-auto lg:max-w-none group">
-                            {/* Back Image */}
-                            <div className="absolute top-[10%] left-[5%] w-[60%] h-[80%] rounded-md overflow-hidden shadow-[0_24px_70px_-42px_rgba(0,0,0,0.9)] border border-black/10 z-0 transform transition-transform duration-500 group-hover:-translate-y-4">
-                                <Image
-                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218144/modern-office-with-nobody-present_lxf4gu.jpg"
-                                    alt="About WedLockStudio Back"
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 1024px) 50vw, 40vw"
-                                    priority
-                                />
-                            </div>
-
-                            {/* Front Image */}
-                            <div className="absolute top-[20%] right-[5%] w-[48%] h-[60%] rounded-md overflow-hidden shadow-[0_24px_70px_-38px_rgba(0,0,0,0.95)] border border-black/15 z-10 transform transition-transform duration-500 group-hover:-translate-y-3">
-                                <Image
-                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
-                                    alt="About WedLockStudio Front"
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 1024px) 50vw, 35vw"
-                                    priority
-                                />
+                <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr] lg:items-stretch xl:gap-8">
+                    <div className="relative overflow-hidden rounded-lg border border-black/10 bg-[#fbfaf7] shadow-[0_24px_70px_-48px_rgba(0,0,0,0.9)]">
+                        <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:h-full lg:min-h-[520px]">
+                            <Image
+                                src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
+                                alt="WedLockStudio post-production desk"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 58vw"
+                            />
+                            <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/75 via-black/25 to-transparent p-5 sm:p-7">
+                                <p className="max-w-xl text-xl font-semibold leading-snug text-white sm:text-2xl">
+                                    We treat every edit like a film, not a file export.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    {/* Text Side */}
-                    <div className="w-full lg:w-[54%] flex flex-col justify-center text-center lg:text-left">
-                        {/* Desktop Title Area (Hidden on Mobile/Tablet) */}
-                        <div className="hidden lg:block">
-                            <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
-                                Our Story
-                            </p>
-                            <h2 className="text-4xl xl:text-5xl font-bold text-black mb-6 leading-tight max-w-2xl">
-                                About <span className="text-gold">WedLockStudio</span>
-                            </h2>
-                        </div>
-
-                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-5 lg:hidden xl:block">
-                            At WedLockStudio, we believe every frame tells a story. Established with a passion for visual storytelling, we specialize in high-end video editing services that bring your vision to life.
-                        </p>
-                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-5 hidden lg:block xl:hidden">
-                            At WedLockStudio, we believe every frame tells a story. Established with a passion for visual storytelling, we specialize in high-end video editing services that bring your vision to life. We don&apos;t just edit videos — we craft emotional experiences.
-                        </p>
-                        <p className="text-neutral-700 text-base sm:text-lg leading-relaxed mb-8 lg:hidden xl:block">
-                            Whether it&apos;s a wedding film, corporate event, or a creative project, our team of expert editors ensures meticulous attention to detail, color grading, and sound design. We don&apos;t just edit videos — we craft emotional experiences.
-                        </p>
-
-                        {/* Stats */}
-                        <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                    <div className="flex flex-col gap-6">
+                        <div className="grid grid-cols-2 gap-4 sm:gap-5">
                             <AboutAnimatedStat
                                 label="Projects Completed"
                                 target={1000}
@@ -85,6 +80,35 @@ export default function About() {
                                 target={100}
                                 suffix="%"
                             />
+                        </div>
+
+                        <div className="rounded-lg border border-black/10 bg-[#fbfaf7] p-5 shadow-[0_18px_50px_-40px_rgba(0,0,0,0.8)] sm:p-6 lg:flex-1">
+                            <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/10 pb-4">
+                                <h3 className="text-xl font-bold text-[#181714] sm:text-2xl">
+                                    How we shape the edit
+                                </h3>
+                                <span className="hidden rounded-full bg-[#181714] px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-gold sm:inline-flex">
+                                    Studio
+                                </span>
+                            </div>
+
+                            <div className="divide-y divide-black/10">
+                                {editPrinciples.map((item) => (
+                                    <div key={item.value} className="grid grid-cols-[44px_1fr] gap-4 py-4 first:pt-0 last:pb-0">
+                                        <span className="text-sm font-bold text-[#b57900]">
+                                            {item.value}
+                                        </span>
+                                        <div>
+                                            <h4 className="font-bold text-[#181714]">
+                                                {item.title}
+                                            </h4>
+                                            <p className="mt-1 text-sm leading-6 text-[#666055]">
+                                                {item.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
