@@ -25,7 +25,7 @@ export default function Hero() {
                         className="object-cover"
                     />
                     <HeroBackgroundVideo />
-                    <div className="absolute inset-0 bg-black/60 z-10" />
+                    <div className="absolute inset-0 bg-black/50 z-10" />
                     <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#f4f1eb] to-transparent z-10" />
                 </div>
 
