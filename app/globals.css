@@ -152,15 +152,6 @@ body {
   min-width: 18%;
 }
 
-.testimonial-selector-strip {
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.testimonial-selector-strip::-webkit-scrollbar {
-  display: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .testimonial-media-enter,
   .testimonial-copy-enter,

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { BadgeCheck, Quote, Star } from "lucide-react";
+import { BadgeCheck, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const testimonials = [
@@ -85,6 +85,16 @@ export default function Testimonials() {
         setIsPaused(false);
     };
 
+    const handlePrevious = () => {
+        setActiveIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
+        setIsPaused(false);
+    };
+
+    const handleNext = () => {
+        setActiveIndex((current) => (current + 1) % testimonials.length);
+        setIsPaused(false);
+    };
+
     return (
         <section
             id="testimonials"
@@ -119,7 +129,7 @@ export default function Testimonials() {
                             ))}
                         </span>
                         <span className="h-1 w-1 rounded-full bg-black/25" aria-hidden="true" />
-                        <span>{testimonials.length} verified client stories</span>
+                        <span>All verified client stories</span>
                     </div>
                 </div>
 
@@ -135,7 +145,7 @@ export default function Testimonials() {
                         }
                     }}
                 >
-                    <div className="grid lg:grid-cols-[minmax(280px,0.56fr)_minmax(0,1.44fr)]">
+                    <div className="grid min-w-0 lg:grid-cols-[minmax(280px,0.56fr)_minmax(0,1.44fr)]">
                         <div className="hidden border-b border-white/10 p-4 sm:p-6 lg:flex lg:min-h-[560px] lg:items-center lg:border-b-0 lg:border-r lg:p-8">
                             <div className="testimonial-media-enter w-full">
                                 <div className="relative aspect-[16/10] overflow-hidden rounded-lg border border-white/10 bg-black sm:aspect-[16/9] lg:aspect-[4/5]">
@@ -176,7 +186,7 @@ export default function Testimonials() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col justify-between p-4 text-white sm:p-6 md:p-8 lg:min-h-[560px] lg:p-10">
+                        <div className="min-w-0 flex flex-col justify-between p-4 text-white sm:p-6 md:p-8 lg:min-h-[560px] lg:p-10">
                             <div className="mb-5 flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.04] p-3 shadow-[0_18px_45px_-34px_rgba(0,0,0,0.9)] sm:gap-4 sm:p-4 lg:hidden">
                                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md border border-white/10 bg-black sm:h-20 sm:w-20">
                                     <Image
@@ -234,7 +244,67 @@ export default function Testimonials() {
                                     </p>
                                 </div>
 
-                                <div className="testimonial-selector-strip -mx-1 flex gap-2.5 overflow-x-auto px-1 pb-2 lg:mx-0 lg:grid lg:grid-cols-5 lg:overflow-visible lg:px-0 lg:pb-0">
+                                <div className="lg:hidden">
+                                    <div className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] p-1.5">
+                                        <button
+                                            type="button"
+                                            onClick={handlePrevious}
+                                            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-black/25 text-white transition-colors hover:border-gold/60 hover:text-gold"
+                                            aria-label="Show previous client review"
+                                        >
+                                            <ChevronLeft size={18} />
+                                        </button>
+
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex min-w-0 items-center justify-center gap-2 rounded-full bg-white/[0.06] px-3 py-2">
+                                                <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border border-white/10 bg-black">
+                                                    <Image
+                                                        src={active.image}
+                                                        alt={active.name}
+                                                        fill
+                                                        sizes="36px"
+                                                        className="object-cover"
+                                                    />
+                                                </span>
+                                                <span className="min-w-0">
+                                                    <span className="block truncate text-sm font-bold leading-5 text-white">
+                                                        {active.name}
+                                                    </span>
+                                                    <span className="block truncate text-xs leading-4 text-white/50">
+                                                        {active.role}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleNext}
+                                            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-black/25 text-white transition-colors hover:border-gold/60 hover:text-gold"
+                                            aria-label="Show next client review"
+                                        >
+                                            <ChevronRight size={18} />
+                                        </button>
+                                    </div>
+
+                                    <div className="mt-3 flex items-center justify-center gap-2">
+                                        {testimonials.map((testimonial, index) => (
+                                            <button
+                                                key={`mobile-dot-${testimonial.id}`}
+                                                type="button"
+                                                onClick={() => handleSelect(index)}
+                                                className={cn(
+                                                    "h-2 rounded-full transition-all",
+                                                    index === activeIndex ? "w-6 bg-gold" : "w-2 bg-white/20 hover:bg-white/40"
+                                                )}
+                                                aria-label={`Show testimonial from ${testimonial.name}`}
+                                                aria-pressed={index === activeIndex}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="hidden gap-2.5 lg:grid lg:grid-cols-5">
                                     {testimonials.map((testimonial, index) => {
                                         const selected = index === activeIndex;
 
@@ -243,7 +313,7 @@ export default function Testimonials() {
                                                 key={testimonial.id}
                                                 onClick={() => handleSelect(index)}
                                                 className={cn(
-                                                    "min-w-[154px] flex-none rounded-full border px-3 py-2 text-left transition-all duration-300 cursor-pointer lg:min-w-0 lg:rounded-md lg:p-2",
+                                                    "rounded-md border p-2 text-left transition-all duration-300 cursor-pointer",
                                                     selected
                                                         ? "border-gold bg-gold text-black"
                                                         : "border-white/10 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08]"
@@ -251,8 +321,8 @@ export default function Testimonials() {
                                                 aria-pressed={selected}
                                                 aria-label={`Show testimonial from ${testimonial.name}`}
                                             >
-                                                <span className="flex items-center gap-2 lg:mb-2">
-                                                    <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full lg:h-9 lg:w-9">
+                                                <span className="mb-2 flex items-center gap-2">
+                                                    <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
                                                         <Image
                                                             src={testimonial.image}
                                                             alt={testimonial.name}
@@ -267,7 +337,7 @@ export default function Testimonials() {
                                                         </span>
                                                         <span
                                                             className={cn(
-                                                                "hidden truncate text-[11px] sm:block",
+                                                                "block truncate text-[11px]",
                                                                 selected ? "text-black/65" : "text-white/45"
                                                             )}
                                                         >
