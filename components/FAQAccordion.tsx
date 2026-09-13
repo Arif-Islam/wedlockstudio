@@ -80,7 +80,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
                             cardRefs.current[index] = node;
                         }}
                         className={cn(
-                                "faq-card group overflow-hidden rounded-lg border bg-[#fbfaf7] shadow-[0_14px_42px_-38px_rgba(0,0,0,0.65)] transition-all duration-300",
+                                "faq-card group overflow-hidden rounded-lg border bg-white shadow-[0_14px_42px_-38px_rgba(0,0,0,0.65)] transition-all duration-300",
                             isOpen
                                 ? "border-gold/45 bg-white shadow-[0_22px_60px_-44px_rgba(0,0,0,0.78)]"
                                 : "border-black/10 hover:border-black/20 hover:bg-white"

@@ -119,7 +119,7 @@ export default function Testimonials() {
         <section
             ref={sectionRef}
             id="testimonials"
-            className="relative overflow-hidden bg-[#f7f4ee] py-10 text-black md:py-14 lg:py-20"
+            className="relative overflow-hidden bg-[#fdfdfb] py-10 text-black md:py-14 lg:py-20"
         >
             <div className="absolute top-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
             <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />

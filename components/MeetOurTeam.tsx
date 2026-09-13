@@ -38,7 +38,7 @@ export default function MeetOurTeam() {
                             {roles.map((role) => (
                                 <span
                                     key={role}
-                                    className="rounded-full border border-black/10 bg-[#f7f3ec] px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#6f685d]"
+                                    className="rounded-full border border-black/10 bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#6f685d]"
                                 >
                                     {role}
                                 </span>

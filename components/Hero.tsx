@@ -26,7 +26,7 @@ export default function Hero() {
                     />
                     <HeroBackgroundVideo />
                     <div className="absolute inset-0 bg-black/50 z-10" />
-                    <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#f4f1eb] to-transparent z-10" />
+                    <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-[#fbfbf8] to-transparent z-10" />
                 </div>
 
                 <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">

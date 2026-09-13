@@ -11,7 +11,7 @@ const HOVER_TRANSITION =
     "box-shadow 400ms cubic-bezier(0.45,0,0.55,1)";
 
 const statCardClassName =
-    "rounded-lg bg-[#fbfaf7] border border-black/10 px-5 py-4 shadow-[0_12px_36px_-30px_rgba(0,0,0,0.75)] " +
+    "rounded-lg bg-white border border-black/10 px-5 py-4 shadow-[0_12px_36px_-30px_rgba(0,0,0,0.75)] " +
     "transform-gpu origin-center " +
     "motion-safe:hover:scale-[1.028] motion-safe:hover:-translate-y-1 " +
     "hover:border-black/25 hover:shadow-[0_18px_42px_-34px_rgba(0,0,0,0.85)]";

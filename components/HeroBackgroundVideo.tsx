@@ -46,7 +46,7 @@ export default function HeroBackgroundVideo() {
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             aria-hidden="true"
             onCanPlay={() => setVideoLoaded(true)}
         >

@@ -23,7 +23,7 @@ export default function About() {
     return (
         <section
             id="about"
-            className="relative overflow-hidden bg-[#f4f1eb] py-14 sm:py-20 lg:py-24"
+            className="relative overflow-hidden bg-[#fbfbf8] py-14 sm:py-20 lg:py-24"
         >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-black/15 to-transparent" />
 
@@ -43,15 +43,15 @@ export default function About() {
                             WedLockStudio helps wedding filmmakers, creators, and brands transform scattered footage into films with rhythm, emotion, and a cinematic finish.
                         </p>
                         <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6f685d]">
-                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Story</span>
-                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Color</span>
-                            <span className="rounded-full border border-black/10 bg-[#fbfaf7] px-3 py-2">Sound</span>
+                            <span className="rounded-full border border-black/10 bg-white px-3 py-2">Story</span>
+                            <span className="rounded-full border border-black/10 bg-white px-3 py-2">Color</span>
+                            <span className="rounded-full border border-black/10 bg-white px-3 py-2">Sound</span>
                         </div>
                     </div>
                 </div>
 
                 <div className="grid gap-6 lg:grid-cols-[1.12fr_0.88fr] lg:items-stretch xl:gap-8">
-                    <div className="relative overflow-hidden rounded-lg border border-black/10 bg-[#fbfaf7] shadow-[0_24px_70px_-48px_rgba(0,0,0,0.9)]">
+                    <div className="relative overflow-hidden rounded-lg border border-black/10 bg-white shadow-[0_24px_70px_-48px_rgba(0,0,0,0.9)]">
                         <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:h-full lg:min-h-[520px]">
                             <Image
                                 src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1600/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
@@ -83,7 +83,7 @@ export default function About() {
                             />
                         </div>
 
-                        <div className="rounded-lg border border-black/10 bg-[#fbfaf7] p-5 shadow-[0_18px_50px_-40px_rgba(0,0,0,0.8)] sm:p-6 lg:flex-1">
+                        <div className="rounded-lg border border-black/10 bg-white p-5 shadow-[0_18px_50px_-40px_rgba(0,0,0,0.8)] sm:p-6 lg:flex-1">
                             <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/10 pb-4">
                                 <h3 className="text-xl font-bold text-[#181714] sm:text-2xl">
                                     How we shape the edit

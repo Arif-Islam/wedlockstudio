@@ -70,7 +70,7 @@ export default function FAQ() {
 
                     <a
                         href="mailto:contact@wedlockstudio.com"
-                        className="mt-5 inline-flex items-center justify-center rounded-full border border-black/10 bg-[#fbfaf7] px-5 py-2.5 text-sm font-bold text-[#181714] shadow-[0_14px_34px_-30px_rgba(0,0,0,0.55)] transition-colors hover:border-gold/60 hover:text-[#b57900]"
+                        className="mt-5 inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-bold text-[#181714] shadow-[0_14px_34px_-30px_rgba(0,0,0,0.55)] transition-colors hover:border-gold/60 hover:text-[#b57900]"
                     >
                         Ask a question
                     </a>

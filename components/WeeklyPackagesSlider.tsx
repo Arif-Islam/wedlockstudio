@@ -118,7 +118,6 @@ export default function WeeklyPackagesSlider() {
     const maxIndex = weeklyCards.length - visibleCount;
     const [index, setIndex] = useState(0);
     const [hasAppeared, setHasAppeared] = useState(false);
-    const trackRef = useRef<HTMLDivElement>(null);
     const wrapperRef = useRef<HTMLDivElement>(null);
     const [cardWidth, setCardWidth] = useState(0);
 
@@ -166,7 +165,6 @@ export default function WeeklyPackagesSlider() {
         <div ref={wrapperRef} className="w-full">
             <div className="overflow-hidden rounded-lg">
                 <div
-                    ref={trackRef}
                     className="flex"
                     style={{
                         gap: GAP,
@@ -314,7 +312,7 @@ function Card({ card }: { card: WeeklyCard }) {
                     <span
                         className={cn(
                             "mb-0.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold",
-                            hl ? "bg-white/[0.08] text-white/70" : "bg-[#f5f0e7] text-neutral-600"
+                            hl ? "bg-white/[0.08] text-white/70" : "bg-[#fbf7ed] text-neutral-600"
                         )}
                     >
                         <Clock3 size={13} />
@@ -341,7 +339,7 @@ function Card({ card }: { card: WeeklyCard }) {
                             <span
                                 className={cn(
                                     "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                                    hl ? "bg-white/10 text-gold" : "bg-[#f2ead8] text-[#b78114]"
+                                    hl ? "bg-white/10 text-gold" : "bg-[#fbf3dd] text-[#b78114]"
                                 )}
                             >
                                 <Check size={12} />
@@ -364,7 +362,7 @@ function Card({ card }: { card: WeeklyCard }) {
                         "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md text-sm font-semibold text-center cursor-pointer transition-all duration-300",
                         hl
                             ? "bg-gold text-black hover:bg-[#e2b14c]"
-                            : "border border-black/15 bg-[#faf8f3] text-neutral-800 hover:border-black/30 hover:bg-[#f0eadf] hover:text-black"
+                            : "border border-black/15 bg-[#fbfbf8] text-neutral-800 hover:border-black/30 hover:bg-white hover:text-black"
                     )}
                 >
                     Get In Touch <ArrowRight size={16} />

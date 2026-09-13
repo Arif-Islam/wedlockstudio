@@ -39,7 +39,7 @@ export default function Packages() {
     return (
         <section
             id="packages"
-            className="relative overflow-hidden bg-[#faf8f3] py-16 text-black md:py-22"
+            className="relative overflow-hidden bg-[#fdfdfb] py-16 text-black md:py-22"
         >
             <div className="absolute top-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
             <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
@@ -62,7 +62,7 @@ export default function Packages() {
                             {packageNotes.map((item) => (
                                 <div
                                     key={item.label}
-                                    className="rounded-md border border-black/10 bg-white/75 px-4 py-3 shadow-[0_14px_34px_-32px_rgba(0,0,0,0.48)]"
+                                    className="rounded-md border border-black/10 bg-white px-4 py-3 shadow-[0_14px_34px_-32px_rgba(0,0,0,0.48)]"
                                 >
                                     <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#b78114]">
                                         {item.label}
@@ -124,7 +124,7 @@ export default function Packages() {
                                 style={{ animationDelay: `${index * 120}ms` }}
                             >
                                 {pkg.popular && (
-                                    <div className="mb-4 w-fit rounded-full bg-[#fff4d6] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#9f6f0a]">
+                                    <div className="mb-4 w-fit rounded-full bg-[#fff7df] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#9f6f0a]">
                                         Most Popular
                                     </div>
                                 )}
@@ -140,7 +140,7 @@ export default function Packages() {
                                 <ul className="mb-6 flex-1 space-y-3">
                                     {pkg.features.map((feature, i) => (
                                         <li key={i} className="flex items-start gap-2.5 text-sm leading-6 text-neutral-700">
-                                            <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#f2ead8]">
+                                            <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#fbf3dd]">
                                                 <Check size={12} className="text-[#b78114]" />
                                             </div>
                                             {feature}
@@ -152,7 +152,7 @@ export default function Packages() {
                                     "inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md text-sm font-bold transition-all duration-300 active:scale-[0.98] cursor-pointer",
                                     pkg.popular
                                         ? "bg-[#181714] text-white hover:bg-black"
-                                        : "bg-[#ede7dc] text-black hover:bg-[#e2dacd]"
+                                        : "border border-black/10 bg-[#fbfbf8] text-black hover:bg-white"
                                 )}>
                                     Get In Touch <ArrowRight size={16} />
                                 </a>

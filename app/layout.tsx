@@ -20,7 +20,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://f.vimeocdn.com" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
       </head>
-      <body className="bg-[#f4f1eb] text-black antialiased">
+      <body className="bg-[#fbfbf8] text-black antialiased">
         <Header />
         <main>{children}</main>
       </body>

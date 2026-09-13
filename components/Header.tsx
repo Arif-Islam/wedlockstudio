@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MailOpen, Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -40,15 +40,31 @@ const mobileNavItems = [
 export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const isScrolledRef = useRef(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 48);
+        let frame = 0;
+
+        const updateScrolledState = () => {
+            frame = 0;
+            const next = window.scrollY > 48;
+            if (isScrolledRef.current === next) return;
+
+            isScrolledRef.current = next;
+            setIsScrolled(next);
         };
 
-        handleScroll();
+        const handleScroll = () => {
+            if (frame) return;
+            frame = window.requestAnimationFrame(updateScrolledState);
+        };
+
+        updateScrolledState();
         window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
+        return () => {
+            if (frame) window.cancelAnimationFrame(frame);
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, []);
 
     const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -65,7 +81,7 @@ export default function Header() {
             className={cn(
                 "fixed left-0 right-0 top-0 z-50 border-b backdrop-blur-md transition-all duration-300",
                 isScrolled || mobileMenuOpen
-                    ? "border-black/10 bg-[#fbfaf7]/95 text-[#181714] shadow-[0_14px_36px_-30px_rgba(0,0,0,0.95)]"
+                    ? "border-black/10 bg-white/95 text-[#181714] shadow-[0_14px_36px_-30px_rgba(0,0,0,0.95)]"
                     : "border-white/10 bg-black/12 text-white shadow-none"
             )}
         >
@@ -132,7 +148,7 @@ export default function Header() {
                                 className={cn(
                                     "flex cursor-pointer items-center gap-1 rounded-full px-4 text-sm font-semibold uppercase tracking-wide transition-all duration-300",
                                     isScrolled
-                                        ? "py-2 text-[#494641] hover:bg-[#f1eadf] hover:text-[#b57900]"
+                                        ? "py-2 text-[#494641] hover:bg-[#f6f6f2] hover:text-[#b57900]"
                                         : "py-2.5 text-white/86 hover:bg-white hover:text-[#181714]",
                                     item.children && "pr-3.5"
                                 )}
@@ -152,7 +168,7 @@ export default function Header() {
                                         className={cn(
                                             "overflow-hidden rounded-lg border py-2 shadow-[0_22px_56px_-34px_rgba(0,0,0,0.9)] backdrop-blur-md transition-colors duration-300",
                                             isScrolled
-                                                ? "border-black/10 bg-[#fbfaf7]"
+                                                ? "border-black/10 bg-white"
                                                 : "border-white/12 bg-[#181714]/88"
                                         )}
                                     >
@@ -164,7 +180,7 @@ export default function Header() {
                                                 className={cn(
                                                     "block px-5 py-2.5 text-center text-sm font-medium transition-colors",
                                                     isScrolled
-                                                        ? "text-[#5f5a51] hover:bg-[#f1eadf] hover:text-[#b57900]"
+                                                        ? "text-[#5f5a51] hover:bg-[#f6f6f2] hover:text-[#b57900]"
                                                         : "text-white/76 hover:bg-white/10 hover:text-gold"
                                                 )}
                                             >
@@ -236,7 +252,7 @@ export default function Header() {
             </div>
 
             {mobileMenuOpen && (
-                <div className="absolute left-0 right-0 top-full border-t border-black/10 bg-[#fbfaf7] px-4 py-5 shadow-[0_22px_56px_-34px_rgba(0,0,0,0.9)] lg:hidden">
+                <div className="absolute left-0 right-0 top-full border-t border-black/10 bg-white px-4 py-5 shadow-[0_22px_56px_-34px_rgba(0,0,0,0.9)] lg:hidden">
                     <nav className="grid grid-cols-2 gap-2">
                         {mobileNavItems.map((item) => (
                             <a
