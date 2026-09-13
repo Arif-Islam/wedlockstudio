@@ -39,7 +39,7 @@ const faqs = [
     },
     {
         question: "How do we communicate during the project?",
-        answer: "We believe in clear and consistent communication. We can collaborate via email, Slack, or WhatsApp depending on your preference. reliable updates throughout the editing process ensure we stay aligned with your goals."
+        answer: "We believe in clear and consistent communication. We can collaborate via email, Slack, or WhatsApp depending on your preference. Reliable updates throughout the editing process ensure we stay aligned with your goals."
     },
     {
         question: "Can you edit vertical videos for TikTok, Reels, and Shorts?",
@@ -57,40 +57,86 @@ export default function FAQ() {
     return (
         <section
             id="faq"
-            className="relative py-20 md:py-28 overflow-hidden text-black bg-white"
+            className="relative overflow-hidden bg-white py-14 text-black md:py-20 lg:py-24"
         >
             <div className="absolute top-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
             <div className="absolute bottom-0 left-0 right-0 h-px bg-black/10 pointer-events-none" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center mb-14 md:mb-16">
-                    <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">FAQ</p>
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight">
-                        Frequently Asked <span className="text-gold">Questions</span>
+                <div className="mx-auto mb-9 max-w-3xl text-center md:mb-11">
+                    <div className="mb-3 flex items-center justify-center gap-3">
+                        <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
+                        <p className="text-xs font-bold uppercase tracking-[0.32em] text-gold">FAQ</p>
+                        <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
+                    </div>
+
+                    <h2 className="text-3xl font-bold leading-tight tracking-normal sm:text-4xl lg:text-5xl">
+                        Questions before the <span className="text-gold">first edit</span>
                     </h2>
-                    <p className="text-neutral-600 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
-                        Have questions? We have answers. If you don&apos;t see your question here, feel free to <a href="mailto:contact@wedlockstudio.com" className="text-gold hover:underline font-medium">contact us</a>.
+
+                    <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base">
+                        Timelines, revisions, file delivery, pricing, and the details clients usually want clear before we start.
                     </p>
+
+                    <a
+                        href="mailto:contact@wedlockstudio.com"
+                        className="mt-5 inline-flex items-center justify-center rounded-full border border-black/10 bg-[#fbfaf7] px-5 py-2.5 text-sm font-bold text-[#181714] shadow-[0_14px_34px_-30px_rgba(0,0,0,0.55)] transition-colors hover:border-gold/60 hover:text-[#b57900]"
+                    >
+                        Ask a question
+                    </a>
                 </div>
 
-                <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 items-start">
+                <div className="mx-auto grid max-w-6xl items-start gap-4 lg:grid-cols-2 lg:gap-5">
                     {faqs.map((faq, index) => (
                         <div
                             key={index}
-                            className="bg-[#fbfaf7] rounded-lg shadow-[0_12px_36px_-32px_rgba(0,0,0,0.65)] border border-black/10 overflow-hidden transition-all duration-300 hover:shadow-[0_18px_46px_-36px_rgba(0,0,0,0.8)] hover:border-black/25 flex flex-col"
+                            className={cn(
+                                "group overflow-hidden rounded-lg border bg-[#fbfaf7] shadow-[0_14px_42px_-38px_rgba(0,0,0,0.65)] transition-all duration-300",
+                                openIndex === index
+                                    ? "border-gold/45 bg-white shadow-[0_22px_60px_-44px_rgba(0,0,0,0.78)]"
+                                    : "border-black/10 hover:border-black/20 hover:bg-white"
+                            )}
                         >
                             <button
+                                type="button"
                                 onClick={() => toggleFAQ(index)}
-                                className="w-full px-6 py-5 flex justify-between items-center text-left focus:outline-none cursor-pointer group"
+                                className="flex w-full cursor-pointer items-start justify-between gap-4 px-5 py-5 text-left focus:outline-none sm:px-6"
+                                aria-expanded={openIndex === index}
                             >
-                                <span className={cn("text-lg font-semibold transition-colors duration-300 pr-4", openIndex === index ? "text-gold" : "text-gray-800")}>
-                                    {faq.question}
+                                <span className="flex min-w-0 gap-4">
+                                    <span
+                                        className={cn(
+                                            "mt-0.5 text-xs font-extrabold uppercase tracking-[0.2em] transition-colors",
+                                            openIndex === index ? "text-gold" : "text-neutral-400"
+                                        )}
+                                    >
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+                                    <span
+                                        className={cn(
+                                            "text-base font-bold leading-6 transition-colors sm:text-lg sm:leading-7",
+                                            openIndex === index ? "text-[#181714]" : "text-neutral-800"
+                                        )}
+                                    >
+                                        {faq.question}
+                                    </span>
                                 </span>
-                                {openIndex === index ? (
-                                    <Minus className="text-gold w-5 h-5 shrink-0 transition-transform duration-300 transform rotate-180" />
-                                ) : (
-                                    <Plus className="text-gray-400 w-5 h-5 shrink-0 transition-transform duration-300 transform rotate-90 group-hover:text-gray-600" />
-                                )}
+
+                                <span
+                                    className={cn(
+                                        "grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-all duration-300",
+                                        openIndex === index
+                                            ? "border-gold bg-gold text-black"
+                                            : "border-black/10 bg-white text-neutral-500 group-hover:border-gold/50 group-hover:text-[#b57900]"
+                                    )}
+                                    aria-hidden="true"
+                                >
+                                    {openIndex === index ? (
+                                        <Minus className="h-4 w-4" />
+                                    ) : (
+                                        <Plus className="h-4 w-4" />
+                                    )}
+                                </span>
                             </button>
                             <div
                                 className={cn(
@@ -99,9 +145,11 @@ export default function FAQ() {
                                 )}
                             >
                                 <div className="overflow-hidden">
-                                    <p className="text-gray-600 leading-relaxed px-6 pb-6 pt-1">
-                                        {faq.answer}
-                                    </p>
+                                    <div className="px-5 pb-5 sm:px-6 sm:pb-6">
+                                        <p className="border-l-2 border-gold/55 pl-4 text-sm leading-7 text-neutral-600 sm:text-[15px]">
+                                            {faq.answer}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
