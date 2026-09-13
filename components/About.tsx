@@ -54,9 +54,10 @@ export default function About() {
                     <div className="relative overflow-hidden rounded-lg border border-black/10 bg-[#fbfaf7] shadow-[0_24px_70px_-48px_rgba(0,0,0,0.9)]">
                         <div className="relative aspect-[4/3] sm:aspect-[16/10] lg:h-full lg:min-h-[520px]">
                             <Image
-                                src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
+                                src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1600/v1772218358/producer-songwriter-mixing-mastering-tracks-with-stereo-gear_ocuzit.jpg"
                                 alt="WedLockStudio post-production desk"
                                 fill
+                                quality={72}
                                 className="object-cover"
                                 sizes="(max-width: 1024px) 100vw, 58vw"
                             />

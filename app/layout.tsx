@@ -14,6 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preconnect" href="https://player.vimeo.com" />
+        <link rel="preconnect" href="https://i.vimeocdn.com" />
+        <link rel="preconnect" href="https://f.vimeocdn.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+      </head>
       <body className="bg-[#f4f1eb] text-black antialiased">
         <Header />
         <main>{children}</main>

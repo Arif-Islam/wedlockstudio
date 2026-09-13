@@ -152,6 +152,11 @@ body {
   min-width: 18%;
 }
 
+.faq-accordion-grid,
+.faq-card {
+  overflow-anchor: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .testimonial-media-enter,
   .testimonial-copy-enter,

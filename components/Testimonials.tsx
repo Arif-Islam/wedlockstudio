@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BadgeCheck, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -54,9 +54,9 @@ const testimonials = [
 ];
 
 const proofItems = [
-    { value: "1000+", label: "Projects Completed" },
-    { value: "100%", label: "Client Satisfaction" },
-    { value: "3-14", label: "Day Delivery" },
+    { value: "1000+", label: "Projects Completed", detail: "Edited, polished, and delivered" },
+    { value: "100%", label: "Client Satisfaction", detail: "Review-ready client workflow" },
+    { value: "3-14", label: "Day Delivery", detail: "Fast weekly project rhythm" },
 ];
 
 const SLIDE_INTERVAL = 6500;
@@ -64,10 +64,30 @@ const SLIDE_INTERVAL = 6500;
 export default function Testimonials() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
+    const [isInViewport, setIsInViewport] = useState(false);
+    const sectionRef = useRef<HTMLElement>(null);
     const active = testimonials[activeIndex];
 
     useEffect(() => {
-        if (isPaused) return;
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setIsInViewport(entry.isIntersecting);
+            },
+            {
+                rootMargin: "-12% 0px -18%",
+                threshold: 0.2,
+            }
+        );
+
+        observer.observe(section);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!isInViewport || isPaused) return;
 
         if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
             return;
@@ -78,7 +98,7 @@ export default function Testimonials() {
         }, SLIDE_INTERVAL);
 
         return () => window.clearTimeout(timer);
-    }, [activeIndex, isPaused]);
+    }, [activeIndex, isInViewport, isPaused]);
 
     const handleSelect = (index: number) => {
         setActiveIndex(index);
@@ -97,6 +117,7 @@ export default function Testimonials() {
 
     return (
         <section
+            ref={sectionRef}
             id="testimonials"
             className="relative overflow-hidden bg-[#f7f4ee] py-10 text-black md:py-14 lg:py-20"
         >
@@ -154,8 +175,8 @@ export default function Testimonials() {
                                         alt={active.name}
                                         fill
                                         sizes="(min-width: 1024px) 28vw, 100vw"
+                                        quality={72}
                                         className="object-cover transition-opacity duration-500"
-                                        priority
                                     />
                                     <div className="absolute inset-0 bg-linear-to-t from-black/82 via-black/10 to-transparent" />
                                     <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5">
@@ -194,8 +215,8 @@ export default function Testimonials() {
                                         alt={active.name}
                                         fill
                                         sizes="80px"
+                                        quality={70}
                                         className="object-cover"
-                                        priority
                                     />
                                 </div>
                                 <div className="min-w-0">
@@ -263,6 +284,7 @@ export default function Testimonials() {
                                                         alt={active.name}
                                                         fill
                                                         sizes="36px"
+                                                        quality={64}
                                                         className="object-cover"
                                                     />
                                                 </span>
@@ -328,6 +350,7 @@ export default function Testimonials() {
                                                             alt={testimonial.name}
                                                             fill
                                                             sizes="36px"
+                                                            quality={64}
                                                             className="object-cover"
                                                         />
                                                     </span>
@@ -354,7 +377,7 @@ export default function Testimonials() {
                                     <div
                                         key={active.id}
                                         className="testimonial-progress h-full origin-left bg-gold"
-                                        style={{ animationPlayState: isPaused ? "paused" : "running" }}
+                                        style={{ animationPlayState: isInViewport && !isPaused ? "running" : "paused" }}
                                     />
                                 </div>
                             </div>
@@ -362,23 +385,62 @@ export default function Testimonials() {
                     </div>
                 </div>
 
-                <div className="mt-5 2xl:mt-10 grid overflow-hidden rounded-lg border border-black/10 bg-white shadow-[0_20px_52px_-44px_rgba(0,0,0,0.65)] sm:grid-cols-3">
+                <div className="mt-4 overflow-hidden rounded-lg border border-black/10 bg-[#181714] p-2 shadow-[0_30px_80px_-58px_rgba(0,0,0,0.95)] sm:p-2.5 lg:mt-5">
+                    <div className="grid gap-2 sm:grid-cols-3">
                     {proofItems.map((item, index) => (
                         <div
                             key={item.label}
                             className={cn(
-                                "flex min-h-20 items-center justify-between gap-4 px-5 py-4 sm:block sm:min-h-0 sm:px-5 sm:py-5 md:px-6",
-                                index > 0 && "border-t border-black/10 sm:border-t-0 sm:border-l"
+                                "relative overflow-hidden rounded-md border border-white/10 bg-white/[0.045] px-4 py-4 transition-colors duration-300 hover:border-gold/35 hover:bg-white/[0.07] sm:px-5 sm:py-5",
+                                index === 1 && "bg-gold text-black hover:bg-[#e5b13b]"
                             )}
                         >
-                            <p className="text-2xl font-extrabold leading-none text-[#181714] sm:text-3xl">
-                                {item.value}
+                            <div
+                                className={cn(
+                                    "absolute right-0 top-0 h-16 w-16 rounded-bl-full",
+                                    index === 1 ? "bg-black/10" : "bg-gold/10"
+                                )}
+                                aria-hidden="true"
+                            />
+                            <p
+                                className={cn(
+                                    "mb-3 text-[10px] font-bold uppercase tracking-[0.22em]",
+                                    index === 1 ? "text-black/55" : "text-gold"
+                                )}
+                            >
+                                0{index + 1}
                             </p>
-                            <p className="text-right text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 sm:mt-2 sm:text-left sm:text-xs sm:tracking-[0.16em] lg:tracking-[0.18em]">
-                                {item.label}
-                            </p>
+                            <div className="flex items-end justify-between gap-4 sm:block xl:flex">
+                                <div>
+                                    <p
+                                        className={cn(
+                                            "text-3xl font-extrabold leading-none tracking-normal sm:text-4xl",
+                                            index === 1 ? "text-black" : "text-white"
+                                        )}
+                                    >
+                                        {item.value}
+                                    </p>
+                                    <p
+                                        className={cn(
+                                            "mt-2 text-[11px] font-bold uppercase tracking-[0.14em] sm:text-xs sm:tracking-[0.16em]",
+                                            index === 1 ? "text-black/70" : "text-white/75"
+                                        )}
+                                    >
+                                        {item.label}
+                                    </p>
+                                </div>
+                                <p
+                                    className={cn(
+                                        "max-w-[13rem] text-right text-xs leading-5 sm:mt-3 sm:text-left xl:mt-0 xl:text-right",
+                                        index === 1 ? "text-black/62" : "text-white/45"
+                                    )}
+                                >
+                                    {item.detail}
+                                </p>
+                            </div>
                         </div>
                     ))}
+                    </div>
                 </div>
             </div>
         </section>

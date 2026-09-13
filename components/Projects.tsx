@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -56,6 +56,50 @@ function getSlotStyle(slot: number, d: CarouselDims) {
 }
 
 const categories = ["Highlight Film", "Teaser", "Full Documentary Film", "Promotional Video"];
+const VIMEO_PLAYER_PARAMS = "autoplay=1&muted=0&autopause=1&playsinline=1&dnt=1&title=0&byline=0&portrait=0";
+
+function getVideoKey(surface: "mobile" | "desktop", category: string, slotId: number, project: ProjectItem) {
+    return `${surface}-${category}-${slotId}-${project.vimeoId}`;
+}
+
+function VimeoPlayer({
+    project,
+    playerKey,
+    isLoading,
+    isSlow,
+    onLoaded,
+}: {
+    project: ProjectItem;
+    playerKey: string;
+    isLoading: boolean;
+    isSlow: boolean;
+    onLoaded: () => void;
+}) {
+    return (
+        <>
+            <iframe
+                key={playerKey}
+                src={`https://player.vimeo.com/video/${project.vimeoId}?${VIMEO_PLAYER_PARAMS}`}
+                className="absolute inset-0 z-30 h-full w-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+                loading="eager"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title={`${project.subtitle} - ${project.title}`}
+                onLoad={onLoaded}
+            />
+            {isLoading && (
+                <div className="pointer-events-none absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 bg-black/65 text-center text-white backdrop-blur-[2px]">
+                    <div className="h-9 w-9 animate-spin rounded-full border-2 border-white/25 border-t-gold" />
+                    <p className="text-sm font-semibold tracking-wide">
+                        {isSlow ? "Still loading video..." : "Loading video..."}
+                    </p>
+                </div>
+            )}
+        </>
+    );
+}
 
 export default function Projects() {
     const [activeCategory, setActiveCategory] = useState("Highlight Film");
@@ -65,7 +109,9 @@ export default function Projects() {
     const [slotOffset, setSlotOffset] = useState(0);
     const [transitionEnabled, setTransitionEnabled] = useState(true);
     const [isAnimating, setIsAnimating] = useState(false);
-    const [playingVideo, setPlayingVideo] = useState<number | null>(null);
+    const [playingVideoKey, setPlayingVideoKey] = useState<string | null>(null);
+    const [loadingVideoKey, setLoadingVideoKey] = useState<string | null>(null);
+    const [slowVideoKey, setSlowVideoKey] = useState<string | null>(null);
 
     // Mobile infinite loop state
     const [mobileSlideIndex, setMobileSlideIndex] = useState(1);
@@ -88,10 +134,6 @@ export default function Projects() {
         sideH: SIDE_H,
         gap: GAP,
     });
-
-    // Separate refs for mobile and desktop to avoid conflicts
-    const mobileVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-    const desktopVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
     // ==================== VIEWPORT ENTRANCE (Intersection Observer) ====================
     useEffect(() => {
@@ -136,10 +178,42 @@ export default function Projects() {
         return () => ro.disconnect();
     }, []);
 
+    const stopActiveVideo = () => {
+        setPlayingVideoKey(null);
+        setLoadingVideoKey(null);
+        setSlowVideoKey(null);
+    };
+
+    const toggleVideo = (playerKey: string) => {
+        if (playingVideoKey === playerKey) {
+            stopActiveVideo();
+            return;
+        }
+
+        setPlayingVideoKey(playerKey);
+        setLoadingVideoKey(playerKey);
+        setSlowVideoKey(null);
+    };
+
+    const clearLoadingForKey = (playerKey: string) => {
+        setLoadingVideoKey((current) => (current === playerKey ? null : current));
+        setSlowVideoKey((current) => (current === playerKey ? null : current));
+    };
+
+    useEffect(() => {
+        if (!loadingVideoKey) return;
+
+        const timer = window.setTimeout(() => {
+            setSlowVideoKey((current) => current ?? loadingVideoKey);
+        }, 4500);
+
+        return () => window.clearTimeout(timer);
+    }, [loadingVideoKey]);
+
     // Get project index with wrapping (for desktop)
-    const getProjectIndex = useCallback((offset: number) => {
+    const getProjectIndex = (offset: number) => {
         return (currentIndex + offset + projects.length * 10) % projects.length;
-    }, [currentIndex, projects.length]);
+    };
 
     // ==================== TAB CHANGE ANIMATION ====================
     useEffect(() => {
@@ -165,9 +239,7 @@ export default function Projects() {
 
     const handleCategoryChange = (category: string) => {
         if (category === activeCategory) return;
-        mobileVideoRefs.current.forEach((v) => v?.pause());
-        desktopVideoRefs.current.forEach((v) => v?.pause());
-        setPlayingVideo(null);
+        stopActiveVideo();
         setIsAnimating(false);
         setTransitionEnabled(false);
         setSlotOffset(0);
@@ -186,10 +258,9 @@ export default function Projects() {
     };
 
     // ==================== DESKTOP NAVIGATION ====================
-    const goToNextDesktop = useCallback(() => {
+    const goToNextDesktop = () => {
         if (isAnimating) return;
-        desktopVideoRefs.current.forEach((v) => v?.pause());
-        setPlayingVideo(null);
+        stopActiveVideo();
         setIsAnimating(true);
 
         setTransitionEnabled(true);
@@ -205,12 +276,11 @@ export default function Projects() {
                 setIsAnimating(false);
             });
         }, 700);
-    }, [isAnimating, projects.length]);
+    };
 
-    const goToPrevDesktop = useCallback(() => {
+    const goToPrevDesktop = () => {
         if (isAnimating) return;
-        desktopVideoRefs.current.forEach((v) => v?.pause());
-        setPlayingVideo(null);
+        stopActiveVideo();
         setIsAnimating(true);
 
         setTransitionEnabled(true);
@@ -226,12 +296,11 @@ export default function Projects() {
                 setIsAnimating(false);
             });
         }, 700);
-    }, [isAnimating, projects.length]);
+    };
 
     // ==================== MOBILE NAVIGATION (infinite loop) ====================
     const pauseAllMobileVideos = () => {
-        mobileVideoRefs.current.forEach((v) => v?.pause());
-        setPlayingVideo(null);
+        stopActiveVideo();
     };
 
     const mobileGoToNext = () => {
@@ -292,22 +361,6 @@ export default function Projects() {
         if (distance < -50) mobileGoToPrev();
         setTouchStart(0);
         setTouchEnd(0);
-    };
-
-    const toggleMobileVideo = (refIndex: number) => {
-        if (playingVideo === refIndex) {
-            setPlayingVideo(null);
-        } else {
-            setPlayingVideo(refIndex);
-        }
-    };
-
-    const toggleDesktopVideo = (projectIndex: number) => {
-        if (playingVideo === projectIndex) {
-            setPlayingVideo(null);
-        } else {
-            setPlayingVideo(projectIndex);
-        }
     };
 
     const mobileRealIndex = getMobileRealIndex();
@@ -414,29 +467,37 @@ export default function Projects() {
                                     }}
                                 >
                                     {extendedProjects.map((project, index) => {
-                                        const isPlaying = playingVideo === index;
+                                        const playerKey = getVideoKey("mobile", activeCategory, index, project);
+                                        const isPlaying = playingVideoKey === playerKey;
+                                        const isLoading = loadingVideoKey === playerKey;
                                         return (
                                             <div key={`mobile-${index}`} className="min-w-full px-2 flex justify-center">
                                                 <div className="relative group overflow-hidden rounded-lg w-full md:w-[80%] border border-white/10 bg-black">
                                                     <div className="relative w-full pt-[56.25%]">
                                                         {isPlaying && (
-                                                            <iframe
-                                                                src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                                                className="absolute inset-0 z-30 w-full h-full"
-                                                                frameBorder="0"
-                                                                allow="autoplay; fullscreen"
-                                                                allowFullScreen
-                                                                title={project.title}
+                                                            <VimeoPlayer
+                                                                project={project}
+                                                                playerKey={playerKey}
+                                                                isLoading={isLoading}
+                                                                isSlow={slowVideoKey === playerKey}
+                                                                onLoaded={() => clearLoadingForKey(playerKey)}
                                                             />
                                                         )}
                                                         <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
-                                                            <Image src={project.thumbnail} alt={project.title} fill sizes="100vw" className="object-cover contrast-110 saturate-110" priority={index <= 2} />
+                                                            <Image
+                                                                src={project.thumbnail}
+                                                                alt={project.title}
+                                                                fill
+                                                                sizes="100vw"
+                                                                quality={72}
+                                                                className="object-cover contrast-110 saturate-110"
+                                                            />
                                                             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/15 to-transparent" />
                                                         </div>
                                                         {!isPlaying && (
                                                             <div
                                                                 className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                                                onClick={() => toggleMobileVideo(index)}
+                                                                onClick={() => toggleVideo(playerKey)}
                                                             >
                                                                 <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-105 transition-all shadow-[0_18px_40px_-28px_rgba(0,0,0,0.9)]">
                                                                     <Play fill="black" className="text-black ml-1" size={36} />
@@ -491,7 +552,9 @@ export default function Projects() {
                                 const slot = offset + slotOffset;
                                 const style = getSlotStyle(slot, carouselDims);
                                 const isCenter = slot === 0;
-                                const isPlaying = playingVideo === projectIndex && isCenter;
+                                const playerKey = getVideoKey("desktop", activeCategory, projectIndex, project);
+                                const isPlaying = playingVideoKey === playerKey && isCenter;
+                                const isLoading = loadingVideoKey === playerKey;
 
                                 return (
                                     <div
@@ -513,13 +576,12 @@ export default function Projects() {
                                     >
                                         {/* Vimeo player - only for current center when playing */}
                                         {offset === 0 && isPlaying && (
-                                            <iframe
-                                                src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1`}
-                                                className="absolute inset-0 z-30 w-full h-full"
-                                                frameBorder="0"
-                                                allow="autoplay; fullscreen"
-                                                allowFullScreen
-                                                title={project.title}
+                                            <VimeoPlayer
+                                                project={project}
+                                                playerKey={playerKey}
+                                                isLoading={isLoading}
+                                                isSlow={slowVideoKey === playerKey}
+                                                onLoaded={() => clearLoadingForKey(playerKey)}
                                             />
                                         )}
 
@@ -530,8 +592,8 @@ export default function Projects() {
                                                 alt={project.title}
                                                 fill
                                                 sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
+                                                quality={72}
                                                 className={`object-cover contrast-110 saturate-110 ${isCenter ? "group-hover:scale-[1.025] transition-transform duration-700" : ""}`}
-                                                priority={offset === 0}
                                             />
                                             <div className={cn(
                                                 "absolute inset-0",
@@ -545,7 +607,7 @@ export default function Projects() {
                                         {isCenter && !isPlaying && (
                                             <div
                                                 className="absolute inset-0 flex items-center justify-center z-20 cursor-pointer"
-                                                onClick={() => toggleDesktopVideo(projectIndex)}
+                                                onClick={() => toggleVideo(playerKey)}
                                             >
                                                 <div className="w-16 h-16 bg-gold rounded-full flex items-center justify-center transform group-hover:scale-105 transition-all shadow-[0_18px_40px_-28px_rgba(0,0,0,0.9)]">
                                                     <Play fill="black" className="text-black ml-1" size={36} />

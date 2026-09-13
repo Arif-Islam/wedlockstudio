@@ -52,9 +52,10 @@ export default function MeetOurTeam() {
                         <div className="grid bg-white/10 sm:grid-cols-2 lg:min-h-[560px]">
                             <div className="relative min-h-[320px] overflow-hidden sm:min-h-[460px] lg:min-h-full">
                                 <Image
-                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217391/group-graphic-designers-working-computer_iojoen.jpg"
+                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1200/v1772217391/group-graphic-designers-working-computer_iojoen.jpg"
                                     alt="WedLockStudio team reviewing an edit"
                                     fill
+                                    quality={72}
                                     className="object-cover"
                                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 35vw"
                                 />
@@ -71,9 +72,10 @@ export default function MeetOurTeam() {
 
                             <div className="relative min-h-[320px] overflow-hidden border-t border-white/10 sm:min-h-[460px] sm:border-l sm:border-t-0 lg:min-h-full">
                                 <Image
-                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/v1772217721/male-female-graphic-designers-interacting-with-each-other_eqt93k.jpg"
+                                    src="https://res.cloudinary.com/djbh7xuqv/image/upload/q_auto,f_auto,w_1200/v1772217721/male-female-graphic-designers-interacting-with-each-other_eqt93k.jpg"
                                     alt="WedLockStudio creative team collaborating"
                                     fill
+                                    quality={72}
                                     className="object-cover object-top"
                                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                                 />

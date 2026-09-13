@@ -2,37 +2,31 @@
 
 import { useRef, useState } from "react";
 import { Mail, Phone, Globe, Send, CheckCircle, MapPin } from "lucide-react";
-import emailjs from "@emailjs/browser";
 
 export default function Contact() {
     const form = useRef<HTMLFormElement>(null);
     const [isSending, setIsSending] = useState(false);
     const [isSent, setIsSent] = useState(false);
 
-    const sendEmail = (e: React.FormEvent) => {
+    const sendEmail = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!form.current) return;
+
         setIsSending(true);
 
-        if (form.current) {
-            emailjs
-                .sendForm(
-                    "service_l3koimq",
-                    "template_pmqw4xb",
-                    form.current,
-                    "Public Key"
-                )
-                .then(
-                    (result) => {
-                        console.log(result.text);
-                        setIsSent(true);
-                        setIsSending(false);
-                    },
-                    (error) => {
-                        console.log(error.text);
-                        alert("Failed to send message. Please try again.");
-                        setIsSending(false);
-                    }
-                );
+        try {
+            const emailjs = await import("@emailjs/browser");
+            await emailjs.sendForm(
+                "service_l3koimq",
+                "template_pmqw4xb",
+                form.current,
+                "Public Key"
+            );
+            setIsSent(true);
+        } catch {
+            alert("Failed to send message. Please try again.");
+        } finally {
+            setIsSending(false);
         }
     };
 
