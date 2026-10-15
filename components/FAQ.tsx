@@ -1,4 +1,7 @@
+"use client";
+
 import FAQAccordion from "@/components/FAQAccordion";
+import { useLanguage } from "@/lib/i18n";
 
 const faqs = [
     {
@@ -44,6 +47,8 @@ const faqs = [
 ];
 
 export default function FAQ() {
+    const { t } = useLanguage();
+    const localizedFaqs = faqs.map((faq) => ({ question: t(faq.question), answer: t(faq.answer) }));
     return (
         <section
             id="faq"
@@ -61,22 +66,22 @@ export default function FAQ() {
                     </div>
 
                     <h2 className="text-3xl font-bold leading-tight tracking-normal sm:text-4xl lg:text-5xl">
-                        Questions before the <span className="text-gold">first edit</span>
+                        {t("Questions before the")} <span className="text-gold">{t("first edit")}</span>
                     </h2>
 
                     <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-600 sm:text-base">
-                        Timelines, revisions, file delivery, pricing, and the details clients usually want clear before we start.
+                        {t("Timelines, revisions, file delivery, pricing, and the details clients usually want clear before we start.")}
                     </p>
 
                     <a
                         href="mailto:contact@wedlockstudio.com"
                         className="mt-5 inline-flex items-center justify-center rounded-full border border-black/10 bg-white px-5 py-2.5 text-sm font-bold text-[#181714] shadow-[0_14px_34px_-30px_rgba(0,0,0,0.55)] transition-colors hover:border-gold/60 hover:text-[#b57900]"
                     >
-                        Ask a question
+                        {t("Ask a question")}
                     </a>
                 </div>
 
-                <FAQAccordion faqs={faqs} />
+                <FAQAccordion faqs={localizedFaqs} />
             </div>
         </section>
     );

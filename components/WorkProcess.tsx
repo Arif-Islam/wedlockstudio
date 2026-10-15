@@ -1,5 +1,8 @@
+"use client";
+
 import { FileText, CloudUpload, CreditCard, Film, FolderDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 const processSteps = [
     {
@@ -35,6 +38,7 @@ const processSteps = [
 ];
 
 export default function WorkProcess() {
+    const { t } = useLanguage();
     return (
         <section
             id="process"
@@ -43,13 +47,13 @@ export default function WorkProcess() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-white">
                 <div className="text-center mb-16 md:mb-24">
                     <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
-                        How We Work
+                        {t("How We Work")}
                     </p>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-white">
-                        Our <span className="text-transparent bg-clip-text bg-linear-to-r from-gold to-yellow-200">Work Process</span>
+                        {t("Our")} <span className="text-transparent bg-clip-text bg-linear-to-r from-gold to-yellow-200">{t("Work Process")}</span>
                     </h2>
                     <p className="text-gray-400 max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
-                        A streamlined, transparent approach for turning raw footage into polished wedding films without production drag.
+                        {t("A streamlined, transparent approach for turning raw footage into polished wedding films without production drag.")}
                     </p>
                 </div>
 
@@ -71,9 +75,9 @@ export default function WorkProcess() {
                                         "hidden md:flex flex-col justify-end flex-1 text-center pb-6 md:pb-8",
                                         isTop ? "opacity-100" : "invisible opacity-0"
                                     )}>
-                                        <h3 className="text-xl font-bold text-white mb-2 md:mb-3">{step.title}</h3>
+                                        <h3 className="text-xl font-bold text-white mb-2 md:mb-3">{t(step.title)}</h3>
                                         <p className="text-gray-400 text-sm leading-relaxed">
-                                            {step.description}
+                                            {t(step.description)}
                                         </p>
                                     </div>
 
@@ -95,9 +99,9 @@ export default function WorkProcess() {
                                         "flex-1 md:flex md:flex-col md:justify-start md:text-center pt-2 md:pt-6 md:pb-0",
                                         !isTop ? "opacity-100" : "md:invisible md:opacity-0"
                                     )}>
-                                        <h3 className="text-xl font-bold text-white mb-2 md:mb-3">{step.title}</h3>
+                                        <h3 className="text-xl font-bold text-white mb-2 md:mb-3">{t(step.title)}</h3>
                                         <p className="text-gray-400 text-sm leading-relaxed">
-                                            {step.description}
+                                            {t(step.description)}
                                         </p>
                                     </div>
                                 </div>
@@ -112,7 +116,7 @@ export default function WorkProcess() {
                         <span className="relative flex h-2 w-2">
                             <span className="relative inline-flex rounded-full h-2 w-2 bg-gold"></span>
                         </span>
-                        Average project turnaround time is <strong className="text-gray-300">1-3 weeks</strong> depending on complexity.
+                        {t("Average project turnaround time is")} <strong className="text-gray-300">1-3 weeks</strong> {t("depending on complexity.")}
                     </div>
                 </div>
             </div>

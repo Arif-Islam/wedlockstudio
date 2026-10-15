@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { BadgeCheck, ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 const testimonials = [
     {
@@ -62,6 +63,7 @@ const proofItems = [
 const SLIDE_INTERVAL = 6500;
 
 export default function Testimonials() {
+    const { t } = useLanguage();
     const [activeIndex, setActiveIndex] = useState(0);
     const [isPaused, setIsPaused] = useState(false);
     const [isInViewport, setIsInViewport] = useState(false);
@@ -129,28 +131,27 @@ export default function Testimonials() {
                     <div className="mb-3 flex items-center justify-center gap-3 md:mb-4">
                         <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
                         <p className="text-xs font-bold uppercase tracking-[0.32em] text-gold">
-                            Testimonials
+                            {t("Testimonials")}
                         </p>
                         <span className="h-px w-8 bg-gold/55 sm:w-12" aria-hidden="true" />
                     </div>
 
                     <h2 className="text-2xl font-bold leading-tight tracking-normal text-[#181714] sm:text-3xl md:text-4xl lg:text-5xl">
-                        Proof in every <span className="text-gold">finished film</span>
+                        {t("Proof in every")} <span className="text-gold">{t("finished film")}</span>
                     </h2>
 
                     <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-neutral-600 sm:text-base sm:leading-7 md:mt-4">
-                        Real feedback from filmmakers, studios, and creators who trust
-                        WedLockStudio for polished edits, clear revisions, and calm delivery.
+                        {t("Real feedback from filmmakers, studios, and creators who trust WedLockStudio for polished edits, clear revisions, and calm delivery.")}
                     </p>
 
                     <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[11px] font-bold uppercase tracking-[0.14em] text-neutral-500 sm:text-xs sm:tracking-[0.16em] md:mt-5">
-                        <span className="flex items-center gap-1 text-gold" aria-label="Five star rating">
+                        <span className="flex items-center gap-1 text-gold" aria-label={t("Five star rating")}>
                             {Array.from({ length: 5 }).map((_, index) => (
                                 <Star key={`intro-star-${index}`} className="h-3.5 w-3.5" fill="currentColor" />
                             ))}
                         </span>
                         <span className="h-1 w-1 rounded-full bg-black/25" aria-hidden="true" />
-                        <span>All verified client stories</span>
+                        <span>{t("All verified client stories")}</span>
                     </div>
                 </div>
 
@@ -181,27 +182,27 @@ export default function Testimonials() {
                                     <div className="absolute inset-0 bg-linear-to-t from-black/82 via-black/10 to-transparent" />
                                     <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5">
                                         <div className="mb-3 w-fit rounded-full border border-white/15 bg-black/35 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-gold backdrop-blur sm:text-[11px] sm:tracking-[0.22em]">
-                                            {active.category}
+                                            {t(active.category)}
                                         </div>
                                         <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-2xl">
                                             {active.name}
                                         </h3>
-                                        <p className="mt-1 text-sm font-medium text-white/70">{active.role}</p>
+                                        <p className="mt-1 text-sm font-medium text-white/70">{t(active.role)}</p>
                                     </div>
                                 </div>
 
                                 <div className="mt-4 grid grid-cols-2 gap-3">
                                     <div className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
                                         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
-                                            Focus
+                                            {t("Focus")}
                                         </p>
-                                        <p className="mt-1 text-sm leading-5 text-white/70">{active.result}</p>
+                                        <p className="mt-1 text-sm leading-5 text-white/70">{t(active.result)}</p>
                                     </div>
                                     <div className="rounded-md border border-white/10 bg-white/[0.04] px-4 py-3">
                                         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold">
-                                            Rating
+                                            {t("Rating")}
                                         </p>
-                                        <p className="mt-1 text-sm leading-5 text-white/70">5-star experience</p>
+                                        <p className="mt-1 text-sm leading-5 text-white/70">{t("5-star experience")}</p>
                                     </div>
                                 </div>
                             </div>
@@ -221,12 +222,12 @@ export default function Testimonials() {
                                 </div>
                                 <div className="min-w-0">
                                     <p className="mb-1 w-fit rounded-full border border-gold/25 bg-gold/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-gold">
-                                        {active.category}
+                                        {t(active.category)}
                                     </p>
                                     <h3 className="truncate text-xl font-bold text-white sm:text-2xl">
                                         {active.name}
                                     </h3>
-                                    <p className="mt-1 truncate text-sm font-medium text-white/60">{active.role}</p>
+                                    <p className="mt-1 truncate text-sm font-medium text-white/60">{t(active.role)}</p>
                                 </div>
                             </div>
 
@@ -241,16 +242,16 @@ export default function Testimonials() {
                                 </div>
 
                                 <p className="max-w-4xl text-[1.05rem] font-semibold leading-7 text-white sm:text-lg sm:leading-8 md:text-[1.2rem] md:leading-9 lg:text-[1.7rem] lg:leading-[1.55]">
-                                    &ldquo;{active.review}&rdquo;
+                                    &ldquo;{t(active.review)}&rdquo;
                                 </p>
 
                                 <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 lg:mt-8">
                                     <span className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
                                         <BadgeCheck size={14} className="text-gold" />
-                                        Verified Client
+                                        {t("Verified Client")}
                                     </span>
                                     <span className="rounded-full border border-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white/70 sm:text-xs sm:tracking-[0.18em]">
-                                        {active.result}
+                                        {t(active.result)}
                                     </span>
                                 </div>
                             </div>
@@ -258,7 +259,7 @@ export default function Testimonials() {
                             <div className="mt-7 border-t border-white/10 pt-4 sm:mt-8 sm:pt-5 lg:mt-10 lg:pt-6">
                                 <div className="mb-4 flex items-center justify-between gap-4">
                                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-gold sm:text-xs sm:tracking-[0.24em]">
-                                        Client Notes
+                                        {t("Client Notes")}
                                     </p>
                                     <p className="text-sm text-white/45">
                                         {activeIndex + 1} / {testimonials.length}
@@ -271,7 +272,7 @@ export default function Testimonials() {
                                             type="button"
                                             onClick={handlePrevious}
                                             className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-black/25 text-white transition-colors hover:border-gold/60 hover:text-gold"
-                                            aria-label="Show previous client review"
+                                            aria-label={t("Show previous client review")}
                                         >
                                             <ChevronLeft size={18} />
                                         </button>
@@ -293,7 +294,7 @@ export default function Testimonials() {
                                                         {active.name}
                                                     </span>
                                                     <span className="block truncate text-xs leading-4 text-white/50">
-                                                        {active.role}
+                                                        {t(active.role)}
                                                     </span>
                                                 </span>
                                             </div>
@@ -303,7 +304,7 @@ export default function Testimonials() {
                                             type="button"
                                             onClick={handleNext}
                                             className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/10 bg-black/25 text-white transition-colors hover:border-gold/60 hover:text-gold"
-                                            aria-label="Show next client review"
+                                            aria-label={t("Show next client review")}
                                         >
                                             <ChevronRight size={18} />
                                         </button>
@@ -319,7 +320,7 @@ export default function Testimonials() {
                                                     "h-2 rounded-full transition-all",
                                                     index === activeIndex ? "w-6 bg-gold" : "w-2 bg-white/20 hover:bg-white/40"
                                                 )}
-                                                aria-label={`Show testimonial from ${testimonial.name}`}
+                                                aria-label={`${t("Show testimonial from")} ${testimonial.name}`}
                                                 aria-pressed={index === activeIndex}
                                             />
                                         ))}
@@ -341,7 +342,7 @@ export default function Testimonials() {
                                                         : "border-white/10 bg-white/[0.04] text-white hover:border-white/25 hover:bg-white/[0.08]"
                                                 )}
                                                 aria-pressed={selected}
-                                                aria-label={`Show testimonial from ${testimonial.name}`}
+                                                aria-label={`${t("Show testimonial from")} ${testimonial.name}`}
                                             >
                                                 <span className="mb-2 flex items-center gap-2">
                                                     <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full">
@@ -364,7 +365,7 @@ export default function Testimonials() {
                                                                 selected ? "text-black/65" : "text-white/45"
                                                             )}
                                                         >
-                                                            {testimonial.role}
+                                                            {t(testimonial.role)}
                                                         </span>
                                                     </span>
                                                 </span>
@@ -426,7 +427,7 @@ export default function Testimonials() {
                                             index === 1 ? "text-black/70" : "text-white/75"
                                         )}
                                     >
-                                        {item.label}
+                                        {t(item.label)}
                                     </p>
                                 </div>
                                 <p
@@ -435,7 +436,7 @@ export default function Testimonials() {
                                         index === 1 ? "text-black/62" : "text-white/45"
                                     )}
                                 >
-                                    {item.detail}
+                                    {t(item.detail)}
                                 </p>
                             </div>
                         </div>

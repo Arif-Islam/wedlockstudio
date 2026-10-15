@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { ArrowRight, Check, ChevronLeft, ChevronRight, Clock3 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 type WeeklyCard = {
     id: number;
@@ -114,6 +115,7 @@ const GAP = 18;
 const TRANSITION = "transform 650ms cubic-bezier(0.22, 1, 0.36, 1)";
 
 export default function WeeklyPackagesSlider() {
+    const { t } = useLanguage();
     const visibleCount = useVisibleCount();
     const maxIndex = weeklyCards.length - visibleCount;
     const [index, setIndex] = useState(0);
@@ -202,7 +204,7 @@ export default function WeeklyPackagesSlider() {
                 <button
                     onClick={goPrev}
                     disabled={clampedIndex === 0}
-                    aria-label="Previous"
+                    aria-label={t("Previous")}
                     className={cn(
                         "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 cursor-pointer",
                         "border shadow-sm",
@@ -216,7 +218,7 @@ export default function WeeklyPackagesSlider() {
                 <button
                     onClick={goNext}
                     disabled={clampedIndex >= maxIndex}
-                    aria-label="Next"
+                    aria-label={t("Next")}
                     className={cn(
                         "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 cursor-pointer",
                         "border shadow-sm",
@@ -233,6 +235,7 @@ export default function WeeklyPackagesSlider() {
 }
 
 function Card({ card }: { card: WeeklyCard }) {
+    const { t } = useLanguage();
     const hl = card.highlighted;
 
     return (
@@ -256,7 +259,7 @@ function Card({ card }: { card: WeeklyCard }) {
         >
             {card.ribbon && (
                 <div className="absolute right-4 top-4 z-20 rounded-full bg-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-black shadow-sm">
-                    {card.ribbon}
+                    {t(card.ribbon)}
                 </div>
             )}
 
@@ -274,7 +277,7 @@ function Card({ card }: { card: WeeklyCard }) {
                         hl ? "text-gold" : "text-[#b78114]"
                     )}
                 >
-                    Weekly Edit
+                    {t("Weekly Edit")}
                 </p>
                 <h3
                     className={cn(
@@ -282,7 +285,7 @@ function Card({ card }: { card: WeeklyCard }) {
                         hl ? "text-white" : "text-gray-900"
                     )}
                 >
-                    {card.title}
+                    {t(card.title)}
                 </h3>
                 <p
                     className={cn(
@@ -290,7 +293,7 @@ function Card({ card }: { card: WeeklyCard }) {
                         hl ? "text-white/70" : "text-neutral-500"
                     )}
                 >
-                    {card.subtitle}
+                    {t(card.subtitle)}
                 </p>
             </div>
 
@@ -316,7 +319,7 @@ function Card({ card }: { card: WeeklyCard }) {
                         )}
                     >
                         <Clock3 size={13} />
-                        {card.delivery}
+                        {t(card.delivery)}
                     </span>
                 </div>
             </div>
@@ -344,7 +347,7 @@ function Card({ card }: { card: WeeklyCard }) {
                             >
                                 <Check size={12} />
                             </span>
-                            {f}
+                            {t(f)}
                         </li>
                     ))}
                 </ul>
@@ -365,7 +368,7 @@ function Card({ card }: { card: WeeklyCard }) {
                             : "border border-black/15 bg-[#fbfbf8] text-neutral-800 hover:border-black/30 hover:bg-white hover:text-black"
                     )}
                 >
-                    Get In Touch <ArrowRight size={16} />
+                    {t("Get In Touch")} <ArrowRight size={16} />
                 </a>
             </div>
         </div>

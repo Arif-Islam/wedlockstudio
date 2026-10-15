@@ -18,6 +18,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
     const [panelHeights, setPanelHeights] = useState<number[]>([]);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const faqContentKey = faqs.map((faq) => `${faq.question}\u0000${faq.answer}`).join("\u0001");
 
     useEffect(() => {
         const measurePanels = () => {
@@ -28,7 +29,7 @@ export default function FAQAccordion({ faqs }: FAQAccordionProps) {
         window.addEventListener("resize", measurePanels);
 
         return () => window.removeEventListener("resize", measurePanels);
-    }, [faqs.length]);
+    }, [faqContentKey, faqs.length]);
 
     useEffect(() => {
         if (openIndex === null) return;

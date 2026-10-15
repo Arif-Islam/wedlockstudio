@@ -2,17 +2,36 @@
 
 import { useRef, useState } from "react";
 import { Mail, Phone, Globe, Send, CheckCircle, MapPin } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
+    const { t } = useLanguage();
     const form = useRef<HTMLFormElement>(null);
     const [isSending, setIsSending] = useState(false);
     const [isSent, setIsSent] = useState(false);
+    const [formError, setFormError] = useState<"" | "Please complete all required fields." | "Please enter a valid email address." | "Failed to send message. Please try again.">("");
 
     const sendEmail = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!form.current) return;
 
+        const values = new FormData(form.current);
+        const name = String(values.get("user_name") ?? "").trim();
+        const email = String(values.get("user_email") ?? "").trim();
+        const message = String(values.get("message") ?? "").trim();
+
+        if (!name || !email || !message) {
+            setFormError("Please complete all required fields.");
+            return;
+        }
+
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            setFormError("Please enter a valid email address.");
+            return;
+        }
+
         setIsSending(true);
+        setFormError("");
 
         try {
             const emailjs = await import("@emailjs/browser");
@@ -24,7 +43,8 @@ export default function Contact() {
             );
             setIsSent(true);
         } catch {
-            alert("Failed to send message. Please try again.");
+            setFormError("Failed to send message. Please try again.");
+            alert(t("Failed to send message. Please try again."));
         } finally {
             setIsSending(false);
         }
@@ -69,13 +89,13 @@ export default function Contact() {
                 {/* Section Header */}
                 <div className="text-center mb-14 md:mb-16">
                     <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
-                        Contact
+                        {t("Contact")}
                     </p>
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-5 leading-tight">
-                        Get In <span className="text-gold">Touch</span>
+                        {t("Get In")} <span className="text-gold">{t("Touch")}</span>
                     </h2>
                     <p className="text-gray-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
-                        Ready to start your project? Send us a message and we&apos;ll get back to you within 24 hours.
+                        {t("Ready to start your project? Send us a message and we'll get back to you within 24 hours.")}
                     </p>
                 </div>
 
@@ -83,7 +103,7 @@ export default function Contact() {
                     {/* Contact Info — left column */}
                     <div className="lg:col-span-2 flex flex-col justify-center">
                         <h3 className="text-xl sm:text-2xl font-bold text-white mb-8">
-                            Contact Information
+                            {t("Contact Information")}
                         </h3>
 
                         <div className="space-y-6">
@@ -93,16 +113,16 @@ export default function Contact() {
                                         {item.icon}
                                     </div>
                                     <div>
-                                        <p className="text-sm text-gray-500 font-medium">{item.label}</p>
+                                        <p className="text-sm text-gray-500 font-medium">{t(item.label)}</p>
                                         {item.href ? (
                                             <a
                                                 href={item.href}
                                                 className="text-gray-300 font-medium hover:text-gold transition-colors"
                                             >
-                                                {item.value}
+                                                {item.value === "Available Globally" ? t(item.value) : item.value}
                                             </a>
                                         ) : (
-                                            <p className="text-gray-300 font-medium">{item.value}</p>
+                                        <p className="text-gray-300 font-medium">{item.value === "Available Globally" ? t(item.value) : item.value}</p>
                                         )}
                                     </div>
                                 </div>
@@ -122,44 +142,49 @@ export default function Contact() {
                                         <div className="w-20 h-20 bg-green-500/10 rounded-lg flex items-center justify-center mx-auto mb-6 ring-1 ring-green-500/30">
                                             <CheckCircle size={40} className="text-green-400" />
                                         </div>
-                                        <h3 className="text-2xl font-bold text-white mb-3">Message Sent!</h3>
+                                        <h3 className="text-2xl font-bold text-white mb-3">{t("Message Sent!")}</h3>
                                         <p className="text-gray-400 mb-8 max-w-xs mx-auto">
-                                            Thank you for reaching out. We will get back to you shortly.
+                                            {t("Thank you for reaching out. We will get back to you shortly.")}
                                         </p>
                                         <button
                                             onClick={() => setIsSent(false)}
                                             className="text-gold font-semibold hover:underline cursor-pointer"
                                         >
-                                            Send another message
+                                            {t("Send another message")}
                                         </button>
                                     </div>
                                 ) : (
-                                    <form ref={form} onSubmit={sendEmail} className="space-y-5">
+                                    <form ref={form} noValidate onChange={() => formError && setFormError("")} onSubmit={sendEmail} className="space-y-5">
+                                        {formError && (
+                                            <p className="rounded-md border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-200" role="alert">
+                                                {t(formError)}
+                                            </p>
+                                        )}
                                         {/* Name & Email — side by side on md+ */}
                                         <div className="grid sm:grid-cols-2 gap-5">
                                             <div>
                                                 <label htmlFor="user_name" className="block text-sm font-medium text-gray-400 mb-1.5">
-                                                    Your Name
+                                                    {t("Your Name")}
                                                 </label>
                                                 <input
                                                     type="text"
                                                     name="user_name"
                                                     id="user_name"
                                                     className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
-                                                    placeholder="John Doe"
+                                                    placeholder={t("John Doe")}
                                                     required
                                                 />
                                             </div>
                                             <div>
                                                 <label htmlFor="user_email" className="block text-sm font-medium text-gray-400 mb-1.5">
-                                                    Email Address
+                                                    {t("Email Address")}
                                                 </label>
                                                 <input
                                                     type="email"
                                                     name="user_email"
                                                     id="user_email"
                                                     className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all"
-                                                    placeholder="john@example.com"
+                                                    placeholder={t("john@example.com")}
                                                     required
                                                 />
                                             </div>
@@ -167,14 +192,14 @@ export default function Contact() {
 
                                         <div>
                                             <label htmlFor="message" className="block text-sm font-medium text-gray-400 mb-1.5">
-                                                Message
+                                                {t("Message")}
                                             </label>
                                             <textarea
                                                 name="message"
                                                 id="message"
                                                 rows={5}
                                                 className="w-full bg-[#151411] border border-white/10 rounded-md px-4 py-3 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all resize-none"
-                                                placeholder="Tell us about your project..."
+                                                placeholder={t("Tell us about your project...")}
                                                 required
                                             />
                                         </div>
@@ -190,11 +215,11 @@ export default function Contact() {
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                                                     </svg>
-                                                    Sending...
+                                                    {t("Sending...")}
                                                 </span>
                                             ) : (
                                                 <>
-                                                    Send Message <Send size={18} />
+                                                    {t("Send Message")} <Send size={18} />
                                                 </>
                                             )}
                                         </button>

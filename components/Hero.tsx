@@ -1,7 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import HeroBackgroundVideo from "@/components/HeroBackgroundVideo";
+import { useLanguage } from "@/lib/i18n";
 
 const trustItems = [
     "Multi-camera edits supported",
@@ -11,6 +14,7 @@ const trustItems = [
 ];
 
 export default function Hero() {
+    const { t } = useLanguage();
     return (
         <>
             <section id="hero" className="relative h-screen w-full overflow-hidden">
@@ -31,23 +35,23 @@ export default function Hero() {
 
                 <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
                     <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.02] animate-fade-in-up max-w-6xl">
-                        Cinematic Wedding Video Editing for
+                        {t("Cinematic Wedding Video Editing for")}
                         <br />
-                        <span className="text-gold">Filmmakers, Studios, and Couples</span>
+                        <span className="text-gold">{t("Filmmakers, Studios, and Couples")}</span>
                     </h1>
                     <p className="text-base md:text-xl text-gray-200 mb-8 max-w-2xl leading-relaxed animate-fade-in-up delay-100">
-                        We are WedLockStudio, a professional video editing agency dedicated to transforming your raw footage into cinematic masterpieces.
+                        {t("We are WedLockStudio, a professional video editing agency dedicated to transforming your raw footage into cinematic masterpieces.")}
                     </p>
                     <Link
                         href="#contact"
                         className="group relative inline-flex min-h-14 items-center justify-center gap-3 overflow-hidden rounded-full border border-gold/50 bg-gold px-5 py-2 font-bold text-black shadow-[0_22px_60px_-28px_rgba(0,0,0,0.95)] ring-1 ring-white/20 transition-all duration-300 hover:-translate-y-1 hover:border-gold hover:text-gold hover:shadow-[0_30px_90px_-24px_rgba(224,173,56,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-black active:translate-y-0 animate-fade-in-up delay-100 sm:min-h-16 sm:px-6"
-                        aria-label="Get in touch with WedLockStudio"
+                        aria-label={t("Get in touch with WedLockStudio")}
                     >
                         <span className="absolute inset-0 bg-linear-to-r from-[#c98e23] via-[#f4cf72] to-[#dfa834] opacity-100 transition-opacity duration-300 group-hover:opacity-0" />
                         <span className="absolute inset-0 bg-[#11100d] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                         <span className="absolute inset-y-0 -left-2/3 w-1/2 skew-x-[-18deg] bg-linear-to-r from-transparent via-gold/45 to-transparent opacity-0 blur-sm transition-all duration-700 group-hover:left-[125%] group-hover:opacity-100" />
                         <span className="relative whitespace-nowrap px-1 text-sm uppercase tracking-[0.14em] transition-colors duration-300 sm:text-base">
-                            Get In Touch
+                            {t("Get In Touch")}
                         </span>
                         <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black text-gold shadow-inner transition-all duration-300 group-hover:translate-x-1 group-hover:rotate-[-8deg] group-hover:bg-gold group-hover:text-black group-hover:shadow-[0_0_24px_rgba(224,173,56,0.45)] sm:h-11 sm:w-11">
                             <ArrowRight size={20} strokeWidth={2.6} />
@@ -68,7 +72,7 @@ export default function Hero() {
                                     index > 0 ? "lg:border-l lg:border-white/10" : ""
                                 }`}
                             >
-                                <span className="block min-[420px]:whitespace-nowrap">{item}</span>
+                                <span className="block min-[420px]:whitespace-nowrap">{t(item)}</span>
                             </div>
                         ))}
                     </div>

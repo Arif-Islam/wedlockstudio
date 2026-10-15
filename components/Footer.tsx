@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -10,6 +12,7 @@ import {
     Twitter,
     Youtube,
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 const footerLinks = [
     { name: "Home", href: "#hero" },
@@ -30,6 +33,7 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+    const { t } = useLanguage();
     return (
         <footer className="border-t border-white/10 bg-[#151411] text-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +51,7 @@ export default function Footer() {
                                 />
                             </Link>
                             <p className="mt-4 text-sm leading-6 text-[#c7c0b3]">
-                                Cinematic video editing for weddings, creators, and brands that want every frame to feel intentional.
+                                {t("Cinematic video editing for weddings, creators, and brands that want every frame to feel intentional.")}
                             </p>
                             <div className="mt-6 flex flex-wrap gap-2.5">
                                 <a
@@ -71,7 +75,7 @@ export default function Footer() {
 
                         <div className="rounded-lg border border-white/10 bg-white/[0.035] p-5 sm:p-6">
                             <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#ede8df]">
-                                Explore
+                                {t("Explore")}
                             </h3>
                             <ul className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-[#a9a194]">
                                 {footerLinks.map((link) => (
@@ -80,7 +84,7 @@ export default function Footer() {
                                             href={link.href}
                                             className="inline-flex items-center gap-1.5 transition-colors hover:text-gold"
                                         >
-                                            {link.name}
+                                            {t(link.name)}
                                             <ArrowUpRight size={13} />
                                         </a>
                                     </li>
@@ -90,7 +94,7 @@ export default function Footer() {
 
                         <div className="rounded-lg border border-white/10 bg-white/[0.035] p-5 sm:p-6">
                             <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#ede8df]">
-                                Connect
+                                {t("Connect")}
                             </h3>
                             <div className="mt-5 space-y-3 text-sm text-[#a9a194]">
                                 <a
@@ -105,7 +109,7 @@ export default function Footer() {
                                     rel="noopener noreferrer"
                                     className="block font-medium transition-colors hover:text-gold"
                                 >
-                                    WhatsApp consultation
+                                    {t("WhatsApp consultation")}
                                 </a>
                             </div>
                             <div className="mt-6 flex flex-wrap gap-2.5">
@@ -125,8 +129,8 @@ export default function Footer() {
                 </div>
 
                 <div className="flex flex-col gap-3 border-t border-white/10 py-5 text-xs text-[#8f887c] sm:flex-row sm:items-center sm:justify-between">
-                    <p>&copy; {new Date().getFullYear()} WedLockStudio. All rights reserved.</p>
-                    <p className="uppercase tracking-[0.2em]">Video editing agency</p>
+                    <p>&copy; {new Date().getFullYear()} WedLockStudio. {t("All rights reserved.")}</p>
+                    <p className="uppercase tracking-[0.2em]">{t("Video editing agency")}</p>
                 </div>
             </div>
         </footer>

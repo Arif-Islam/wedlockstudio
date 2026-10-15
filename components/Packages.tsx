@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import WeeklyPackagesSlider from "@/components/WeeklyPackagesSlider";
+import { useLanguage } from "@/lib/i18n";
 
 const monthlyPackages = [
     {
@@ -34,6 +35,7 @@ const packageNotes = [
 ];
 
 export default function Packages() {
+    const { t } = useLanguage();
     const [activeTab, setActiveTab] = useState<"weekly" | "monthly">("weekly");
 
     return (
@@ -47,13 +49,12 @@ export default function Packages() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div className="mb-9 grid gap-6 md:mb-11 lg:grid-cols-[minmax(0,0.95fr)_minmax(440px,0.85fr)] lg:items-start lg:gap-12">
                     <div className="max-w-2xl text-left">
-                        <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-gold">Pricing</p>
+                        <p className="mb-3 text-xs font-bold uppercase tracking-[0.32em] text-gold">{t("Pricing")}</p>
                         <h2 className="mb-3 text-3xl font-bold leading-tight tracking-normal md:text-4xl lg:text-5xl">
-                            Our <span className="text-gold">Packages</span>
+                            {t("Our")} <span className="text-gold">{t("Packages")}</span>
                         </h2>
                         <p className="max-w-xl text-sm leading-7 text-neutral-600 sm:text-base">
-                            Choose a weekly edit or a monthly post-production rhythm with clean delivery,
-                            clear revisions, and polished final exports.
+                            {t("Choose a weekly edit or a monthly post-production rhythm with clean delivery, clear revisions, and polished final exports.")}
                         </p>
                     </div>
 
@@ -65,10 +66,10 @@ export default function Packages() {
                                     className="rounded-md border border-black/10 bg-white px-4 py-3 shadow-[0_14px_34px_-32px_rgba(0,0,0,0.48)]"
                                 >
                                     <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#b78114]">
-                                        {item.label}
+                                        {t(item.label)}
                                     </p>
                                     <p className="mt-1 text-sm leading-5 text-neutral-600">
-                                        {item.value}
+                                        {t(item.value)}
                                     </p>
                                 </div>
                             ))}
@@ -76,7 +77,7 @@ export default function Packages() {
 
                         <div className="mt-3 flex flex-col gap-3 border-t border-black/10 pt-3 sm:flex-row sm:items-center sm:justify-between">
                             <p className="max-w-xs text-sm leading-6 text-neutral-500">
-                                Pick the cadence first, then choose the edit scope that fits the project.
+                                {t("Pick the cadence first, then choose the edit scope that fits the project.")}
                             </p>
 
                             {/* Toggle */}
@@ -90,7 +91,7 @@ export default function Packages() {
                                             : "text-neutral-500 hover:bg-black/5 hover:text-black"
                                     )}
                                 >
-                                    Weekly
+                                    {t("Weekly")}
                                 </button>
                                 <button
                                     onClick={() => setActiveTab("monthly")}
@@ -101,7 +102,7 @@ export default function Packages() {
                                             : "text-neutral-500 hover:bg-black/5 hover:text-black"
                                     )}
                                 >
-                                    Monthly
+                                    {t("Monthly")}
                                 </button>
                             </div>
                         </div>
@@ -125,16 +126,16 @@ export default function Packages() {
                             >
                                 {pkg.popular && (
                                     <div className="mb-4 w-fit rounded-full bg-[#fff7df] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-[#9f6f0a]">
-                                        Most Popular
+                                        {t("Most Popular")}
                                     </div>
                                 )}
 
-                                <h3 className="mb-1 text-xl font-bold">{pkg.name}</h3>
-                                <p className="mb-5 min-h-10 text-sm leading-6 text-neutral-600">{pkg.description}</p>
+                                <h3 className="mb-1 text-xl font-bold">{t(pkg.name)}</h3>
+                                <p className="mb-5 min-h-10 text-sm leading-6 text-neutral-600">{t(pkg.description)}</p>
 
                                 <div className="mb-5 text-3xl font-bold text-black">
                                     {pkg.price}
-                                    <span className="text-base font-medium text-neutral-500">/mo</span>
+                                    <span className="text-base font-medium text-neutral-500">{t("/mo")}</span>
                                 </div>
 
                                 <ul className="mb-6 flex-1 space-y-3">
@@ -143,7 +144,7 @@ export default function Packages() {
                                             <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#fbf3dd]">
                                                 <Check size={12} className="text-[#b78114]" />
                                             </div>
-                                            {feature}
+                                            {t(feature)}
                                         </li>
                                     ))}
                                 </ul>
@@ -154,7 +155,7 @@ export default function Packages() {
                                         ? "bg-[#181714] text-white hover:bg-black"
                                         : "border border-black/10 bg-[#fbfbf8] text-black hover:bg-white"
                                 )}>
-                                    Get In Touch <ArrowRight size={16} />
+                                    {t("Get In Touch")} <ArrowRight size={16} />
                                 </a>
                             </div>
                         ))}

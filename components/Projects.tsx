@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/lib/i18n";
 
 type ProjectItem = { id: number; title: string; subtitle: string; thumbnail: string; vimeoId: string };
 
@@ -56,6 +57,12 @@ function getSlotStyle(slot: number, d: CarouselDims) {
 }
 
 const categories = ["Highlight Film", "Teaser", "Full Documentary Film", "Promotional Video"];
+const categoryDescriptionKeys: Record<string, string> = {
+    "Highlight Film": "Explore our curated collection of cinematic highlight films.",
+    Teaser: "Explore our curated collection of cinematic wedding teasers.",
+    "Full Documentary Film": "Explore our curated collection of cinematic documentary films.",
+    "Promotional Video": "Explore our curated collection of cinematic promotional videos.",
+};
 const VIMEO_PLAYER_PARAMS = "autoplay=1&muted=0&autopause=1&playsinline=1&dnt=1&title=0&byline=0&portrait=0";
 
 function getVideoKey(surface: "mobile" | "desktop", category: string, slotId: number, project: ProjectItem) {
@@ -75,6 +82,7 @@ function VimeoPlayer({
     isSlow: boolean;
     onLoaded: () => void;
 }) {
+    const { t } = useLanguage();
     return (
         <>
             <iframe
@@ -86,14 +94,14 @@ function VimeoPlayer({
                 allowFullScreen
                 loading="eager"
                 referrerPolicy="strict-origin-when-cross-origin"
-                title={`${project.subtitle} - ${project.title}`}
+                title={`${t(project.subtitle)} - ${t(project.title)}`}
                 onLoad={onLoaded}
             />
             {isLoading && (
                 <div className="pointer-events-none absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 bg-black/65 text-center text-white backdrop-blur-[2px]">
                     <div className="h-9 w-9 animate-spin rounded-full border-2 border-white/25 border-t-gold" />
                     <p className="text-sm font-semibold tracking-wide">
-                        {isSlow ? "Still loading video..." : "Loading video..."}
+                        {t(isSlow ? "Still loading video..." : "Loading video...")}
                     </p>
                 </div>
             )}
@@ -102,6 +110,7 @@ function VimeoPlayer({
 }
 
 export default function Projects() {
+    const { t } = useLanguage();
     const [activeCategory, setActiveCategory] = useState("Highlight Film");
     const projects = getProjectsForCategory(activeCategory);
     const extendedProjects = [projects[projects.length - 1], ...projects, projects[0]];
@@ -389,13 +398,13 @@ export default function Projects() {
                         )}
                     >
                         <p className="text-gold font-semibold text-sm uppercase tracking-widest mb-3">
-                            Our Work
+                            {t("Our Work")}
                         </p>
                         <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                            Project <span className="text-gold">Highlights</span>
+                            {t("Project")} <span className="text-gold">{t("Highlights")}</span>
                         </h2>
                         <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                            Explore our curated collection of cinematic {activeCategory.toLowerCase()}s
+                            {t(categoryDescriptionKeys[activeCategory])}
                         </p>
                     </div>
 
@@ -420,7 +429,7 @@ export default function Projects() {
                                             : "bg-white/5 text-neutral-300 hover:text-white hover:bg-white/10 border-white/10"
                                     )}
                                 >
-                                    {category}
+                                    {t(category)}
                                 </button>
                             ))}
                         </div>
@@ -438,7 +447,7 @@ export default function Projects() {
                                             : "text-neutral-400 hover:text-white hover:bg-white/10"
                                     )}
                                 >
-                                    {category}
+                                    {t(category)}
                                 </button>
                             ))}
                         </div>
@@ -486,7 +495,7 @@ export default function Projects() {
                                                         <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
                                                             <Image
                                                                 src={project.thumbnail}
-                                                                alt={project.title}
+                                                                alt={t(project.title)}
                                                                 fill
                                                                 sizes="100vw"
                                                                 quality={72}
@@ -506,8 +515,8 @@ export default function Projects() {
                                                         )}
                                                         <div className={`absolute bottom-2 left-0 right-0 z-10 p-6 transition-opacity duration-300 pointer-events-none ${isPlaying ? "opacity-0" : "opacity-100"}`}>
                                                             <div className="text-center space-y-2">
-                                                                <h3 className="text-2xl md:text-3xl font-bold text-white">{project.subtitle}</h3>
-                                                                <p className="text-gray-300 text-sm">{project.title}</p>
+                                                                <h3 className="text-2xl md:text-3xl font-bold text-white">{t(project.subtitle)}</h3>
+                                                                <p className="text-gray-300 text-sm">{t(project.title)}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -530,7 +539,7 @@ export default function Projects() {
                                                 ? "bg-gold w-7 h-2.5"
                                                 : "bg-white/25 hover:bg-white/45 w-2.5 h-2.5"
                                         )}
-                                        aria-label={`Go to slide ${index + 1}`}
+                                        aria-label={`${t("Go to slide")} ${index + 1}`}
                                     />
                                 ))}
                             </div>
@@ -589,7 +598,7 @@ export default function Projects() {
                                         <div className={`absolute inset-0 transition-opacity duration-300 ${isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"}`}>
                                             <Image
                                                 src={project.thumbnail}
-                                                alt={project.title}
+                                                alt={t(project.title)}
                                                 fill
                                                 sizes={isCenter ? `${carouselDims.centerW}px` : `${carouselDims.sideW}px`}
                                                 quality={72}
@@ -619,8 +628,8 @@ export default function Projects() {
                                         {isCenter && (
                                             <div className={`absolute bottom-0 left-0 right-0 z-10 p-6 transition-opacity duration-300 pointer-events-none ${isPlaying ? "opacity-0" : "opacity-100"}`}>
                                                 <div className="text-center space-y-1.5">
-                                                    <h3 className="text-2xl font-semibold text-white drop-shadow-md">{project.subtitle}</h3>
-                                                    <p className="text-gray-300 text-sm tracking-wide">{project.title}</p>
+                                                    <h3 className="text-2xl font-semibold text-white drop-shadow-md">{t(project.subtitle)}</h3>
+                                                    <p className="text-gray-300 text-sm tracking-wide">{t(project.title)}</p>
                                                 </div>
                                             </div>
                                         )}
@@ -638,7 +647,7 @@ export default function Projects() {
                                     top: "50%",
                                     transform: "translate(-50%, -50%)",
                                 }}
-                                aria-label="Previous"
+                                aria-label={t("Previous")}
                             >
                                 <ChevronLeft size={24} className="text-black" />
                             </button>
@@ -651,7 +660,7 @@ export default function Projects() {
                                     top: "50%",
                                     transform: "translate(-50%, -50%)",
                                 }}
-                                aria-label="Next"
+                                aria-label={t("Next")}
                             >
                                 <ChevronRight size={24} className="text-black" />
                             </button>
